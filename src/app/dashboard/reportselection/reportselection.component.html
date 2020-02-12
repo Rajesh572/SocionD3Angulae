@@ -1,7 +1,7 @@
 <app-pagehader>
     <div class="pagetitle">Metrics</div>
 
-    <div  *ngIf="dropdownList.length > 0">
+    <!-- <div  *ngIf="dropdownList.length > 0">
         <mat-form-field>
             <mat-label>Topics</mat-label>
             <mat-select [(ngModel)]="selectedItems" multiple>
@@ -12,7 +12,7 @@
         </mat-form-field>
 
         <button class="clear-all" (click)="clearAll()">Clear All</button>
-    </div>
+    </div> -->
 
 </app-pagehader>
 <div class="pagecontainer">
@@ -48,7 +48,7 @@
         <app-barchart class="charts" [dimension]="selectedHorizontalValue" [label]="yAxisLabel" [barData]="barData">
         </app-barchart>
         <app-stackedchart class="charts" [dimension]="selectedHorizontalValue" [label]="yAxisLabel"
-            [selectedTopics]="selectedItems" [topics]="topics" [stackedData]="stackedData"></app-stackedchart>
-        <app-multilinechart class="charts" [label]="yAxisLabel" [multiLineData]="multiLineData"></app-multilinechart>
+            [selectedTopics]="selectedItems" [topics]="topics" [stackedData]="stackedData"></app-stackedchart><!-- 
+        <app-multilinechart class="charts" [label]="yAxisLabel" [multiLineData]="multiLineData"></app-multilinechart> -->
     </div>
 </div>
