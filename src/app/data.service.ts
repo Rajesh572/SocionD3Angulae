@@ -103,7 +103,7 @@ export class DataService {
   getDataforBar(program_name?, dimension?, event_type?,topics?) {
     let url = this.druidNodeUrl + "getBarData";
     this.http.post(url, { event_type, program_name, dimension,topics }).subscribe((data) => {
-      console.log("bar", data)
+      //console.log("bar", data)
       this.barChartData.next(data['data'])
     })
   }
@@ -111,7 +111,7 @@ export class DataService {
   getStackedData(program_name?, dimension?, event_type?,topics?) {
     let url = this.druidNodeUrl + "getStackedData";
     this.http.post(url, { event_type, program_name, dimension ,topics}).subscribe((data) => {
-      console.log("stack", data)
+      //console.log("stack", data)
       this.stackedChartData.next(data['data'])
     })
   }
@@ -131,7 +131,7 @@ export class DataService {
       data['data'].forEach(element => {
         alltopics.push(element['topic_name'])
       });
-      console.log("topics",_.uniq(alltopics))
+      //console.log("topics",_.uniq(alltopics))
       this.allTopics.next(_.uniq(alltopics))
     })
   }
@@ -154,13 +154,13 @@ export class DataService {
       "topics":topics
     }
     this.http.post(this.druidNodeUrl + "getBarData", obj).subscribe((data) => {
-      console.log("barRolr", data)
+      //console.log("barRolr", data)
       this.barChartData.next(data['data'])
     })
 
 
     this.http.post(this.druidNodeUrl + "getStackedData", obj).subscribe((data) => {
-      console.log("stackedRole", data)
+      //console.log("stackedRole", data)
       this.stackedChartData.next(data['data'])
     })
 
@@ -176,7 +176,7 @@ export class DataService {
       data['data'].forEach(element => {
         alltopics.push(element['topic_name'])
       });
-      console.log("topicsRole", _.uniq(alltopics))
+      //console.log("topicsRole", _.uniq(alltopics))
       this.allTopics.next(_.uniq(alltopics))
     })
 

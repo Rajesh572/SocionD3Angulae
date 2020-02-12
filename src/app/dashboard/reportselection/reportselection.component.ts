@@ -54,7 +54,6 @@ export class ReportselectionComponent implements OnInit, OnChanges {
   }
 
   onKey(value) {
-    console.log(value)
     this.dataArray = [];
     this.selectSearch(value);
   }
@@ -67,7 +66,6 @@ export class ReportselectionComponent implements OnInit, OnChanges {
       }
     }
     this.newDataArray = this.dataArray;/*  === 0 ? this.dropdownList : this.dataArray; */
-    console.log("this.dataArray", this.newDataArray, this.dataArray)
   }
 
   onHorizontalAxisSelect(key) {
