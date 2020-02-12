@@ -1,0 +1,87 @@
+body {
+  background: #fff;
+}
+.axis-selection {
+  padding: 1em;
+  width: 500px;
+  height: 350px;
+  margin: 2%;
+  background: #fff;
+  display: inline-flex;
+}
+
+.axis-heading {
+  text-align: center;
+}
+.menu {
+  text-align: center;
+  margin-left: 14%;
+}
+
+.menu button {
+  display: block;
+  text-align: center;
+  padding: 0.8em;
+  margin: 1em 0 1em 0;
+  width: 350px;
+  font-weight: bold;
+  font-size: medium;
+  background: #b5b3b3;
+  border: none;
+  color: #fff;
+}
+.show-report {
+  margin-top: 10px;
+  width: 300px;
+  height: 50px;
+  background-color: rgba(68, 60, 60, 0.836);
+  color: white;
+  font-weight: bold;
+  font-size: medium;
+  border: none;
+  border-radius: 50px;
+  margin-bottom: 20px;
+}
+
+.clear-all {
+  margin-top: 10px;
+  height: max-content;
+  background-color:#8C7FEE;
+  color: white;
+  font-weight: bold;
+  font-size: medium;
+  border: none;
+  padding: 1em;
+  max-width: max-content;
+  border-radius: 50px;
+  margin-left: 5em;
+}
+.selected {
+  background-color: lightseagreen !important;
+}
+li {
+  list-style: none;
+}
+.containercenter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.dimensionsselection {
+  display: flex;
+  justify-content: center;
+}
+.selectAxis {
+  display: flex;
+  justify-content: space-evenly;
+  margin: 2em 0;
+  flex-wrap: wrap;
+}
+.noresult {
+  text-align: center;
+  display: block;
+  font-size: 20px;
+  font-weight: 300;
+  color: lightslategrey;
+  padding: 5px;
+}

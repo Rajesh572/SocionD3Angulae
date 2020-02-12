@@ -1,0 +1,54 @@
+<app-pagehader>
+    <div class="pagetitle">Metrics</div>
+
+    <div  *ngIf="dropdownList.length > 0">
+        <mat-form-field>
+            <mat-label>Topics</mat-label>
+            <mat-select [(ngModel)]="selectedItems" multiple>
+                <input class="select-input" placeholder="Search for topic" (keyup)="onKey($event.target.value)">
+                <span class="noresult" *ngIf="newDataArray.length === 0">No Search Found</span>
+                <mat-option *ngFor="let topic of newDataArray" [value]="topic">{{topic}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <button class="clear-all" (click)="clearAll()">Clear All</button>
+    </div>
+
+</app-pagehader>
+<div class="pagecontainer">
+    <div class="selectAxis">
+        <div class="dimensionsselection">
+            <div class="axis-selection">
+                <div class="menu">
+                    <h1 class="axis-heading">Select Horizontal Axis</h1>
+                    <ng-container *ngFor="let key of horizontalArr">
+                        <button (click)="onHorizontalAxisSelect(key)"
+                            [ngClass]="{ 'selected': key === getSelectedHorizontalAxis() }">{{key}} &nbsp;&nbsp;
+                            <fa-icon *ngIf=" key === getSelectedHorizontalAxis() " [icon]="faCheck"></fa-icon></button>
+                    </ng-container>
+                </div>
+            </div>
+
+            <div class="axis-selection">
+                <div class="menu">
+                    <h1 class="axis-heading">Select Vertical Axis</h1>
+                    <ng-container *ngFor="let key of verticalArr">
+                        <button (click)="onVerticalAxisSelect(key)"
+                            [ngClass]="{ 'selected': key === getSelectedVerticalAxis() }">{{key}}&nbsp;&nbsp;
+                            <fa-icon *ngIf=" key === getSelectedVerticalAxis() " [icon]="faCheck"></fa-icon>
+                        </button>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+
+        <div class="containercenter"><button class="show-report" (click)="showReports()">Show Report</button></div>
+    </div>
+    <div *ngIf="showCharts" class="charts-container">
+        <app-barchart class="charts" [dimension]="selectedHorizontalValue" [label]="yAxisLabel" [barData]="barData">
+        </app-barchart>
+        <app-stackedchart class="charts" [dimension]="selectedHorizontalValue" [label]="yAxisLabel"
+            [selectedTopics]="selectedItems" [topics]="topics" [stackedData]="stackedData"></app-stackedchart>
+        <app-multilinechart class="charts" [label]="yAxisLabel" [multiLineData]="multiLineData"></app-multilinechart>
+    </div>
+</div>

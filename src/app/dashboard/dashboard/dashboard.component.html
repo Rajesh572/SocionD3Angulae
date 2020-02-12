@@ -1,16 +1,9 @@
 <app-pagehader>
   <div class="pagetitle">Dashboard</div>
-  <div class="pagesubtitle">Overview</div>
 </app-pagehader>
 <div class="pagecontainer">
-    <div class="overviewcont">
-      <app-overview [colorcode]="'#9898D6'" [ovrno]="600" [ovrtitle]="'Active users'"></app-overview>
-      <app-overview [colorcode]="'#FFCC2E'" [ovrno]="06" [ovrtitle]="'Distributors'"></app-overview>
-      <app-overview [colorcode]="'#D186F8'" [ovrno]="100" [ovrtitle]="'Amazon users'"></app-overview>
-    </div>
-    <div class="usergraphs">
-      <app-activeuser></app-activeuser>
-      <app-commingexpiry></app-commingexpiry>
-    </div>
-
+  <div class="overviewcont">
+    <app-overview [extra]="item.extra" [colorcode]="item.color" *ngFor="let item of dataArr" [ovrno]="item.value" [ovrtitle]="item.info">
+    </app-overview>
+  </div>
 </div>

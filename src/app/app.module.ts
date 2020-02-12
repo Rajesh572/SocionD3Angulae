@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -14,6 +14,12 @@ import { RouterModule } from '@angular/router';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { UserModule } from './user/user.module';
 import { SearchModule } from './searchmodule/search.module';
+import { DataService } from './data.service';
+import { HttpClientModule } from '@angular/common/http';
+import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown';
+import { MatFormFieldModule, MatSelectModule, MatDialogModule } from '@angular/material';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { UploadmodalComponent } from './uploadmodal/uploadmodal.component';
 
 @NgModule({
   declarations: [
@@ -21,21 +27,30 @@ import { SearchModule } from './searchmodule/search.module';
     SidenavComponent,
     HeaderComponent,
     UsermenuComponent,
-    NotificationComponent
+    NotificationComponent,
+    UploadmodalComponent
   ],
+  entryComponents:[UploadmodalComponent],
   imports: [
     BrowserModule,
     RouterModule.forRoot([]),
     FormsModule,
+    ReactiveFormsModule,
+    AngularMultiSelectModule,
+    MatSelectModule,
+    MatFormFieldModule,
+    NgxMatSelectSearchModule,
+    MatDialogModule,
     FontAwesomeModule,
     AppRoutingModule,
     SearchModule,
     DashboardModule,
     UserModule,
     SharedmoduleModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    HttpClientModule,
   ],
-  providers: [],
+  providers: [DataService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

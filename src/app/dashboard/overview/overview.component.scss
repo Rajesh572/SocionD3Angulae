@@ -1,17 +1,21 @@
-.overviewcont{
-  display: flex;
-  justify-content: space-around;
-}
 .overview {
-  padding: 1em 5em;
+  padding: 2em 3em;
   text-align: center;
   border-radius: 10px;
   color: #fff;
-  .ovrno{
-    font-size: 2.25em;
+  width: 270px;
+  margin: 1.5em 5em;
+  height: 140px;
+  cursor: pointer !important;
+  .ovrno {
+    font-size: 3.25em;
+    font-weight: bold;
+    padding: 0.3em 0;
   }
-  .ovrtitle{
-    font-size:2.25em;
+  .overtitle {
+    font-size: 1.25em !important;
+    font-weight: 500;
+    padding: 0.3em 0;
   }
 }
 

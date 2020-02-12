@@ -1,94 +1,201 @@
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@import "~@angular/material/theming";
+// Plus imports for other components in your app.
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat-core();
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+$sksapp-primary: mat-palette($mat-indigo);
+$sksapp-accent: mat-palette($mat-pink, A200, A100, A400);
+
+// The warn palette is optional (defaults to red).
+$sksapp-warn: mat-palette($mat-red);
+
+// Create the theme object (a Sass map containing all of the palettes).
+$sksapp-theme: mat-light-theme($sksapp-primary, $sksapp-accent, $sksapp-warn);
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include angular-material-theme($sksapp-theme);
+
 /* You can add global styles to this file, and also import other style files */
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
 :host {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-    font-size: 14px;
-    color: #333;
-    box-sizing: border-box;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
-  html,body{
-      height: 100%;
-      width:100%;
-      position: relative;
-      overflow-x: hidden;
-  }
-  *{
-    outline: none;
-  }
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    margin: 8px 0;
-  }
-
-  p {
-    margin: 0;
-  }
-
-  a,
-  a:visited,
-  a:hover {
-    color: #1976d2;
-    text-decoration: none;
-  }
-
-  a:hover {
-    color: #125699;
-  }
-  .base{
-    background: #fff;
-    margin:2em 0;
-    padding: 2em;
-    border-radius: 10px;
-  }
-//forms controls
-.designedinput, .inputbox{
-  padding:0.8em;
-  border-radius:10px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol";
+  font-size: 14px;
+  color: #333;
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+html,
+body {
+  height: 100%;
+  width: 100%;
+  position: relative;
+  overflow-x: hidden;
+}
+* {
   outline: none;
-  border:none;
-  border:1px solid #ccc;
-  font-size:0.8em;
-  background-color: #F7F8F9;
 }
-.designedbutton{
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 8px 0;
+}
+
+p {
+  margin: 0;
+}
+
+a,
+a:visited,
+a:hover {
+  color: #1976d2;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #125699;
+}
+.base {
+  background: #fff;
+  margin: 2em 0;
+  padding: 2em;
+  border-radius: 10px;
+}
+//forms controls
+.designedinput,
+.inputbox {
+  padding: 0.8em;
+  border-radius: 10px;
+  outline: none;
+  border: none;
+  border: 1px solid #ccc;
+  font-size: 0.8em;
+  background-color: #f7f8f9;
+}
+.designedbutton {
   background-color: #ff808b;
-    padding:0.7em 1.5em;
-    font-size: 1em;
-    outline: none;
-    border-radius:20px;
-    color:#fff;
-    box-shadow: none;
-    border:none;
-}
-.righttoppos{
-  position: absolute;
-  top: -50px;
-  right:0
-}
-.custombutton{
-  padding:0.7em 1.5em;
+  padding: 0.7em 1.5em;
   font-size: 1em;
   outline: none;
-  border-radius:20px;
-  color:#fff;
+  border-radius: 20px;
+  color: #fff;
+  box-shadow: none;
+  border: none;
 }
-.purplebg{
-  background-color: #8C7FEE;
+.righttoppos {
+  position: absolute;
+  top: -50px;
+  right: 0;
 }
-.pingbg{
+.custombutton {
+  padding: 0.7em 1.5em;
+  font-size: 1em;
+  outline: none;
+  border-radius: 20px;
+  border: none;
+  color: #fff;
+  margin: 0 1em;
+}
+.purplebg {
+  background-color: #8c7fee;
+  cursor: pointer;
+}
+.pingbg {
   background-color: #ff808b;
 }
-.textcolor{
-  color:#333
+.textcolor {
+  color: #333;
 }
-.textcenter{
-  text-align:center;
+.textcenter {
+  text-align: center;
 }
-.bigbtn{
-  width:150px
+.bigbtn {
+  width: 150px;
+}
+
+.line {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 1.5px;
+}
+
+.bar {
+  fill: steelblue;
+}
+
+.bar:hover {
+  fill: brown;
+}
+.pagecontainer {
+  margin: 2em 0;
+}
+
+button {
+  cursor: pointer !important;
+}
+.chart {
+  background: white;
+  padding: 4em;
+  width: 78%;
+  margin: auto;
+  margin-bottom: 3em;
+  display: flex;
+  justify-content: center;
+}
+
+g.baraxis {
+  font-size: 12px;
+}
+g.stackaxis {
+  font-size: 12px;
+}
+.axis--x {
+  font-size: 12px;
+}
+.axis--y {
+  font-size: 12px;
+}
+.select-input {
+  width: 98%;
+  height: 39px;
+  font-size: 20px;
+  font-weight: 200;
+  border: none;
+  text-align: center;
+  border-bottom: 1px solid lightgray;
+}
+
+.mat-option-text {
+  font-size: 14px !important;
+}
+
+.ng-trigger{
+  width: 220px !important;
+}
+
+.mat-dialog-container{
+  width: 100%!important;
+}
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
 }

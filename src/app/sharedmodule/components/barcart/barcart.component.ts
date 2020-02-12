@@ -56,7 +56,6 @@ export class BarcartComponent implements OnInit {
     if (!active.length) {
         return;
     }
-    debugger;
     const mnth = active[0]._model.label;
     const chartid = active[0]._model.datasetLabel;
     this.router.navigate(['/search'], { queryParams: {month: mnth, id: chartid}});

@@ -10,8 +10,16 @@
     align-items: center;
     z-index: 999;
 }
+.programheading {
+  margin: 0 2em;
+}
+
+.programheading p {
+  font-size: 1.5em;
+font-weight: bold;
+}
 .search {
-  width: 75%;
+  width: 45%;
   .inputbox{
     padding:0.8em;
     border-radius:20px;
@@ -32,3 +40,6 @@
   }
 }
 
+.socion-logo{
+  cursor: pointer;
+}

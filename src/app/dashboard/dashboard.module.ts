@@ -6,15 +6,27 @@ import { SharedmoduleModule } from '../sharedmodule/sharedmodule.module';
 import { CommingexpiryComponent } from './commingexpiry/commingexpiry.component';
 import { ActiveuserComponent } from './activeuser/activeuser.component';
 import { OverviewComponent } from './overview/overview.component';
-
+import { ReportsComponent } from './reports/reports.component';
+import { AttestationreportsComponent } from './attestationreports/attestationreports.component';
+import { ReportselectionComponent } from './reportselection/reportselection.component';
+import { BarchartComponent } from './barchart/barchart.component';
+import { StackedchartComponent } from './stackedchart/stackedchart.component';
+import { MultilinechartComponent } from './multilinechart/multilinechart.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatFormFieldModule, MatSelectModule } from '@angular/material';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 
 
 @NgModule({
-  declarations: [DashboardComponent, CommingexpiryComponent, ActiveuserComponent, OverviewComponent],
-  imports: [
-    CommonModule,
+  declarations: [DashboardComponent, CommingexpiryComponent, ActiveuserComponent, OverviewComponent, ReportsComponent, AttestationreportsComponent, ReportselectionComponent, BarchartComponent, StackedchartComponent, MultilinechartComponent],
+  imports: [FormsModule, ReactiveFormsModule,
+    CommonModule, MatSelectModule,
     DashboardRoutingModule,
-    SharedmoduleModule
+    SharedmoduleModule,
+    FontAwesomeModule,
+    AngularMultiSelectModule, MatFormFieldModule, NgxMatSelectSearchModule
   ]
 })
 export class DashboardModule { }

@@ -1,11 +1,14 @@
 .pageheader{
-  color: #959595
+  color: #333
 }
 ::ng-deep .pagetitle{
-  font-size: 1.2em;
+  font-size: 2em;
+  font-weight: bold;
   padding-bottom: 0.5em;
+  margin-top: 1em;
+ 
 }
 ::ng-deep .pagesubtitle{
-  font-size: 1.8em;
-  color:#7C7C7C
+  font-size: 1.2em;
+  color:#444
 }

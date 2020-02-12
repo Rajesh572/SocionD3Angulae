@@ -1,9 +1,29 @@
-.overviewcont{
+.overviewcont {
   display: flex;
-  justify-content: space-between;
-  margin:2em 0
+  justify-content: flex-start;
+  margin: 2em 0;
+  flex-wrap: wrap;
 }
-.usergraphs{
+.usergraphs {
   display: flex;
   justify-content: space-between;
+}
+.select-metric {
+  padding: 2em 3em;
+  border-radius: 10px;
+  width: 200px;
+  margin: 2em;
+  height: 109px;
+  background-color: rgb(47, 255, 99);
+}
+
+.select-btn{
+  padding: 10px;
+  font-size: 1em;
+  outline: none;
+  margin-top: 10px!important;
+  border-radius:20px;
+  border: none;
+  color:#fff;
+  margin: 0 1em;
 }

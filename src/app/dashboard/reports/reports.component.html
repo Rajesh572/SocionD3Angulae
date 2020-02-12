@@ -1,0 +1,19 @@
+<app-pagehader>
+  <div class="pagetitle">Reports</div>
+  <div class="pagesubtitle">{{title}}</div>
+</app-pagehader>
+<div class="pagecontainer">
+  <div class="reportscontainer">
+    <div class="chartselection">
+
+      <button class="custombutton purplebg" (click)="drawBarchart()">Consolidated</button>
+      <button class="custombutton purplebg" (click)="drawStackedChart()">Cumulative</button>
+      <button class="custombutton purplebg">Time-series</button>
+      <app-back></app-back>
+    </div>
+
+    <div class="charts">
+      <svg class="reportchart" width="800" height="730"></svg>
+    </div>
+  </div>
+</div>

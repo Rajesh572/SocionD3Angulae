@@ -1,8 +1,11 @@
 <div class="header">
+  <img class="socion-logo" [routerLink]="['/dashboard']" src="../../../assets/images/socion.png"/>
+  <div class="programheading">
+    <p>Program: Hepatitis - c Awareness</p>
+  </div>
     <div class="search">
-      <input type="text" [(ngModel)]="searchText" class="inputbox" (keyup.enter)="getSearch()" placeholder="Search user" />
-      <button class="btnsearch"  (click)="getSearch()">Search</button>
     </div>
+
     <app-notification></app-notification>
     <app-usermenu></app-usermenu>
 
