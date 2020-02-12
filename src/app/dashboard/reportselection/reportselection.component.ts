@@ -3,7 +3,6 @@ import { DataService } from "../../data.service"
 import { Router } from '@angular/router';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import * as _ from 'lodash'
-import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-reportselection',

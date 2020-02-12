@@ -30,11 +30,11 @@ export class DataService {
   public $selected = this.selected.asObservable();
   public $selectedTopics = this.seletedTopics.asObservable();
 
-  menuItems = [{ info: "Number of Attestation Generated", route: 'getCountForAttestation', ngroute: 'attestation', color: "#E78F18", index: 1, extra: "Number of Attestation" },
-  { info: "Number of Sessions Completed", route: 'getCountForSessionCompleted', ngroute: 'session', color: "#B1D5A3", index: 2, extra: "Number of Sessions" },
-  { info: "Number of Content Views", route: 'getCountForDownload', ngroute: 'download', color: "#80A4F3", index: 3, extra: "Number of Content Views" },
-  { info: "Number of Unique Trainers", route: 'getCountForUniqueTrainer', color: "#01ABBE", index: 4, extra: "Number of Unique Trainers" },
-  { info: "Number of Unique Participants", route: 'getCountForUniqueTrainee', color: "#7FCAF0", index: 5, extra: "Number of Unique Participants" }
+  menuItems = [{ info: "Number of Attestation Generated", route: 'getCountForAttestation', ngroute: 'attestation', color: "#4A75B8 ", index: 1, extra: "Number of Attestation" },
+  { info: "Number of Sessions Completed", route: 'getCountForSessionCompleted', ngroute: 'session', color: "#1E8449", index: 2, extra: "Number of Sessions" },
+  { info: "Number of Content Views", route: 'getCountForDownload', ngroute: 'download', color: "#0B528A ", index: 3, extra: "Number of Content Views" },
+  { info: "Number of Unique Trainers", route: 'getCountForUniqueTrainer', color: "#5B2C6F ", index: 4, extra: "Number of Unique Trainers" },
+  { info: "Number of Unique Participants", route: 'getCountForUniqueTrainee', color: "#2E4053 ", index: 5, extra: "Number of Unique Participants" }
   ]
 
   updateBar(data) {
