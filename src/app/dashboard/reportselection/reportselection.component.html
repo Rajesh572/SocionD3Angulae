@@ -45,10 +45,11 @@
         <div class="containercenter"><button class="show-report" (click)="showReports()">Show Report</button></div>
     </div>
     <div *ngIf="showCharts" class="charts-container">
-        <app-barchart class="charts" [dimension]="selectedHorizontalValue" [label]="yAxisLabel" [barData]="barData">
+        <!-- <app-barchart class="charts" [dimension]="selectedHorizontalValue" [label]="yAxisLabel" [barData]="barData">
         </app-barchart>
         <app-stackedchart class="charts" [dimension]="selectedHorizontalValue" [label]="yAxisLabel"
-            [selectedTopics]="selectedItems" [topics]="topics" [stackedData]="stackedData"></app-stackedchart>
-        <app-multilinechart class="charts" [label]="yAxisLabel" [multiLineData]="multiLineData"></app-multilinechart>
+            [selectedTopics]="selectedItems" [topics]="topics" [stackedData]="stackedData"></app-stackedchart> -->
+        <app-multilinechart class="charts" [label]="yAxisLabel" [dimension]="selectedHorizontalValue"
+         [multiLineData]="multiLineData"></app-multilinechart>
     </div>
 </div>
