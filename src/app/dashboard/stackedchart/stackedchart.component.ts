@@ -47,6 +47,7 @@ export class StackedchartComponent implements OnInit, OnChanges {
 
   ngOnChanges() {
     if (this.stackedData && this.topics && this.topics.length > 0) {
+      console.log(this.dimension);
       if (this.dimension === "Time Period") {
         this.yLabel = "month"
         let topicArr = this.selectedTopics.length > 0 ? this.selectedTopics : this.topics;
@@ -101,6 +102,7 @@ export class StackedchartComponent implements OnInit, OnChanges {
           })
 
         })
+        console.log("newda location", newda)
         this.drawStackedChart(newda)
       }
     }
@@ -204,6 +206,7 @@ export class StackedchartComponent implements OnInit, OnChanges {
       .attr('dy', '0.32em')
       .style('font-size', '12px')
       .text(d => d);
+      this.svg.attr('width',this.width+100)
   }
 
 }
