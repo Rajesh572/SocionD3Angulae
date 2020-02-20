@@ -34,6 +34,7 @@ export class ReportselectionComponent implements OnInit, OnChanges {
   modelSelected: any;
   dataArray: any[];
   newDataArray: any[];
+  changeStackChart: boolean;
 
   constructor(private dataService: DataService, private router: Router) {
     let extras = this.router.getCurrentNavigation().extras;
@@ -138,10 +139,16 @@ export class ReportselectionComponent implements OnInit, OnChanges {
     })
     setTimeout(() => {
       this.showCharts = true;
+      this.changeStackChart = true;
     });
   }
   clearAll() {
     this.selectedItems = [];
     this.showReports();
+  }
+
+  onTopicChange(event) {
+    console.log(event)
+    this.changeStackChart = false;
   }
 }

@@ -4,7 +4,7 @@
     <div  *ngIf="dropdownList.length > 0">
         <mat-form-field>
             <mat-label>Topics</mat-label>
-            <mat-select [(ngModel)]="selectedItems" multiple>
+            <mat-select [(ngModel)]="selectedItems" (ngModelChange)="onTopicChange($event)" multiple>
                 <input class="select-input" placeholder="Search for topic" (keyup)="onKey($event.target.value)">
                 <span class="noresult" *ngIf="newDataArray.length === 0">No Search Found</span>
                 <mat-option *ngFor="let topic of newDataArray" [value]="topic">{{topic}}</mat-option>
@@ -48,7 +48,7 @@
         <app-barchart class="charts" [dimension]="selectedHorizontalValue" [label]="yAxisLabel" [barData]="barData">
         </app-barchart>
         <app-stackedchart class="charts" [dimension]="selectedHorizontalValue" [label]="yAxisLabel"
-            [selectedTopics]="selectedItems" [topics]="topics" [stackedData]="stackedData"></app-stackedchart>
+            [selectedTopics]="selectedItems" [topics]="topics" [stackedData]="stackedData" [changeStackChart]="changeStackChart"></app-stackedchart>
         <app-multilinechart class="charts" [label]="yAxisLabel" [dimension]="selectedHorizontalValue"
          [multiLineData]="multiLineData"></app-multilinechart>
     </div>

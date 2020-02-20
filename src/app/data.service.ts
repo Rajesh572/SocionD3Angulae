@@ -131,7 +131,7 @@ export class DataService {
       data['data'].forEach(element => {
         alltopics.push(element['topic_name'])
       });
-      //console.log("topics",_.uniq(alltopics))
+      console.log("topics",_.uniq(alltopics))
       this.allTopics.next(_.uniq(alltopics))
     })
   }
@@ -176,7 +176,7 @@ export class DataService {
       data['data'].forEach(element => {
         alltopics.push(element['topic_name'])
       });
-      //console.log("topicsRole", _.uniq(alltopics))
+      console.log("topicsRole", _.uniq(alltopics))
       this.allTopics.next(_.uniq(alltopics))
     })
 
