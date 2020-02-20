@@ -206,7 +206,7 @@ export class StackedchartComponent implements OnInit, OnChanges {
       .attr('dy', '0.32em')
       .style('font-size', '12px')
       .text(d => d);
-      this.svg.attr('width',this.width+100)
+    this.svg.attr('width', this.width + 150)
   }
 
 }

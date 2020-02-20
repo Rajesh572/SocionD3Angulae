@@ -59,7 +59,7 @@ export class AttestationreportsComponent implements OnInit {
     })
   }
 
-  private drawStackedChart() {
+  public drawStackedChart() {
     d3.select('.reportchart').select("*").remove();
 
     this.margin = { top: 20, right: 20, bottom: 30, left: 40 };
