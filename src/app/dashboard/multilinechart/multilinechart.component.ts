@@ -208,7 +208,7 @@ export class MultilinechartComponent implements OnInit, OnChanges {
         "translate(" + (this.width / 2) + " ," +
         (this.height + this.margin.top + 50) + ")")
       .style("text-anchor", "middle")
-      .text("Time");
+      .text("Month");
 
 
     //For Y Axis Label
