@@ -8,6 +8,7 @@ import * as d3Axis from 'd3-axis';
 import * as d3Array from 'd3-array';
 import * as d3ScaleChromatic from 'd3-scale-chromatic';
 import * as d3Time from 'd3-time'
+import * as d3TimeFormat from 'd3-time-format'
 import { nest } from 'd3-collection'
 
 @Component({
@@ -128,8 +129,23 @@ export class MultilinechartComponent implements OnInit, OnChanges {
         return d1 - d2;
       })
     })
+    let newdateobjArr = this.datadate2.map((date,index)=>{
+      return{id:index,date:date}
+    });
     groupeddata = group2;
+    group2.forEach((data) => {
+      data.values.forEach((value) => {
+        for (var i = 0; i < newdateobjArr.length; i++) {
+          if (newdateobjArr[i]['date'] === value['date']) {
+            value['id'] = newdateobjArr[i]['id']
+          }
+        }
+      })
+    })
+
+    console.log(newdateobjArr,group2)
     this.svg = d3.select('.chart .multilinechart');
+    console.log(d3Time.timeMonth(new Date()))
     this.svg.selectAll("*").remove();
 
     this.width = this.svg.attr('width') - this.margin.left - this.margin.right;
@@ -137,16 +153,29 @@ export class MultilinechartComponent implements OnInit, OnChanges {
 
     this.g = this.svg.append('g').attr('transform', 'translate(' + this.margin.left + ',' + this.margin.top + ')');
 
-    this.x = d3Scale.scaleTime().range([0, this.width])
+    this.x = d3Scale.scaleLinear().range([0, this.width])
     this.y = d3Scale.scaleLinear().range([this.height, 0]);
     this.z = d3Scale.scaleOrdinal(d3ScaleChromatic.schemeCategory10);
-
+/* 
     this.line = d3Shape.line()
       .curve(d3Shape.curveBasis)
       .x((d: any) => this.x(new Date(d.date)))
       .y((d: any) => this.y(d.count));
 
-    this.x.domain(d3Array.extent(this.data, (d: Date) => d));
+ */
+
+    this.line = d3Shape.line()
+    .curve(d3Shape.curveBasis)
+    .x((d: any) => this.x(d.id))
+    .y((d: any) => this.y(d.count));
+
+
+   // this.x.domain(d3Array.extent(this.data, (d: Date) => d));
+
+   this.x.domain(
+    [d3Array.min(groupeddata, function (c) { return d3Array.min(c['values'], function (d) { return d['id']; }); }),
+    d3Array.max(groupeddata, function (c) { return d3Array.max(c['values'], function (d) { return d['id']; }); })])
+
 
     this.y.domain([
       d3Array.min(groupeddata, function (c) { return d3Array.min(c.values, function (d) { return d['count']; }); }),
@@ -158,7 +187,9 @@ export class MultilinechartComponent implements OnInit, OnChanges {
     this.g.append('g')
       .attr('class', 'axis axis--x')
       .attr('transform', 'translate(0,' + this.height + ')')
-      .call(d3Axis.axisBottom(this.x));
+      .call(d3Axis.axisBottom(this.x)
+      .tickFormat((d) => { return this.getMonth(d,newdateobjArr) })
+      .ticks(newdateobjArr.length));
 
     this.g.append('g')
       .attr('class', 'axis axis--y')
@@ -189,7 +220,7 @@ export class MultilinechartComponent implements OnInit, OnChanges {
       .style("text-anchor", "middle")
       .text(this.label);
 
-    let city = this.g.selectAll('.city')
+      let city = this.g.selectAll('.city')
       .data(groupeddata)
       .enter().append('g')
       .attr('class', 'city');
@@ -198,19 +229,18 @@ export class MultilinechartComponent implements OnInit, OnChanges {
       .attr('class', 'line')
       .attr('d', (d) => this.line(d.values))
       .style('stroke', (d) => this.z(d.key))
-      .style('stroke-width', '3')
-      /* .style('mix-blend-mode', 'multiply') */
+      //.style('mix-blend-mode', 'multiply')
       .style('stroke-linejoin', 'round')
-      .style('stroke-linecap', 'round')
-
+      .style('stroke-width', newdateobjArr.length === 1 ? 10 : 3)
+      .style('stroke-linecap', 'round');
 
     city.append('text')
       .datum(function (d) { return { id: d.key, value: d.values[d.values.length - 1] }; })
-      .attr('transform', (d) => 'translate(' + this.x(new Date(d.value.date)) + ',' + this.y(d.value.count) + ')')
+      .attr('transform', (d) => 'translate(' + this.x(d.value.id) + ',' + this.y(d.value.count) + ')')
       .attr('x', 3)
       .attr('dy', '0.35em')
       .style('font', '10px sans-serif')
-      .text(function (d) { return "" });
+      .text(function (d) { return ""; });
 
 
     //legend
@@ -277,7 +307,7 @@ export class MultilinechartComponent implements OnInit, OnChanges {
         .tickFormat((d) => { return this.getLocation(d, this.LOCS) })
         .ticks(this.LOCS.length));
 
-    console.log(this.LOCS, "this.LOCS")
+    console.log(this.LOCS,this.newData, "this.LOCS")
 
     this.g.append('g')
       .attr('class', 'axis axis--y')
@@ -366,6 +396,17 @@ export class MultilinechartComponent implements OnInit, OnChanges {
       }
     })
     return location;
+  }
+
+  getMonth(id, data: any[]) {
+    let date;
+    let formatTime = d3TimeFormat.timeFormat("%B")
+    data.forEach((data) => {
+      if (data['id'] === id) {
+        date = data['date']
+      }
+    })
+    return formatTime(new Date(date));
   }
 
 }

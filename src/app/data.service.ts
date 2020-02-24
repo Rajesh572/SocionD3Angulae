@@ -103,7 +103,7 @@ export class DataService {
   getDataforBar(program_name?, dimension?, event_type?,topics?) {
     let url = this.druidNodeUrl + "getBarData";
     this.http.post(url, { event_type, program_name, dimension,topics }).subscribe((data) => {
-      //console.log("bar", data)
+      console.log("bar", data)
       this.barChartData.next(data['data'])
     })
   }
@@ -111,7 +111,7 @@ export class DataService {
   getStackedData(program_name?, dimension?, event_type?,topics?) {
     let url = this.druidNodeUrl + "getStackedData";
     this.http.post(url, { event_type, program_name, dimension ,topics}).subscribe((data) => {
-      //console.log("stack", data)
+      console.log("stack", data)
       this.stackedChartData.next(data['data'])
     })
   }
