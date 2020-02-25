@@ -1,0 +1,7 @@
+<div class="charts-container">
+  <app-stackedchart class="charts" [dimension]="selectedHorizontalValue" [label]="yAxisLabel"
+    [selectedTopics]="selectedItems" [topics]="topics" [stackedData]="stackedData"
+    [changeStackChart]="changeStackChart"></app-stackedchart>
+  <mat-tab label="Time Series" *ngIf="selectedHorizontalValue === 'Time Period'"></mat-tab>
+
+</div>

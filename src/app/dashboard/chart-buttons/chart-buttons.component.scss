@@ -1,0 +1,56 @@
+.button {
+    background-color: lightseagreen;
+    color: white;
+    margin: 8% 0px;
+    min-width: 175px;
+    font-size: 1em;
+    padding: 5px;
+    border: 1px solid transparent;
+    border-radius: 50px;
+}
+.button_marked {
+    background-color: lightseagreen;
+    color: white;
+    margin: 8% 0px;
+    min-width: 175px;
+    font-size: 1em;
+    padding: 4px;
+    border: 1px solid transparent;
+    border-radius: 50px;
+}
+
+.marked{
+    font-size: 1.5rem;
+    padding: 5px;
+}
+
+// .chart-buttons {
+//     position: absolute;
+//     right: 0;
+//     margin-right: 10%;
+//     bottom: 10%;
+//     text-align: center;
+//   }
+
+  .favourite-button {
+    position: absolute;
+    right: 0;
+    margin-right: 4%;
+    bottom: 10%;
+    text-align: center;
+  }
+
+  .radio-button {
+    position: absolute;
+    right: 0;
+    margin-right: 4%;
+    margin-top: 1%;
+    width: 8%;
+    font-size: 1em;
+}
+
+.radio-title{
+    font-weight: bold;
+    font-size: 1em;
+    margin-bottom: 10%;
+}

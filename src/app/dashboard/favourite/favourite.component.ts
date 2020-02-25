@@ -1,7 +1,7 @@
 // tslint:disable: no-string-literal
 // tslint:disable: prefer-const
 
-import { Component, OnInit, OnChanges } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { DataService } from '../../data.service';
 import { Router } from '@angular/router';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
@@ -9,24 +9,21 @@ import * as _ from 'lodash';
 import { FormControl } from '@angular/forms';
 
 @Component({
-  selector: 'app-reportselection',
-  templateUrl: './reportselection.component.html',
-  styleUrls: ['./reportselection.component.scss']
+  selector: 'app-favourite',
+  templateUrl: './favourite.component.html',
+  styleUrls: ['./favourite.component.scss']
 })
-export class ReportselectionComponent implements OnInit, OnChanges {
+export class FavouriteComponent implements OnInit {
   dropdownList = [];
   optionCustomDate = false;
   dateTo = '';
   dateFrom = '';
   serializedDate = new FormControl((new Date()).toISOString());
   selectedItems = [];
-  selectedTime;
-  selectedLocations =  [];
-  unselected = [];
   barData: any;
   stackedData: any;
   showCharts = false;
-  yAxisLabel: any;
+  yAxisLabel = 'Participant Attestations';
   meta: any;
   faCheck = faCheck;
   verticalArr = ['Sessions Completed',
@@ -37,8 +34,8 @@ export class ReportselectionComponent implements OnInit, OnChanges {
 
   horizontalArr = ['Time Period', 'Location'];
 
-  selectedHorizontalValue: string;
-  selectedVerticalValue: string;
+  selectedHorizontalValue = 'Time Period';
+  selectedVerticalValue = 'Participant Attestations';
   multiLineData: any;
   topics: any[] = [];
   modelSelected: any;
@@ -89,80 +86,20 @@ newTimeArray = ['Last 6 months',
       console.log('topics', _.uniq(alltopics));
       this.newDataArray = _.uniq(alltopics);
     });
+    this.showReports();
   }
 
-  ngOnChanges() {
-  }
-
-  onKey(value) {
-    this.dataArray = [];
-    this.selectSearch(value);
-  }
-  selectSearch(value: any) {
-    let filter = value.toLowerCase();
-    this.dropdownList.forEach(option => {
-      if (option.toLowerCase().indexOf(filter) >= 0) {
-        this.dataArray.push(option);
-      }
-    });
-    this.newDataArray = this.dataArray; /*  === 0 ? this.dropdownList : this.dataArray; */
-  }
-
-  onHorizontalAxisSelect(key) {
-    this.selectedItems = [];
-    this.dropdownList = [];
-    this.showCharts = false;
-    this.selectedHorizontalValue = key;
-  }
-
-  onVerticalAxisSelect(key) {
-    this.selectedItems = [];
-    this.dropdownList = [];
-    this.showCharts = false;
-    this.selectedVerticalValue = key;
-  }
-
-  getSelectedHorizontalAxis() {
-    return this.selectedHorizontalValue;
-  }
-
-  getSelectedVerticalAxis() {
-    return this.selectedVerticalValue;
-  }
 
   showReports() {
-
-    if (this.selectedItems.length > 0) {
-      this.dataService.seletedTopics.next(this.selectedItems);
-    }
-
     this.dataService.setAllSelectedAxis({ dimension: this.selectedHorizontalValue, metric: this.selectedVerticalValue },
        this.selectedItems);
 
-       // change
-    if (this.selectedVerticalValue === 'Sessions Completed') {
-      this.yAxisLabel = this.selectedVerticalValue;
-    } else if (this.selectedVerticalValue === 'Participant Attestations') {
-      this.yAxisLabel = this.selectedVerticalValue;
-    } else if (this.selectedVerticalValue === 'Content Views') {
-      this.yAxisLabel = this.selectedVerticalValue;
-    } else if (this.selectedVerticalValue === 'Unique Participants') {
-      this.yAxisLabel = this.selectedVerticalValue;
-    } else if (this.selectedVerticalValue === 'Unique Trainers') {
-      this.yAxisLabel = this.selectedVerticalValue;
-    }
     this.getDataforCharts();
   }
 
   getDataforCharts() {
-    this.dataService.$barChartData.subscribe((bardata) => {
-      this.barData = bardata;
-    });
     this.dataService.$stackedChartData.subscribe((stackdata) => {
       this.stackedData = stackdata;
-    });
-    this.dataService.$multiLineChartData.subscribe((multilinedata) => {
-      this.multiLineData = multilinedata;
     });
     // this.dataService.getAllTopics();
     this.dataService.$allTopics.subscribe((topics: any[]) => {
@@ -178,13 +115,6 @@ newTimeArray = ['Last 6 months',
       this.showCharts = true;
       this.changeStackChart = true;
     });
-  }
-  clearAll() {
-    this.selectedItems = [];
-    this.selectedLocations = [];
-    this.selectedTime = undefined;
-    this.optionCustomDate = false;
-    this.showReports();
   }
 
   onTopicChange(event) {

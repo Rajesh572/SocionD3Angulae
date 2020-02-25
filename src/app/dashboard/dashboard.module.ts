@@ -19,12 +19,18 @@ import { MatFormFieldModule, MatSelectModule } from '@angular/material';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatDatepickerModule, MatInputModule, MatNativeDateModule} from '@angular/material';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { ChartButtonsComponent } from './chart-buttons/chart-buttons.component';
+import {MatButtonModule} from '@angular/material/button';
+import { FavouriteComponent } from './favourite/favourite.component';
+import {RouterModule} from '@angular/router';
+import {MatRadioModule} from '@angular/material/radio';
+
 
 
 @NgModule({
   declarations: [DashboardComponent, CommingexpiryComponent, ActiveuserComponent, OverviewComponent,
     ReportsComponent, AttestationreportsComponent, ReportselectionComponent, BarchartComponent,
-    StackedchartComponent, MultilinechartComponent],
+    StackedchartComponent, MultilinechartComponent, ChartButtonsComponent, FavouriteComponent],
   imports: [FormsModule, ReactiveFormsModule,
     CommonModule, MatSelectModule,
     DashboardRoutingModule,
@@ -36,7 +42,10 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
     MatTabsModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatInputModule
+    MatInputModule,
+    MatButtonModule,
+    RouterModule,
+    MatRadioModule
   ]
 })
 export class DashboardModule { }

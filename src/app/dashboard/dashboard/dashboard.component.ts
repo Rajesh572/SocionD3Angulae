@@ -16,7 +16,7 @@ import { FormControl } from '@angular/forms';
 export class DashboardComponent implements OnInit {
   selectedItems = [];
   selectedLocations = [];
-  selectedTime = '';
+  selectedTime;
   constructor(private http: HttpClient, private dataService: DataService, private route: Router) { }
   dataArr = [];
   optionCustomDate = false;
@@ -95,6 +95,15 @@ export class DashboardComponent implements OnInit {
       this.dateFrom = '';
       this.dateTo = '';
     }
+  }
+
+  clearAll() {
+    this.selectedItems = [];
+    this.selectedLocations = [];
+    this.selectedTime = undefined;
+    this.dataArr = [];
+    this.optionCustomDate = false;
+    this.ngOnInit();
   }
 
   // onKey(value) {

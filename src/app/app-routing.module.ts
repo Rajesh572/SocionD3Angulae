@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { DashboardComponent } from './dashboard/dashboard/dashboard.component';
 import { ReportselectionComponent } from './dashboard/reportselection/reportselection.component';
+import { FavouriteComponent } from './dashboard/favourite/favourite.component';
 
 
 const routes: Routes = [
@@ -16,6 +17,10 @@ const routes: Routes = [
   {
     path: 'reports/select',
     component: ReportselectionComponent
+  },
+  {
+    path: 'reports/favourite',
+    component: FavouriteComponent
   }
 ];
 
