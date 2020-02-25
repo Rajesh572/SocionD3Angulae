@@ -1,9 +1,64 @@
 <app-pagehader>
-  <div class="pagetitle">Dashboard</div>
+  <div class="header-component">
+    <div class="pagetitle">Dashboard</div>
+
+    <div class="filter-component">
+      <mat-form-field class="input-dropdown">
+          <mat-label>Time</mat-label>
+          <mat-select [(ngModel)]="selectedTime" (ngModelChange)="onTimeChange($event)">
+              <input class="select-input" placeholder="Search by Time" (keyup)="onKey($event.target.value)">
+              <span class="noresult" *ngIf="newTimeArray.length === 0">No Search Found</span>
+              <mat-option *ngFor="let topic of newTimeArray" [value]="topic">{{topic}}</mat-option>
+          </mat-select>
+      </mat-form-field>
+
+
+      <div *ngIf="optionCustomDate">
+        <mat-form-field class="input-dropdown">
+          <mat-label>From</mat-label>
+          <input matInput [matDatepicker]="dateFrom" [formControl]="serializedDate">
+          <mat-datepicker-toggle matSuffix [for]="dateFrom"></mat-datepicker-toggle>
+          <mat-datepicker #dateFrom></mat-datepicker>
+        </mat-form-field>
+
+      <mat-form-field class="input-dropdown">
+        <mat-label>To</mat-label>
+        <input matInput [matDatepicker]="dateTo" [formControl]="serializedDate">
+        <mat-datepicker-toggle matSuffix [for]="dateTo"></mat-datepicker-toggle>
+          <mat-datepicker #dateTo></mat-datepicker>
+      </mat-form-field>
+    </div>
+
+
+      <mat-form-field class="input-dropdown">
+        <mat-label>Location</mat-label>
+        <mat-select [(ngModel)]="selectedLocations" (ngModelChange)="onLocationChange($event)" multiple>
+            <input class="select-input" placeholder="Search by Location" (keyup)="onKey($event.target.value)">
+            <span class="noresult" *ngIf="newLocationArray.length === 0">No Search Found</span>
+            <mat-option *ngFor="let topic of newLocationArray" [value]="topic">{{topic}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="input-dropdown">
+      <mat-label>Topics</mat-label>
+      <mat-select [(ngModel)]="selectedItems" (ngModelChange)="onTopicChange($event)" multiple>
+          <input class="select-input" placeholder="Search by Topic" (keyup)="onKey($event.target.value)">
+          <span class="noresult" *ngIf="newDataArray.length === 0">No Search Found</span>
+          <mat-option *ngFor="let topic of newDataArray" [value]="topic">{{topic}}</mat-option>
+      </mat-select>
+  </mat-form-field>
+
+      <button class="clear-all" (click)="clearAll()">Clear All</button>
+  </div>
+</div>
+
+<hr class = "break-line"/>
+
 </app-pagehader>
+
 <div class="pagecontainer">
   <div class="overviewcont">
-    <app-overview [extra]="item.extra" [colorcode]="item.color" *ngFor="let item of dataArr" [ovrno]="item.value" [ovrtitle]="item.info">
+    <app-overview *ngFor="let item of dataArr" [extra]="item.extra" [colorcode]="item.color" [ovrno]="item.value" [ovrtitle]="item.info">
     </app-overview>
   </div>
 </div>

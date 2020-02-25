@@ -1,7 +1,56 @@
 <app-pagehader>
-    <div class="pagetitle">Metrics</div>
+    <div class="header-component">
+        <div class="pagetitle">Metrics</div>
 
-    <div  *ngIf="dropdownList.length > 0">
+        <div class="filter-component">
+            <mat-form-field class="input-dropdown">
+                <mat-label>Time</mat-label>
+                <mat-select [(ngModel)]="selectedTime" (ngModelChange)="onTimeChange($event)">
+                    <input class="select-input" placeholder="Search by Time" (keyup)="onKey($event.target.value)">
+                    <span class="noresult" *ngIf="newTimeArray.length === 0">No Search Found</span>
+                    <mat-option *ngFor="let topic of newTimeArray" [value]="topic">{{topic}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+      
+      
+            <div *ngIf="optionCustomDate">
+              <mat-form-field class="input-dropdown">
+                <mat-label>From</mat-label>
+                <input matInput [matDatepicker]="dateFrom" [formControl]="serializedDate">
+                <mat-datepicker-toggle matSuffix [for]="dateFrom"></mat-datepicker-toggle>
+                <mat-datepicker #dateFrom></mat-datepicker>
+              </mat-form-field>
+      
+            <mat-form-field class="input-dropdown">
+              <mat-label>To</mat-label>
+              <input matInput [matDatepicker]="dateTo" [formControl]="serializedDate">
+              <mat-datepicker-toggle matSuffix [for]="dateTo"></mat-datepicker-toggle>
+                <mat-datepicker #dateTo></mat-datepicker>
+            </mat-form-field>
+          </div>
+      
+      
+            <mat-form-field class="input-dropdown">
+              <mat-label>Location</mat-label>
+              <mat-select [(ngModel)]="selectedLocations" (ngModelChange)="onLocationChange($event)" multiple>
+                  <input class="select-input" placeholder="Search by Location" (keyup)="onKey($event.target.value)">
+                  <span class="noresult" *ngIf="newLocationArray.length === 0">No Search Found</span>
+                  <mat-option *ngFor="let topic of newLocationArray" [value]="topic">{{topic}}</mat-option>
+              </mat-select>
+          </mat-form-field>
+      
+          <mat-form-field class="input-dropdown">
+            <mat-label>Topics</mat-label>
+            <mat-select [(ngModel)]="selectedItems" (ngModelChange)="onTopicChange($event)" multiple>
+                <input class="select-input" placeholder="Search by Topic" (keyup)="onKey($event.target.value)">
+                <span class="noresult" *ngIf="newDataArray.length === 0">No Search Found</span>
+                <mat-option *ngFor="let topic of newDataArray" [value]="topic">{{topic}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+      
+            <button class="clear-all" (click)="clearAll()">Clear All</button>
+        </div>
+    <!-- <div  *ngIf="dropdownList.length > 0">
         <mat-form-field>
             <mat-label>Topics</mat-label>
             <mat-select [(ngModel)]="selectedItems" (ngModelChange)="onTopicChange($event)" multiple>
@@ -9,10 +58,12 @@
                 <span class="noresult" *ngIf="newDataArray.length === 0">No Search Found</span>
                 <mat-option *ngFor="let topic of newDataArray" [value]="topic">{{topic}}</mat-option>
             </mat-select>
-        </mat-form-field>
+        </mat-form-field> -->
 
-        <button class="clear-all" (click)="clearAll()">Clear All</button>
+        <!-- <button class="clear-all" (click)="clearAll()">Clear All</button> -->
     </div>
+
+    <hr class = "break-line"/>
 
 </app-pagehader>
 <div class="pagecontainer">
@@ -45,11 +96,32 @@
         <div class="containercenter"><button class="show-report" (click)="showReports()">Show Report</button></div>
     </div>
     <div *ngIf="showCharts" class="charts-container">
-        <app-barchart class="charts" [dimension]="selectedHorizontalValue" [label]="yAxisLabel" [barData]="barData">
-        </app-barchart>
-        <app-stackedchart class="charts" [dimension]="selectedHorizontalValue" [label]="yAxisLabel"
+        <mat-tab-group mat-stretch-tabs class="example-stretched-tabs mat-elevation-z4">
+            <mat-tab label="Consolidated">
+                <ng-template matTabContent>
+                    <app-barchart class="charts" [dimension]="selectedHorizontalValue" [label]="yAxisLabel" [barData]="barData">
+                    </app-barchart>
+                </ng-template>
+            </mat-tab>
+            <mat-tab label="Cummulative">
+                <ng-template matTabContent>
+                    <app-stackedchart class="charts" [dimension]="selectedHorizontalValue" [label]="yAxisLabel"
+                    [selectedTopics]="selectedItems" [topics]="topics" [stackedData]="stackedData" [changeStackChart]="changeStackChart"></app-stackedchart>               
+                </ng-template>
+            </mat-tab> 
+            <mat-tab label="Time Series" *ngIf="selectedHorizontalValue === 'Time Period'">
+                <ng-template matTabContent>
+                    <app-multilinechart class="charts" [label]="yAxisLabel" [dimension]="selectedHorizontalValue"
+                    [multiLineData]="multiLineData"></app-multilinechart>
+                </ng-template>
+                </mat-tab>
+          </mat-tab-group>
+          
+        <!-- <app-barchart class="charts" [dimension]="selectedHorizontalValue" [label]="yAxisLabel" [barData]="barData">
+        </app-barchart> -->
+        <!-- <app-stackedchart class="charts" [dimension]="selectedHorizontalValue" [label]="yAxisLabel"
             [selectedTopics]="selectedItems" [topics]="topics" [stackedData]="stackedData" [changeStackChart]="changeStackChart"></app-stackedchart>
         <app-multilinechart class="charts" [label]="yAxisLabel" [dimension]="selectedHorizontalValue"
-         [multiLineData]="multiLineData"></app-multilinechart>
+        [multiLineData]="multiLineData"></app-multilinechart> -->
     </div>
 </div>

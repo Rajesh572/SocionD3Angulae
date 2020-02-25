@@ -30,25 +30,25 @@ export class OverviewComponent implements OnInit {
   }
 
   onReportSelect() {
-    if (this.ovrtitle === "Number of Content Views") {
-      this.router.navigateByUrl("/reports/select", { state: { id: this.extra } })
+    if (this.ovrtitle === "Content Views") {
+      this.router.navigateByUrl("/reports/select", { state: { id: this.extra } });
     }
 
-    if (this.ovrtitle === "Number of Attestation Generated") {
-      this.router.navigateByUrl("/reports/select", { state: { id: this.ovrtitle } })
+    if (this.ovrtitle === "Participant Attestations") {
+      this.router.navigateByUrl("/reports/select", { state: { id: this.ovrtitle } });
 
     }
 
-    if (this.ovrtitle === "Number of Sessions Completed") {
-      this.router.navigateByUrl("/reports/select", { state: { id: this.ovrtitle } })
+    if (this.ovrtitle === "Sessions Completed") {
+      this.router.navigateByUrl("/reports/select", { state: { id: this.ovrtitle } });
     }
 
-    if (this.ovrtitle === "Number of Unique Trainers") {
-      this.router.navigateByUrl("/reports/select", { state: { id: this.ovrtitle } })
+    if (this.ovrtitle === "Unique Trainers") {
+      this.router.navigateByUrl("/reports/select", { state: { id: this.ovrtitle } });
     }
 
-    if (this.ovrtitle === "Number of Unique Participants") {
-      this.router.navigateByUrl("/reports/select", { state: { id: this.ovrtitle } })
+    if (this.ovrtitle === "Unique Participants") {
+      this.router.navigateByUrl("/reports/select", { state: { id: this.ovrtitle } });
     }
   }
 }

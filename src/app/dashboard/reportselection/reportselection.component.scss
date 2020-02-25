@@ -4,7 +4,6 @@ body {
 .axis-selection {
   padding: 1em;
   width: 500px;
-  height: 350px;
   margin: 2%;
   background: #fff;
   display: inline-flex;
@@ -43,19 +42,31 @@ body {
   margin-bottom: 20px;
 }
 
+// .clear-all {
+//   margin-top: 10px;
+//   height: max-content;
+//   background-color:#8C7FEE;
+//   color: white;
+//   font-weight: bold;
+//   font-size: medium;
+//   border: none;
+//   padding: 1em;
+//   max-width: max-content;
+//   border-radius: 50px;
+//   margin-left: 5em;
+// }
+
 .clear-all {
-  margin-top: 10px;
   height: max-content;
-  background-color:#8C7FEE;
+  background-color: #8C7FEE;
   color: white;
-  font-weight: bold;
-  font-size: medium;
+  font-size: inherit;
   border: none;
   padding: 1em;
-  max-width: max-content;
   border-radius: 50px;
   margin-left: 5em;
 }
+
 .selected {
   background-color: lightseagreen !important;
 }
@@ -84,4 +95,24 @@ li {
   font-weight: 300;
   color: lightslategrey;
   padding: 5px;
+}
+
+.filter-component {
+  display: flex;
+  justify-content: space-between;
+}
+
+.input-dropdown {
+  margin-left: 20px;
+}
+
+hr.break-line {
+  // border-top: 1.3px solid #8C7FEE;
+  border-top: 1.3px solid lightslategrey;
+}
+
+.header-component {
+  margin: 0 10px;
+  display: flex;
+  justify-content: space-between;
 }

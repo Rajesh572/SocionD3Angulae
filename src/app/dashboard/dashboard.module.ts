@@ -16,17 +16,27 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule, MatSelectModule } from '@angular/material';
+import {MatTabsModule} from '@angular/material/tabs';
+import {MatDatepickerModule, MatInputModule, MatNativeDateModule} from '@angular/material';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 
 
 @NgModule({
-  declarations: [DashboardComponent, CommingexpiryComponent, ActiveuserComponent, OverviewComponent, ReportsComponent, AttestationreportsComponent, ReportselectionComponent, BarchartComponent, StackedchartComponent, MultilinechartComponent],
+  declarations: [DashboardComponent, CommingexpiryComponent, ActiveuserComponent, OverviewComponent,
+    ReportsComponent, AttestationreportsComponent, ReportselectionComponent, BarchartComponent,
+    StackedchartComponent, MultilinechartComponent],
   imports: [FormsModule, ReactiveFormsModule,
     CommonModule, MatSelectModule,
     DashboardRoutingModule,
     SharedmoduleModule,
     FontAwesomeModule,
-    AngularMultiSelectModule, MatFormFieldModule, NgxMatSelectSearchModule
+    AngularMultiSelectModule,
+    MatFormFieldModule,
+    NgxMatSelectSearchModule,
+    MatTabsModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatInputModule
   ]
 })
 export class DashboardModule { }

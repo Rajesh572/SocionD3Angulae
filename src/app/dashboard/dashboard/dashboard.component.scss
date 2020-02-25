@@ -25,3 +25,43 @@
   color:#fff;
   margin: 0 1em;
 }
+
+.header-component {
+  margin: 0 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.filter-component {
+  display: flex;
+  justify-content: space-between;
+}
+
+.noresult {
+  text-align: center;
+  display: block;
+  font-size: 20px;
+  font-weight: 300;
+  color: lightslategrey;
+  padding: 5px;
+}
+
+.clear-all {
+  height: max-content;
+  background-color: #8C7FEE;
+  color: white;
+  font-size: inherit;
+  border: none;
+  padding: 1em;
+  border-radius: 50px;
+  margin-left: 5em;
+}
+
+.input-dropdown {
+  margin-left: 20px;
+}
+
+hr.break-line {
+  // border-top: 1.3px solid #8C7FEE;
+  border-top: 1.3px solid lightslategrey;
+}
