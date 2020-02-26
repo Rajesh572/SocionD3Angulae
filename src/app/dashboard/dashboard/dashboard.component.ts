@@ -17,6 +17,8 @@ export class DashboardComponent implements OnInit {
   selectedItems = [];
   selectedLocations = [];
   selectedTime;
+  dataArray: any[];
+  dropdownList: any;
   constructor(private http: HttpClient, private dataService: DataService, private route: Router) { }
   dataArr = [];
   optionCustomDate = false;
@@ -106,18 +108,17 @@ export class DashboardComponent implements OnInit {
     this.ngOnInit();
   }
 
-  // onKey(value) {
-  //   this.dataArray = [];
-  //   this.selectSearch(value);
-  // }
-  // selectSearch(value: any) {
-  //   let filter = value.toLowerCase();
-  //   for (let i = 0; i < this.dropdownList.length; i++) {
-  //     let option = this.dropdownList[i];
-  //     if (option.toLowerCase().indexOf(filter) >= 0) {
-  //       this.dataArray.push(option);
-  //     }
-  //   }
-  //   this.newDataArray = this.dataArray;/*  === 0 ? this.dropdownList : this.dataArray; */
-  // }
+  onKey(value) {
+    this.dataArray = [];
+    this.selectSearch(value);
+  }
+  selectSearch(value: any) {
+    let filter = value.toLowerCase();
+    this.dropdownList.forEach(option => {
+      if (option.toLowerCase().indexOf(filter) >= 0) {
+        this.dataArray.push(option);
+      }
+    });
+    this.newDataArray = this.dataArray;/*  === 0 ? this.dropdownList : this.dataArray; */
+  }
 }

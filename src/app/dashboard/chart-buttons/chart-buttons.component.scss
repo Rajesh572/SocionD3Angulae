@@ -53,6 +53,17 @@
     font-size: 1em;
 }
 
+@media screen and (max-width: 1750px) {
+    .radio-button {
+        margin-right: 2%;
+    }
+  }
+
+  @media screen and (max-width: 1650px) {
+    .radio-button {
+        margin-right: 0%;
+    }
+  }
 .radio-title{
     font-weight: bold;
     font-size: 1em;
