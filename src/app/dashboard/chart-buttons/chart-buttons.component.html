@@ -1,9 +1,10 @@
 <div class='chart-buttons' *ngIf="showButtons">
     <div class="favourite-button">
         <button class="button_marked" (click)="setFavourite()" *ngIf="markFavourite" mat-raised-button>
-            <fa-icon class="marked" [icon]="faCheckCircle"></fa-icon>
+            <span class="marked-text">Marked as Favourite</span>
+            <fa-icon class="marked-icon" [icon]="faStar"></fa-icon>
         </button>
-        <button *ngIf="!markFavourite" (click)="setFavourite()" class="button" mat-raised-button>Set as Favourite</button>
+        <button *ngIf="!markFavourite" (click)="setFavourite()" class="button" mat-raised-button>Mark as Favourite</button>
     </div>
     <!-- <button *ngIf="dimension === 'Time Period'" class="button" mat-raised-button>Filter by Week</button>
     <button *ngIf="dimension === 'Time Period'" class="button" mat-raised-button>Filter by Day</button>

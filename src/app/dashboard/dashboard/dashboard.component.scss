@@ -1,6 +1,9 @@
 .overviewcont {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
+  // display: flex;
+  // justify-content: space-evenly;
+  // width: 100%;
 }
 .usergraphs {
   display: flex;

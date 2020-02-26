@@ -25,6 +25,8 @@ export class BarchartComponent implements OnInit, OnChanges {
   private yLabel: any;
   constructor() { }
   @Input() data: any;
+  @Input() svgWidth = 1000;
+  @Input() svgHeight = 550;
   @Input() barData: any;
   @Input() label: any;
   @Input() dimension: any;
@@ -54,8 +56,8 @@ export class BarchartComponent implements OnInit, OnChanges {
       bottom: 30,
       left: 50
     },
-      this.width = +this.svg.attr("width") - this.margin.left - this.margin.right,
-      this.height = +this.svg.attr("height") - this.margin.top - this.margin.bottom,
+      this.width = +this.svgWidth - this.margin.left - this.margin.right,
+      this.height = +this.svgHeight - this.margin.top - this.margin.bottom,
       this.g = this.svg.append("g").attr("transform", "translate(" + this.margin.left + "," + this.margin.top + ")");
 
 
@@ -76,6 +78,14 @@ export class BarchartComponent implements OnInit, OnChanges {
     this.g.append("g").attr("class", "baraxis")
       .attr("transform", "translate(0," + this.height + ")")
       .call(d3Axis.axisBottom(this.x))
+      .selectAll("text")
+      .style("text-anchor", "end")
+      .attr("dx", "-.8em")
+      .attr("dy", ".15em")
+      .attr("font-size", "1.2em")
+      .attr("transform", (d) => {
+          return "rotate(-65)";
+          });
 
     this.g.append("g")
       .attr("class", "baraxis")
@@ -93,7 +103,7 @@ export class BarchartComponent implements OnInit, OnChanges {
     this.svg.append("text")
       .attr("transform",
         "translate(" + ((this.width / 2) + (2 * this.margin.right)) + " ," +
-        (this.height + this.margin.top + 50) + ")")
+        (this.height + this.margin.top + 100) + ")")
       .style("text-anchor", "middle")
       .style("text-transform", "capitalize")
       .text(this.yLabel);
@@ -123,11 +133,11 @@ export class BarchartComponent implements OnInit, OnChanges {
         return this.height - this.y(Number(d.count));
       });
 
-    //for bar vaues
+    //for bar values
 
 
-    let len = (this.barData.length) * 3
-    console.log(len)
+    let len = (this.barData.length) * 3;
+    console.log(len);
 
     this.svg.selectAll("text.bar")
       .data(this.barData)

@@ -100,6 +100,10 @@ newTimeArray = ['Last 6 months',
   getDataforCharts() {
     this.dataService.$stackedChartData.subscribe((stackdata) => {
       this.stackedData = stackdata;
+      
+      this.dataService.$barChartData.subscribe((bardata) => {
+        this.barData = bardata;
+      });
     });
     // this.dataService.getAllTopics();
     this.dataService.$allTopics.subscribe((topics: any[]) => {

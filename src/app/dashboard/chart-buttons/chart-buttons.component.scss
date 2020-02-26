@@ -2,7 +2,7 @@
     background-color: lightseagreen;
     color: white;
     margin: 8% 0px;
-    min-width: 175px;
+    min-width: 237px;
     font-size: 1em;
     padding: 5px;
     border: 1px solid transparent;
@@ -19,9 +19,13 @@
     border-radius: 50px;
 }
 
-.marked{
-    font-size: 1.5rem;
+.marked-text {
     padding: 5px;
+}
+
+.marked-icon {
+    font-size: 1.4rem;
+    padding: 3px;
 }
 
 // .chart-buttons {

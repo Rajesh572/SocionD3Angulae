@@ -40,9 +40,13 @@ export class StackedchartComponent implements OnInit, OnChanges {
   @Input() stackedData: any;
   @Input() topics: any[];
   @Input() label: any;
+  @Input() svgWidth = 1000;
+  @Input() svgHeight = 550;
   @Input() dimension;
   @Input() selectedTopics;
   @Input() changeStackChart;
+
+
   ngOnInit() {
   }
 
@@ -117,8 +121,8 @@ export class StackedchartComponent implements OnInit, OnChanges {
     this.svg = d3.select('.chart .stackedchart');
     this.svg.selectAll("*").remove();
 
-    this.width = +this.svg.attr('width') - this.margin.left - this.margin.right;
-    this.height = +this.svg.attr('height') - this.margin.top - this.margin.bottom;
+    this.width = +this.svgWidth - this.margin.left - this.margin.right;
+    this.height = +this.svgHeight - this.margin.top - this.margin.bottom;
     this.g = this.svg.append('g').attr('transform', 'translate(' + this.margin.left + ',' + this.margin.top + ')');
 
     this.x = d3Scale.scaleBand()
@@ -156,7 +160,15 @@ export class StackedchartComponent implements OnInit, OnChanges {
     this.g.append('g')
       .attr('class', 'stackaxis')
       .attr('transform', 'translate(0,' + this.height + ')')
-      .call(d3Axis.axisBottom(this.x));
+      .call(d3Axis.axisBottom(this.x))
+      .selectAll("text")
+      .style("text-anchor", "end")
+      .attr("dx", "-.8em")
+      .attr("dy", ".15em")
+      .attr("font-size", "1.2em")
+      .attr("transform", (d) => {
+          return "rotate(-65)";
+          });
 
     this.g.append('g')
       .attr('class', 'stackaxis')
@@ -174,7 +186,7 @@ export class StackedchartComponent implements OnInit, OnChanges {
     this.svg.append("text")
       .attr("transform",
         "translate(" + (this.width / 2) + " ," +
-        (this.height + this.margin.top + 50) + ")")
+        (this.height + this.margin.top + 100) + ")")
       .style("text-anchor", "middle")
       .style('text-transform', 'capitalize')
       .text(this.yLabel);

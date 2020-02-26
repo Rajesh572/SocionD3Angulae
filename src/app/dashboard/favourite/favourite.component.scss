@@ -1,0 +1,16 @@
+.charts-container {
+    float: left;
+}
+
+.chart-title {
+    font-weight: 500;
+    text-align: center;
+}
+
+::ng-deep .chart {
+    background: white;
+    padding: 4em;
+    width: 90%;
+    display: flex;
+    justify-content: space-evenly;
+}

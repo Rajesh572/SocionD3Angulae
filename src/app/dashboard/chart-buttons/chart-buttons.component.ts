@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { faCheckCircle} from '@fortawesome/free-solid-svg-icons';
+import { faStar} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-chart-buttons',
@@ -11,7 +11,8 @@ export class ChartButtonsComponent implements OnInit {
 
   @Input() dimension;
   showButtons = false;
-  faCheckCircle = faCheckCircle;
+  // faCheckCircle = faCheckCircle;
+  faStar = faStar;
   markFavourite;
   timeFilter = 'month';
   locationFilter = 'state';

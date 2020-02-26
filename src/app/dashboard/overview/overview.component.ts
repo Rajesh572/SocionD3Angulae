@@ -1,7 +1,10 @@
+// tslint:disable: no-string-literal
+// tslint:disable: prefer-const
+
 import { Component, OnInit, Input, Renderer2, AfterViewInit, ElementRef } from '@angular/core';
-import { Router } from '@angular/router'
+import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { DataService } from '../../data.service'
+import { DataService } from '../../data.service';
 
 @Component({
   selector: 'app-overview',
@@ -15,7 +18,7 @@ export class OverviewComponent implements OnInit {
   @Input() extra;
 
   barData: any;
-  xd = []
+  xd = [];
 
   constructor(private router: Router, private http: HttpClient, private dataService: DataService) { }
 
@@ -24,31 +27,31 @@ export class OverviewComponent implements OnInit {
 
   getColorCode() {
     const colorcodes = {
-      'background': this.colorcode
+      background: this.colorcode
     };
     return colorcodes;
   }
 
   onReportSelect() {
-    if (this.ovrtitle === "Content Views") {
-      this.router.navigateByUrl("/reports/select", { state: { id: this.extra } });
+    if (this.ovrtitle === 'Content Views') {
+      this.router.navigateByUrl('/reports/select', { state: { id: this.extra } });
     }
 
-    if (this.ovrtitle === "Participant Attestations") {
-      this.router.navigateByUrl("/reports/select", { state: { id: this.ovrtitle } });
+    if (this.ovrtitle === 'Participant Attestations') {
+      this.router.navigateByUrl('/reports/select', { state: { id: this.ovrtitle } });
 
     }
 
-    if (this.ovrtitle === "Sessions Completed") {
-      this.router.navigateByUrl("/reports/select", { state: { id: this.ovrtitle } });
+    if (this.ovrtitle === 'Sessions Completed') {
+      this.router.navigateByUrl('/reports/select', { state: { id: this.ovrtitle } });
     }
 
-    if (this.ovrtitle === "Unique Trainers") {
-      this.router.navigateByUrl("/reports/select", { state: { id: this.ovrtitle } });
+    if (this.ovrtitle === 'Unique Trainers') {
+      this.router.navigateByUrl('/reports/select', { state: { id: this.ovrtitle } });
     }
 
-    if (this.ovrtitle === "Unique Participants") {
-      this.router.navigateByUrl("/reports/select", { state: { id: this.ovrtitle } });
+    if (this.ovrtitle === 'Unique Participants') {
+      this.router.navigateByUrl('/reports/select', { state: { id: this.ovrtitle } });
     }
   }
 }

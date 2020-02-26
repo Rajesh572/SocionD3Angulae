@@ -19,6 +19,8 @@ export class MultilinechartComponent implements OnInit, OnChanges {
   @Input() multiLineData: any;
   @Input() label: any;
   @Input() dimension: any;
+  @Input() svgWidth = 1000;
+  @Input() svgHeight = 550;
   datadate2: any;
   newData: any;
   uniqLocs: any;
@@ -132,8 +134,8 @@ export class MultilinechartComponent implements OnInit, OnChanges {
     this.svg = d3.select('.chart .multilinechart');
     this.svg.selectAll("*").remove();
 
-    this.width = this.svg.attr('width') - this.margin.left - this.margin.right;
-    this.height = this.svg.attr('height') - this.margin.top - this.margin.bottom;
+    this.width = this.svgWidth - this.margin.left - this.margin.right;
+    this.height = this.svgHeight - this.margin.top - this.margin.bottom;
 
     this.g = this.svg.append('g').attr('transform', 'translate(' + this.margin.left + ',' + this.margin.top + ')');
 
@@ -158,7 +160,15 @@ export class MultilinechartComponent implements OnInit, OnChanges {
     this.g.append('g')
       .attr('class', 'axis axis--x')
       .attr('transform', 'translate(0,' + this.height + ')')
-      .call(d3Axis.axisBottom(this.x));
+      .call(d3Axis.axisBottom(this.x))
+      .selectAll("text")
+      .style("text-anchor", "end")
+      .attr("dx", "-.8em")
+      .attr("dy", ".15em")
+      .attr("font-size", "1.2em")
+      .attr("transform", (d) => {
+          return "rotate(-65)";
+          });
 
     this.g.append('g')
       .attr('class', 'axis axis--y')
@@ -173,9 +183,9 @@ export class MultilinechartComponent implements OnInit, OnChanges {
 
     //for X axis Label
     this.svg.append("text")
-      .attr("transform",
+      .attr("transform",  
         "translate(" + (this.width / 2) + " ," +
-        (this.height + this.margin.top + 50) + ")")
+        (this.height + this.margin.top + 100) + ")")
       .style("text-anchor", "middle")
       .text("Time");
 

@@ -1,7 +1,17 @@
-<div class="charts-container">
-  <app-stackedchart class="charts" [dimension]="selectedHorizontalValue" [label]="yAxisLabel"
-    [selectedTopics]="selectedItems" [topics]="topics" [stackedData]="stackedData"
-    [changeStackChart]="changeStackChart"></app-stackedchart>
-  <mat-tab label="Time Series" *ngIf="selectedHorizontalValue === 'Time Period'"></mat-tab>
-
+<div>
+    <div class="charts-container">
+        <p class="chart-title">Participant Attestations Consolidated</p>
+        <br/>
+        <app-barchart class="charts" [dimension]="selectedHorizontalValue" [label]="yAxisLabel"
+        svgHeight="400" svgWidth="400" [barData]="barData">
+        </app-barchart>
+    <!-- <mat-tab label="Time Series" *ngIf="selectedHorizontalValue === 'Time Period'"></mat-tab> -->
+    </div>
+    <!-- <div class="charts-container">
+        <p class="chart-title">Unique Participants Consolidated</p>
+        <br/>
+        <app-barchart class="charts" [dimension]="selectedHorizontalValue" [label]="yAxisLabel"
+        svgHeight="400" svgWidth="400" [barData]="barData">
+        </app-barchart>
+    </div> -->
 </div>
