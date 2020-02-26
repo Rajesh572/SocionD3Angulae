@@ -35,7 +35,8 @@ export class DataService {
   public $selected = this.selected.asObservable();
   public $selectedTopics = this.seletedTopics.asObservable();
 
-  menuItems = [{ info: 'Participant Attestations', route: 'getCountForAttestation', ngroute: 'attestation',
+  menuItems = [
+  { info: 'Participant Attestations', route: 'getCountForAttestation', ngroute: 'attestation',
    color: '#4A75B8 ', index: 1, extra: 'Number of Attestation' },
   { info: 'Sessions Completed', route: 'getCountForSessionCompleted', ngroute: 'session',
    color: '#1E8449', index: 2, extra: 'Number of Sessions' },

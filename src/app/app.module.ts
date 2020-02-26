@@ -20,6 +20,7 @@ import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown';
 import { MatFormFieldModule, MatSelectModule, MatDialogModule } from '@angular/material';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { UploadmodalComponent } from './uploadmodal/uploadmodal.component';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
   declarations: [
@@ -30,8 +31,9 @@ import { UploadmodalComponent } from './uploadmodal/uploadmodal.component';
     NotificationComponent,
     UploadmodalComponent
   ],
-  entryComponents:[UploadmodalComponent],
+  entryComponents: [ UploadmodalComponent],
   imports: [
+    FlexLayoutModule,
     BrowserModule,
     RouterModule.forRoot([]),
     FormsModule,
