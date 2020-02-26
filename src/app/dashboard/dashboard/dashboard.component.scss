@@ -1,5 +1,5 @@
 
-.overviewcont {
+.filter-component {
   display: flex;
   grid-template-columns: 1fr 1fr 1fr;
   flex-direction: column;
@@ -7,12 +7,32 @@
 }
 
 @media (min-width: 900px) {
+  .filter-component {
+    flex-direction: row;
+    flex-wrap: wrap;
+    max-width: 100%;
+    margin: auto; 
+    display: flex;
+}
+}
+
+
+
+.header-component{
+  display: flex;
+  grid-template-columns: 1fr 1fr 1fr;
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+
+
+@media (min-width: 900px) {
   .overviewcont {
     flex-direction: row;
     flex-wrap: wrap;
     max-width: 100%;
-    margin: auto;
-    align-items: stretch;  
+    margin: auto; 
+    display: flex;
 }
 }
 
