@@ -3,13 +3,14 @@
   display: flex;
   grid-template-columns: 1fr 1fr 1fr;
   flex-direction: column;
+  flex-wrap: wrap;
 }
 
 @media (min-width: 900px) {
   .overviewcont {
     flex-direction: row;
     flex-wrap: wrap;
-    max-width: 1200px;
+    max-width: 100%;
     margin: auto;
     align-items: stretch;  
 }
