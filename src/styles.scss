@@ -140,9 +140,9 @@ a:hover {
 .bar:hover {
   fill: brown;
 }
-.pagecontainer {
+// .pagecontainer {
 
-}
+// }
 
 button {
   cursor: pointer !important;
@@ -155,6 +155,13 @@ button {
   margin-bottom: 3em;
   display: flex;
   justify-content: space-around;
+}
+
+@media screen and (max-width: 1500px) {
+  .chart {
+      padding: 4em 2em;
+      justify-content: space-between;
+  }
 }
 
 g.baraxis {

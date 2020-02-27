@@ -10,18 +10,18 @@
     <button *ngIf="dimension === 'Time Period'" class="button" mat-raised-button>Filter by Day</button>
     <button *ngIf="dimension === 'Location'" class="button" mat-raised-button>Filter by District</button> -->
     <div class="radio-button" *ngIf="dimension === 'Time Period'">
-        <p class="radio-title">Filter by</p>
+        <p class="radio-title">View by</p>
         <mat-radio-group aria-label="Select an option" [(ngModel)]="timeFilter">
-            <mat-radio-button selected value="month">Month</mat-radio-button>
-            <mat-radio-button value="week">Week</mat-radio-button>
-            <mat-radio-button value="day">Day</mat-radio-button>
+            <mat-radio-button class="option" selected value="month">Month</mat-radio-button>
+            <mat-radio-button class="option" value="week">Week</mat-radio-button>
+            <mat-radio-button class="option" value="day">Day</mat-radio-button>
           </mat-radio-group>
     </div>
     <div class="radio-button" *ngIf="dimension === 'Location'">
-        <p class="radio-title">Filter by</p>
+        <p class="radio-title">View by</p>
         <mat-radio-group aria-label="Select an option" [(ngModel)]="locationFilter">
-            <mat-radio-button value="state">State</mat-radio-button>
-            <mat-radio-button value="city">City</mat-radio-button>
+            <mat-radio-button class="option" value="state">State</mat-radio-button>
+            <mat-radio-button class="option" value="city">City</mat-radio-button>
             <!-- <mat-radio-button value="district">By District</mat-radio-button> -->
           </mat-radio-group>
     </div>

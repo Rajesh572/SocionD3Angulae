@@ -40,7 +40,7 @@ export class StackedchartComponent implements OnInit, OnChanges {
   @Input() stackedData: any;
   @Input() topics: any[];
   @Input() label: any;
-  @Input() svgWidth = 1000;
+  @Input() svgWidth: any = '70%';
   @Input() svgHeight = 550;
   @Input() dimension;
   @Input() selectedTopics;
@@ -51,6 +51,12 @@ export class StackedchartComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
+    const chartWidth = d3.select('.chart').style('width');
+    if (typeof(this.svgWidth) === 'string' && this.svgWidth.endsWith('%') ) {
+      this.svgWidth = (parseFloat(this.svgWidth) / 100.0) * parseFloat(chartWidth);
+      console.log('SVG Width', this.svgWidth);
+    }
+
     console.log(this.changeStackChart, "stackchange")
     if (!this.changeStackChart) {
       return;

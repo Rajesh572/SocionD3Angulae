@@ -7,8 +7,8 @@ import * as d3Shape from 'd3-shape';
 import * as d3Axis from 'd3-axis';
 import * as d3Array from 'd3-array';
 import * as d3ScaleChromatic from 'd3-scale-chromatic';
-import * as d3Time from 'd3-time'
-import { nest } from 'd3-collection'
+import * as d3Time from 'd3-time';
+import { nest } from 'd3-collection';
 
 @Component({
   selector: 'app-multilinechart',
@@ -19,7 +19,7 @@ export class MultilinechartComponent implements OnInit, OnChanges {
   @Input() multiLineData: any;
   @Input() label: any;
   @Input() dimension: any;
-  @Input() svgWidth = 1000;
+  @Input() svgWidth: any = '75%';
   @Input() svgHeight = 550;
   datadate2: any;
   newData: any;
@@ -31,6 +31,12 @@ export class MultilinechartComponent implements OnInit, OnChanges {
   ngOnInit() {
   }
   ngOnChanges() {
+    const chartWidth = d3.select('.chart').style('width');
+    if (typeof(this.svgWidth) === 'string' && this.svgWidth.endsWith('%') ) {
+      this.svgWidth = (parseFloat(this.svgWidth) / 100.0) * parseFloat(chartWidth);
+      console.log('SVG Width', this.svgWidth);
+    }
+    // window.scrollTo(500, 0);
     if (this.multiLineData && this.dimension != "Location") {
       let dates = this.multiLineData.map((data) => {
         return data['date']

@@ -4,7 +4,7 @@ import * as d3 from 'd3-selection';
 import * as d3Scale from 'd3-scale';
 import * as d3Axis from 'd3-axis';
 import * as d3Array from 'd3-array';
-import * as d3Collection from 'd3-collection';
+// import * as d3Collection from 'd3-collection';
 
 
 @Component({
@@ -25,7 +25,7 @@ export class BarchartComponent implements OnInit, OnChanges {
   private yLabel: any;
   constructor() { }
   @Input() data: any;
-  @Input() svgWidth = 1000;
+  @Input() svgWidth: any = '75%';
   @Input() svgHeight = 550;
   @Input() barData: any;
   @Input() label: any;
@@ -35,6 +35,12 @@ export class BarchartComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
+    const chartWidth = d3.select('.chart').style('width');
+    if (typeof(this.svgWidth) === 'string' && this.svgWidth.endsWith('%') ) {
+      this.svgWidth = (parseFloat(this.svgWidth) / 100.0) * parseFloat(chartWidth);
+      console.log('SVG Width', this.svgWidth);
+    }
+
     if (this.barData) {
       console.log(this.dimension);
       if (this.dimension === "Time Period") {
