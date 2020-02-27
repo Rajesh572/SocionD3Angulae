@@ -8,11 +8,12 @@ import { FavouriteComponent } from './dashboard/favourite/favourite.component';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: '/dashboard',
+    redirectTo: 'dashboard',
     pathMatch: 'full'
-  }, {
+  },
+  {
     path: 'dashboard',
-    component: DashboardComponent
+    loadChildren: './dashboard/dashboard.module#DashboardModule'
   },
   {
     path: 'reports/select',
@@ -21,7 +22,27 @@ const routes: Routes = [
   {
     path: 'reports/favourite',
     component: FavouriteComponent
+  },
+  {
+    path: '**',
+    redirectTo: 'dashboard'
   }
+  // {
+  //   path: '',
+  //   redirectTo: '/dashboard',
+  //   pathMatch: 'full'
+  // }, {
+  //   path: 'dashboard',
+  //   component: DashboardComponent
+  // },
+  // {
+  //   path: 'reports/select',
+  //   component: ReportselectionComponent
+  // },
+  // {
+  //   path: 'reports/favourite',
+  //   component: FavouriteComponent
+  // },
 ];
 
 @NgModule({

@@ -3,9 +3,14 @@ import { Routes, RouterModule } from '@angular/router';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ReportsComponent } from './reports/reports.component';
 import { ReportselectionComponent } from './reportselection/reportselection.component';
+import { DashboardModule } from './dashboard.module';
 
 
 const routes: Routes = [
+  {
+    path: '',
+    component: DashboardComponent
+  }
   /* {
     path: "reports",
     children: [
