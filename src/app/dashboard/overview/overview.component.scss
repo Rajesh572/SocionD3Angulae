@@ -4,17 +4,18 @@
   border-radius: 10px;
   color: #fff;
   margin: 10px;
-  height: 270px;
+  min-height: 150px;
+  // width: 33%;
   cursor: pointer !important;
   .ovrno {
-    font-size: 6.5em;
+    font-size: 4.0em;
     font-weight: bold;
     padding: 0.3em 0;
   }
   .overtitle {
     font-size: 25px !important;
-    font-weight: 300;
-    padding: 0.3em 0;
+    font-weight: 220;
+    padding: 0.4em 0;
   }
 }
 /* 
