@@ -34,7 +34,7 @@ export class OverviewComponent implements OnInit {
 
   onReportSelect() {
     if (this.ovrtitle === 'Content Views') {
-      this.router.navigateByUrl('/reports/select', { state: { id: this.extra } });
+      this.router.navigateByUrl('/reports/select', { state: { id: this.ovrtitle } });
     }
 
     if (this.ovrtitle === 'Participant Attestations') {
