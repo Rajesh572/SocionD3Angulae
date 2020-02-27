@@ -1,9 +1,27 @@
 
-.filter-component {
+.overviewcont {
   display: flex;
-  grid-template-columns: 1fr 1fr 1fr;
+  // grid-template-columns: 1fr 1fr 1fr;
   flex-direction: column;
   flex-wrap: wrap;
+}
+
+@media (min-width: 900px) {
+  .overviewcont {
+    flex-direction: row;
+    flex-wrap: wrap;
+    max-width: 100%;
+    margin: auto;
+    align-items: stretch; 
+}
+}
+
+.header-component {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin: 0 10px;
+  justify-content: space-between;
 }
 
 @media (min-width: 900px) {
@@ -11,30 +29,10 @@
     flex-direction: row;
     flex-wrap: wrap;
     max-width: 100%;
-    margin: auto; 
     display: flex;
 }
 }
 
-
-
-.header-component{
-  display: flex;
-  grid-template-columns: 1fr 1fr 1fr;
-  flex-direction: column;
-  flex-wrap: wrap;
-}
-
-
-@media (min-width: 900px) {
-  .overviewcont {
-    flex-direction: row;
-    flex-wrap: wrap;
-    max-width: 100%;
-    margin: auto; 
-    display: flex;
-}
-}
 
 .usergraphs {
   display: flex;
@@ -60,16 +58,7 @@
   margin: 0 1em;
 }
 
-.header-component {
-  margin: 0 10px;
-  display: flex;
-  justify-content: space-between;
-}
 
-.filter-component {
-  display: flex;
-  justify-content: space-between;
-}
 
 .noresult {
   text-align: center;
