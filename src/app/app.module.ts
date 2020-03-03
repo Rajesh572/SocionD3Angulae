@@ -12,16 +12,14 @@ import { UsermenuComponent } from './components/header/components/usermenu/userm
 import { NotificationComponent } from './components/header/components/notification/notification.component';
 import { RouterModule } from '@angular/router';
 import { DashboardModule } from './dashboard/dashboard.module';
-import { UserModule } from './user/user.module';
-import { SearchModule } from './searchmodule/search.module';
 import { DataService } from './data.service';
 import { HttpClientModule } from '@angular/common/http';
 import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown';
 import { MatFormFieldModule, MatSelectModule, MatDialogModule } from '@angular/material';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
-import { UploadmodalComponent } from './uploadmodal/uploadmodal.component';
 import { MetricsModule } from './metrics/metrics.module';
 import { FavouriteModule } from './favourite/favourite.module';
+import { UploadmodalComponent } from './uploadmodal/uploadmodal.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +30,7 @@ import { FavouriteModule } from './favourite/favourite.module';
     NotificationComponent,
     UploadmodalComponent
   ],
-  entryComponents:[UploadmodalComponent],
+  entryComponents: [UploadmodalComponent],
   imports: [
     BrowserModule,
     RouterModule.forRoot([]),
@@ -45,9 +43,7 @@ import { FavouriteModule } from './favourite/favourite.module';
     MatDialogModule,
     FontAwesomeModule,
     AppRoutingModule,
-    SearchModule,
     DashboardModule,
-    UserModule,
     SharedmoduleModule,
     BrowserAnimationsModule,
     HttpClientModule,

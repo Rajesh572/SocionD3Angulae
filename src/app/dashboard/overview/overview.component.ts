@@ -1,7 +1,7 @@
 // tslint:disable: no-string-literal
 // tslint:disable: prefer-const
 
-import { Component, OnInit, Input, Renderer2, AfterViewInit, ElementRef } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
 // import { HttpClient } from '@angular/common/http';
 import { DataService } from '../../data.service';
@@ -12,10 +12,8 @@ import { DataService } from '../../data.service';
   styleUrls: ['./overview.component.scss']
 })
 export class OverviewComponent implements OnInit {
-  @Input() ovrno;
-  @Input() ovrtitle;
-  @Input() colorcode;
-  @Input() extra;
+
+  @Input() data;
 
   constructor(private router: Router, private dataService: DataService) { }
 
@@ -24,35 +22,19 @@ export class OverviewComponent implements OnInit {
 
   getColorCode() {
     const colorcodes = {
-      background: this.colorcode
+      background: this.data.color
     };
     return colorcodes;
   }
 
   onReportSelect() {
-    if (this.dataService.attributeKeys.includes(this.ovrtitle)) {
-      this.router.navigateByUrl('/reports/select', { state: { id: this.ovrtitle } });
+    try {
+      if (this.dataService.attributeKeys.includes(this.data.info)) {
+        this.router.navigateByUrl('/reports/select', { state: { id: this.data.info } });
+      }
+    } catch(e) {
+      console.log('Error while navigating to the report select page : ', e);
     }
-    // if (this.ovrtitle === 'Content Views') {
-    //   this.router.navigateByUrl('/reports/select', { state: { id: this.ovrtitle } });
-    // }
-
-    // if (this.ovrtitle === 'Participant Attestations') {
-    //   this.router.navigateByUrl('/reports/select', { state: { id: this.ovrtitle } });
-
-    // }
-
-    // if (this.ovrtitle === 'Sessions Completed') {
-    //   this.router.navigateByUrl('/reports/select', { state: { id: this.ovrtitle } });
-    // }
-
-    // if (this.ovrtitle === 'Unique Trainers') {
-    //   this.router.navigateByUrl('/reports/select', { state: { id: this.ovrtitle } });
-    // }
-
-    // if (this.ovrtitle === 'Unique Participants') {
-    //   this.router.navigateByUrl('/reports/select', { state: { id: this.ovrtitle } });
-    // }
   }
 }
 

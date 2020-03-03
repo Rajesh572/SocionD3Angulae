@@ -7,20 +7,53 @@
   min-height: 150px;
   // width: 33%;
   cursor: pointer !important;
+
   .ovrno {
     font-size: 4.0em;
     font-weight: bold;
     padding: 0.3em 0;
   }
+
   .overtitle {
-    font-size: 25px !important;
+    font-size: 25px;
     font-weight: 220;
     padding: 0.4em 0;
   }
 }
+
 /* 
 app-overview {
   display: flex;
   align-items: center;
   justify-content: space-around;
 } */
+
+@media screen and (max-width: 800px) {
+  .overview .ovrno {
+    font-size: 3.5em;
+    font-weight: bold;
+    padding: 0.2em 0;
+  }
+
+  .overview .overtitle {
+    font-size: 25px;
+    font-weight: 220;
+    padding: 0.3em 0;
+  }
+} 
+
+@media screen and (max-width: 550px) {
+
+  .overview .ovrno {
+    font-size: 3.0em;
+    font-weight: bold;
+    padding: 0.2em 0;
+  }
+
+  .overview .overtitle {
+    font-size: 25px;
+    font-weight: 220;
+    padding: 0.2em 0;
+  }
+}
+

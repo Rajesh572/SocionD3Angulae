@@ -8,6 +8,7 @@
   justify-content: flex-start;
 }
 
+
 app-overview {
   width: 33%;
 }
@@ -18,15 +19,19 @@ app-overview {
 //   }
 // }
 
-@media screen and (max-width: 720px) {
+@media screen and (max-width: 800px) {
   app-overview {
     width: 50%;
   }
+
 }
 
-@media screen and (max-width: 320px) {
+@media screen and (max-width: 550px) {
   app-overview {
-    width: 100%;
+    width: 90%;
+  }
+  .overviewcont {
+    justify-content: center;
   }
 }
 
