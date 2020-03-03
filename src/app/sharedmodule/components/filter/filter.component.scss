@@ -1,0 +1,36 @@
+.filter-component {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .noresult {
+    text-align: center;
+    display: block;
+    font-size: 20px;
+    font-weight: 300;
+    color: lightslategrey;
+    padding: 5px;
+  }
+  
+  .clear-all {
+    min-width: 115px;
+    height: max-content;
+    background-color: #8C7FEE;
+    color: white;
+    font-size: inherit;
+    border: none;
+    padding: 14px;
+    border-radius: 50px;
+    margin-left: 2em;
+  }
+  
+  .input-dropdown {
+    margin-left: 20px;
+  }
+  
+  @media screen and (max-width: 1400px) {
+    .input-dropdown {
+      margin-left: 10px;
+      max-width: 150px;
+    }
+  }

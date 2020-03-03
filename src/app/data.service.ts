@@ -7,7 +7,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import * as _ from 'lodash';
-import { API_URL } from './dashboard/config/config';
+import { API_URL } from './config/config';
 @Injectable({
   providedIn: 'root'
 })
@@ -46,6 +46,19 @@ export class DataService {
   { info: 'Unique Participants', route: 'getCountForUniqueTrainee',
    color: '#2E4053 ', index: 5, extra: 'Number of Unique Participants' }
   ];
+
+  attributes = {'Sessions Completed': 'Session Completed',
+  'Participant Attestations': 'Generate Attestation',
+  'Unique Participants': 'TRAINEE',
+  'Unique Trainers': 'TRAINER',
+  'Content Views': 'Download Content'};
+
+  attributeKeys = ['Sessions Completed',
+  'Participant Attestations',
+  'Unique Participants',
+  'Unique Trainers',
+  'Content Views'
+];
 
   updateBar(data) {
     this.barChartData.next(data);
@@ -89,23 +102,28 @@ export class DataService {
   }
 
   getEventType(metric) {
-    if (metric === 'Sessions Completed') {
-      return 'Session Completed';
-    }
-    if (metric === 'Participant Attestations') {
-      return 'Generate Attestation';
-    }
-    if (metric === 'Content Views') {
-      return 'Download Content';
+
+    if (this.attributeKeys.includes(metric)) {
+      return this.attributes[metric];
     }
 
-    if (metric === 'Unique Trainers') {
-      return 'TRAINER';
-    }
+    // if (metric === 'Sessions Completed') {
+    //   return 'Session Completed';
+    // }
+    // if (metric === 'Participant Attestations') {
+    //   return 'Generate Attestation';
+    // }
+    // if (metric === 'Content Views') {
+    //   return 'Download Content';
+    // }
 
-    if (metric === 'Unique Participants') {
-      return 'TRAINEE';
-    }
+    // if (metric === 'Unique Trainers') {
+    //   return 'TRAINER';
+    // }
+
+    // if (metric === 'Unique Participants') {
+    //   return 'TRAINEE';
+    // }
   }
 
 

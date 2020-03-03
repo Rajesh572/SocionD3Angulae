@@ -1,1 +1,0 @@
-export const API_URL="http://socion-pda-dashboard.stackroute.com:3000/v1/api/"

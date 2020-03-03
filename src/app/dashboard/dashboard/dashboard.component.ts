@@ -3,7 +3,7 @@
 
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
+// import { Router } from '@angular/router';
 import { DataService } from '../../data.service';
 import * as _ from 'lodash';
 import { FormControl } from '@angular/forms';
@@ -14,56 +14,27 @@ import { FormControl } from '@angular/forms';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
-  selectedItems = [];
-  selectedLocations = [];
-  selectedTime;
-  dataArray: any[];
   dropdownList: any;
-  constructor(private http: HttpClient, private dataService: DataService, private route: Router) { }
+  constructor(private http: HttpClient, private dataService: DataService) { }
   dataArr = [];
-  optionCustomDate = false;
-  dateFrom = '';
-  dateTo = '';
-  serializedDate = new FormControl((new Date()).toISOString());
-  newDataArray = [];
-  newLocationArray = ['Andhra Pradesh',
-    'Arunachal pradesh',
-    'Assam',
-    'Sikkim',
-    'Nagaland',
-    'Manipur',
-    'Meghalaya',
-    'Jammu kashmir',
-    'Karnataka',
-    'Madhya Pradesh',
-    'Manipur',
-    'Punjab',
-    'Rajasthan',
-    'Uttar Pradesh',
-    'Chhattisgarh'
-];
-  newTimeArray = ['Last 6 months',
-    'Last 3 months',
-    'Last 1 month',
-    'Last 2 weeks',
-    'Last 1 week',
-    'Custom Date'];
+
+
   ngOnInit() {
 
     this.dataService.menuItems.forEach((menuItem) => {
-      let info = menuItem['info'];
-      let ngroute = menuItem['ngroute'];
-      let color = menuItem['color'];
-      let index = menuItem['index'];
-      let extra = menuItem['extra'];
+      // let info = menuItem['info'];
+      // let ngroute = menuItem['ngroute'];
+      // let color = menuItem['color'];
+      // let index = menuItem['index'];
+      // let extra = menuItem['extra'];
       this.http.get(this.dataService.apiUrl + menuItem['route']).subscribe((data) => {
         let obj = {};
-        obj['info'] = info;
+        obj['info'] = menuItem['info'];
         obj['value'] = data[0]['value'];
-        obj['ngroute'] = ngroute;
-        obj['color'] = color;
-        obj['index'] = index;
-        obj['extra'] = extra;
+        obj['ngroute'] = menuItem['ngroute'];
+        obj['color'] = menuItem['color'];
+        obj['index'] = menuItem['index'];
+        obj['extra'] = menuItem['extra'];
         this.dataArr.push(obj);
         this.dataArr.sort((a, b) =>  a['index'] - b['index'] );
       });
@@ -75,50 +46,8 @@ export class DashboardComponent implements OnInit {
         alltopics.push(element['topic_name']);
       });
       console.log('topics', _.uniq(alltopics));
-      this.newDataArray = _.uniq(alltopics);
     });
 
   }
 
-  onTopicChange(event) {
-    console.log('Event on Topic : ', event);
-  }
-
-  onLocationChange(event) {
-    console.log('Event on Location : ', event);
-  }
-
-  onTimeChange(event) {
-    console.log('Event on Time : ', event);
-    if (event === 'Custom Date') {
-      this.optionCustomDate = true;
-    } else {
-      this.optionCustomDate = false;
-      this.dateFrom = '';
-      this.dateTo = '';
-    }
-  }
-
-  clearAll() {
-    this.selectedItems = [];
-    this.selectedLocations = [];
-    this.selectedTime = undefined;
-    this.dataArr = [];
-    this.optionCustomDate = false;
-    this.ngOnInit();
-  }
-
-  onKey(value) {
-    this.dataArray = [];
-    this.selectSearch(value);
-  }
-  selectSearch(value: any) {
-    let filter = value.toLowerCase();
-    this.dropdownList.forEach(option => {
-      if (option.toLowerCase().indexOf(filter) >= 0) {
-        this.dataArray.push(option);
-      }
-    });
-    this.newDataArray = this.dataArray;/*  === 0 ? this.dropdownList : this.dataArray; */
-  }
 }

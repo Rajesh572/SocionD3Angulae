@@ -20,6 +20,8 @@ import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown';
 import { MatFormFieldModule, MatSelectModule, MatDialogModule } from '@angular/material';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { UploadmodalComponent } from './uploadmodal/uploadmodal.component';
+import { MetricsModule } from './metrics/metrics.module';
+import { FavouriteModule } from './favourite/favourite.module';
 
 @NgModule({
   declarations: [
@@ -49,6 +51,8 @@ import { UploadmodalComponent } from './uploadmodal/uploadmodal.component';
     SharedmoduleModule,
     BrowserAnimationsModule,
     HttpClientModule,
+    MetricsModule,
+    FavouriteModule,
   ],
   providers: [DataService],
   bootstrap: [AppComponent]

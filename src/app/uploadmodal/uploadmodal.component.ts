@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { HttpClient, HttpEventType } from '@angular/common/http';
-import { API_URL } from './../dashboard/config/config';
+import { API_URL } from './../config/config';
 
 @Component({
   selector: 'app-uploadmodal',
