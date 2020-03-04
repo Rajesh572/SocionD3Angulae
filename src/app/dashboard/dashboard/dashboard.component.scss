@@ -1,5 +1,5 @@
 .apptitle{
-  font-size: 2em;
+  font-size: 3em;
   font-weight: bold;
   padding-bottom: 0.3em;
   margin-top: 1px;
@@ -22,27 +22,22 @@
   // flex-direction: column;
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-start;
 }
 app-overview {
-   width: 33%;
-  }
+  display: flex;
+  flex: 0 0 calc(33.33%);
+}
   
-  @media screen and (max-width: 800px) {
-    app-overview {
-      width: 50%;/* 1.5rem is the final flex value */
+@media screen and (max-width: 900px) {
+  app-overview {
+    flex: 0 0 calc(50%);
     }
-  }
-
-
-  @media screen and (max-width: 550px) {
-    app-overview {
-      width: 90%;/* 1.5rem is the final flex value */
-      .overviewcont{
-        justify-content: center;
-      }
+}
+@media screen and (max-width: 600px) {
+  app-overview {
+    flex: 0 0 calc(100%);
     }
-  }
+}
 
 .header-component {
   display: flex;
@@ -75,7 +70,6 @@ app-overview {
   height: 109px;
   background-color: rgb(47, 255, 99);
 }
-
 .select-btn{
   padding: 10px;
   font-size: 1em;
@@ -86,34 +80,79 @@ app-overview {
   color:#fff;
   margin: 0 1em;
 }
-
-
-
-.noresult {
-  text-align: center;
-  display: block;
-  font-size: 20px;
-  font-weight: 300;
-  color: lightslategrey;
-  padding: 5px;
+.header-component {
+  margin: 0 10px;
+  display: flex;
+  justify-content: space-between;
 }
-
-.clear-all {
-  height: max-content;
-  background-color: #8C7FEE;
-  color: white;
-  font-size: inherit;
-  border: none;
-  padding: 1em;
-  border-radius: 50px;
-  margin-left: 5em;
-}
-
-.input-dropdown {
-  margin-left: 20px;
-}
-
 hr.break-line {
   // border-top: 1.3px solid #8C7FEE;
   border-top: 1.3px solid lightslategrey;
 }
+.contentarea {
+  height: 80vh;
+}
+//====================
+
+// .overviewcont {
+//   // display: grid;
+//   // grid-template-columns: 1fr 1fr 1fr;
+//   // grid-column-gap: 50px;
+//   display: flex;
+//   flex-wrap: wrap;
+//   // flex: 100%;
+// }
+// app-overview {
+//   display: flex;
+//   flex: 0 0 calc(33.33%);
+// }
+// // @media screen and (max-width: 1300px) {
+// //   .overviewcont {
+// //     grid-template-columns: 1fr 1fr;
+// //     grid-column-gap: 70px;
+// //   }
+// // }
+// @media screen and (max-width: 900px) {
+//   app-overview {
+//     flex: 0 0 calc(50%);
+//     }
+// }
+// @media screen and (max-width: 600px) {
+//   app-overview {
+//     flex: 0 0 calc(100%);
+//     }
+// }
+// .usergraphs {
+//   display: flex;
+//   justify-content: space-between;
+// }
+// .select-metric {
+//   padding: 2em 3em;
+//   border-radius: 10px;
+//   width: 200px;
+//   margin: 2em;
+//   height: 109px;
+//   background-color: rgb(47, 255, 99);
+// }
+// .select-btn{
+//   padding: 10px;
+//   font-size: 1em;
+//   outline: none;
+//   margin-top: 10px!important;
+//   border-radius:20px;
+//   border: none;
+//   color:#fff;
+//   margin: 0 1em;
+// }
+// .header-component {
+//   margin: 0 10px;
+//   display: flex;
+//   justify-content: space-between;
+// }
+// hr.break-line {
+//   // border-top: 1.3px solid #8C7FEE;
+//   border-top: 1.3px solid lightslategrey;
+// }
+// .contentarea {
+//   height: 80vh;
+// }
