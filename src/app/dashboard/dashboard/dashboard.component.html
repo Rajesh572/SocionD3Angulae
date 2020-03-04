@@ -1,4 +1,5 @@
 <app-pagehader>
+  <div class="apptitle">Program: Hepatitis - c Awareness</div>
   <div class="header-component">
     <div class="pagetitle">Dashboard</div>
 
@@ -58,7 +59,6 @@
 
 <div class="pagecontainer">
   <div class="overviewcont">
-    <app-overview  *ngFor="let item of dataArr" [extra]="item.extra" [colorcode]="item.color" [ovrno]="item.value" [ovrtitle]="item.info" >
-    </app-overview>
+    <app-overview  *ngFor="let item of dataArr" [extra]="item.extra" [colorcode]="item.color" [ovrno]="item.value" [ovrtitle]="item.info" ></app-overview>
   </div>
 </div>

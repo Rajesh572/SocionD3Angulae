@@ -8,7 +8,7 @@
   cursor: pointer !important;
   .ovrno {
     font-size: 6.5em;
-    font-weight: bold;
+    font-weight: normal;
     padding: 0.3em 0;
   }
   .overtitle {
@@ -18,6 +18,59 @@
   }
   
 } 
+
+@media screen and (max-width: 800px) {
+    .overview .ovrno {
+      font-size: 3.5em;
+      font-weight: normal;
+      padding: 0.2em 0;
+    }
+
+    .overview .overtitle{
+      font-size: 25px;
+      font-weight: 220;
+      padding: 0.3em 0;
+    }
+  }
+
+
+@media screen and (max-width: 550px) {
+  .overview .ovrno {
+    font-size: 3.0em;
+    font-weight: normal;
+    padding: 0.2em 0;
+  }
+
+  .overview .overtitle{
+    font-size: 25px;
+    font-weight: 220;
+    padding: 0.2em 0;
+  }
+}
+
+
+// .overview  {
+//   color: #fff;
+//   border-radius: .75rem;
+//   text-align: center;
+//   margin: .5rem; /* This value plus the left to right padding == final flex value */
+//   flex: 100%;
+//   display: flex;
+//   flex-flow: column;
+//   justify-items: center;
+//   padding: 2rem .25rem;
+//   font-size: 1.5rem;
+// }
+// .ovrno  {
+//   font-size: 80px;
+//   margin: 10px;
+// }
+
+// @media (min-width: 640px) {
+//   .overview  {
+//     flex: 0 0 calc(33.33333% - 1.5rem); /* 1.5rem is the final flex value */
+//   }
+// }
 
 // app-overview {
 //   display: flex;

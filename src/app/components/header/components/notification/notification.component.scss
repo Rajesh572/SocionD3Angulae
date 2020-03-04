@@ -4,6 +4,7 @@
   border-right: 1px solid #ccc;
 position: relative;
   text-align: center;
+  margin-top: 5px;
   .no{
     position: absolute;
     width:20px;
@@ -12,5 +13,10 @@ position: relative;
     background:#FFCC2E;
     top:-10px;
     right:18px;
+  }
+}
+@media screen and (max-width:500px){
+  .notification{
+    width: 70px;
   }
 }

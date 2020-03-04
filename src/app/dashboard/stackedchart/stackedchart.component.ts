@@ -47,75 +47,78 @@ export class StackedchartComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    console.log(this.changeStackChart, "stackchange")
+    console.log(this.changeStackChart, 'stackchange');
     if (!this.changeStackChart) {
       return;
     }
     if (this.stackedData && this.topics && this.topics.length > 0) {
       console.log(this.dimension, this.stackedData);
-      if (this.dimension === "Time Period") {
-        this.yLabel = "month"
-        let topicArr = this.selectedTopics.length > 0 ? this.selectedTopics : this.topics;
-        let months = [];
+      if (this.dimension === 'Time Period') {
+        this.yLabel = 'month';
+        const topicArr = this.selectedTopics.length > 0 ? this.selectedTopics : this.topics;
+        const months = [];
         this.xd = this.stackedData;
         this.xd.forEach(element => {
-          if (months.indexOf(element['month']) > -1) { }
-          else { months.push(element['month']) }
+          // tslint:disable-next-line:no-string-literal
+          if (months.indexOf(element['month']) > -1) { } else { months.push(element['month']); }
         });
-        let newda = months.map(month => { return { month: month }; })
+        const newda = months.map(month => ({ month }));
 
         newda.forEach((da) => {
           topicArr.forEach(topic => {
             da[topic] = 0;
           });
-        })
+        });
         this.xd.forEach((objs) => {
 
           newda.forEach((da) => {
 
+            // tslint:disable-next-line:no-string-literal
             if (da['month'] === objs['month']) {
-              da[objs['topic_name']] = objs['count']
+              // tslint:disable-next-line:no-string-literal
+              da[objs['topic_name']] = objs['count'];
             }
-          })
+          });
 
-        })
+        });
         this.drawStackedChart(newda);
-      }
-      else {
-        this.yLabel = "Location"
-        let topicArr = this.selectedTopics.length > 0 ? this.selectedTopics : this.topics;
-        let locations = [];
+      } else {
+        this.yLabel = 'Location';
+        const topicArr = this.selectedTopics.length > 0 ? this.selectedTopics : this.topics;
+        const locations = [];
         this.xd = this.stackedData;
         this.xd.forEach(element => {
-          if (locations.indexOf(element['Location']) > -1) { }
-          else { locations.push(element['Location']) }
+          // tslint:disable-next-line:no-string-literal
+          if (locations.indexOf(element['Location']) > -1) { } else { locations.push(element['Location']); }
         });
-        let newda = locations.map(location => { return { Location: location }; })
+        const newda = locations.map(location => ({ Location: location }));
 
         newda.forEach((da) => {
           topicArr.forEach(topic => {
             da[topic] = 0;
           });
-        })
+        });
         this.xd.forEach((objs) => {
 
           newda.forEach((da) => {
 
+            // tslint:disable-next-line:no-string-literal
             if (da['Location'] === objs['Location']) {
-              da[objs['topic_name']] = objs['count']
+              // tslint:disable-next-line:no-string-literal
+              da[objs['topic_name']] = objs['count'];
             }
-          })
+          });
 
-        })
-        console.log("newda location", newda)
-        this.drawStackedChart(newda)
+        });
+        console.log('newda location', newda);
+        this.drawStackedChart(newda);
       }
     }
   }
   private drawStackedChart(stackedData) {
     this.margin = { top: 20, right: 20, bottom: 30, left: 40 };
     this.svg = d3.select('.chart .stackedchart');
-    this.svg.selectAll("*").remove();
+    this.svg.selectAll('*').remove();
 
     this.width = +this.svg.attr('width') - this.margin.left - this.margin.right;
     this.height = +this.svg.attr('height') - this.margin.top - this.margin.bottom;
@@ -127,14 +130,15 @@ export class StackedchartComponent implements OnInit, OnChanges {
       .align(0.1);
     this.y = d3Scale.scaleLinear()
       .rangeRound([this.height, 0]);
-    this.z = d3Scale.scaleOrdinal(d3ScaleChromatic.schemeCategory10)
-    let keys = Object.getOwnPropertyNames(stackedData[0]).slice(1);
+    this.z = d3Scale.scaleOrdinal(d3ScaleChromatic.schemeCategory10);
+    const keys = Object.getOwnPropertyNames(stackedData[0]).slice(1);
 
     stackedData = stackedData.map(v => {
       v.total = keys.map(key => v[key]).reduce((a, b) => a + b, 0);
       return v;
     });
-    //stackedData.sort((a: any, b: any) => b.total - a.total);
+
+    // stackedData.sort((a: any, b: any) => b.total - a.total);
 
     this.x.domain(stackedData.map((d: any) => d[this.yLabel]));
     this.y.domain([0, d3Array.max(stackedData, (d: any) => d.total)]).nice();
@@ -170,26 +174,26 @@ export class StackedchartComponent implements OnInit, OnChanges {
       .attr('text-anchor', 'start')
       .text('');
 
-    //for X axis Label
-    this.svg.append("text")
-      .attr("transform",
-        "translate(" + (this.width / 2) + " ," +
-        (this.height + this.margin.top + 50) + ")")
-      .style("text-anchor", "middle")
+    // for X axis Label
+    this.svg.append('text')
+      .attr('transform',
+        'translate(' + (this.width / 2) + ' ,' +
+        (this.height + this.margin.top + 50) + ')')
+      .style('text-anchor', 'middle')
       .style('text-transform', 'capitalize')
       .text(this.yLabel);
 
 
-    //For Y Axis Label
-    this.svg.append("text")
-      .attr("transform", "rotate(-90)")
-      .attr("y", 0 - this.margin.left + 10)
-      .attr("x", 0 - (this.height / 2))
-      .attr("dy", "1em")
-      .style("text-anchor", "middle")
+    // For Y Axis Label
+    this.svg.append('text')
+      .attr('transform', 'rotate(-90)')
+      .attr('y', 0 - this.margin.left + 10)
+      .attr('x', 0 - (this.height / 2))
+      .attr('dy', '1em')
+      .style('text-anchor', 'middle')
       .text(this.label);
 
-    let legend = this.g.append('g')
+    const legend = this.g.append('g')
       .attr('font-family', 'sans-serif')
       .attr('font-size', 10)
       .attr('text-anchor', 'end')
@@ -211,7 +215,7 @@ export class StackedchartComponent implements OnInit, OnChanges {
       .attr('dy', '0.32em')
       .style('font-size', '12px')
       .text(d => d);
-    //this.svg.attr('width', this.width + 150)
+    // this.svg.attr('width', this.width + 150)
   }
 
 }

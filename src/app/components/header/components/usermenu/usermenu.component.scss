@@ -2,7 +2,7 @@
     margin: 0 .5em;
     width:160px;
     cursor: pointer;
-
+    align-items: center;
 .userimg {
   height: 100%;
 }
@@ -30,7 +30,8 @@
 }
 .userimg::after {
     content: '';
-    display: block;
+    display: inline-flex;
+    flex: 100%;
     border-left: 2px solid #333;
     border-bottom: 2px solid #333;
     position: absolute;
@@ -38,8 +39,9 @@
     width: 10px;
     height: 10PX;
     transform: rotate(-45deg);
-    top: 31px;
+    //top: 31px;
 }
+
 .open{
   transition: all 1s;
 }
@@ -47,4 +49,15 @@
 visibility: visible;
 opacity: 1;
 height: 131px;
+}
+
+@media screen and (max-width: 960px){
+    .usermenu{
+      width: 80px;
+    }
+}
+@media screen and (max-width:500px){
+    .usermenu{
+        width: 70px;
+    }
 }

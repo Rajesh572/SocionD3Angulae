@@ -1,7 +1,14 @@
 .contentarea {
   background: #f7f8fc;
   margin-top: 0;
+  margin-bottom: 0px;
   margin-left: 80px;
   padding: 1em 2em;
-  min-height: 100vh;
+  min-height: calc(100vh - 56px);
+  box-sizing: border-box;
+}
+@media screen and (max-width: 960px){
+  .usermenu{
+    width: 80px !important; 
+  }
 }
