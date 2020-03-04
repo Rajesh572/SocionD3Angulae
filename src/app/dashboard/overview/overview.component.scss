@@ -3,8 +3,8 @@
   text-align: center;
   border-radius: 10px;
   color: #fff;
-  margin: 10px;
-  min-height: 150px;
+  margin: 18px;
+  width: 100%;
   // width: 33%;
   cursor: pointer !important;
 
@@ -28,32 +28,40 @@ app-overview {
   justify-content: space-around;
 } */
 
-@media screen and (max-width: 800px) {
-  .overview .ovrno {
-    font-size: 3.5em;
-    font-weight: bold;
-    padding: 0.2em 0;
-  }
+@media screen and (max-width: 900px) {
+  .overview {
+    margin: 10px;
 
-  .overview .overtitle {
-    font-size: 25px;
-    font-weight: 220;
-    padding: 0.3em 0;
+    .ovrno {
+      font-size: 3.5em;
+      font-weight: bold;
+      padding: 0.2em 0;
+    }
+
+    .overtitle {
+      font-size: 25px;
+      font-weight: 220;
+      padding: 0.3em 0;
+    }
   }
 } 
 
-@media screen and (max-width: 550px) {
+@media screen and (max-width: 600px) {
 
-  .overview .ovrno {
-    font-size: 3.0em;
-    font-weight: bold;
-    padding: 0.2em 0;
-  }
+  .overview {
+    margin: 10px;
 
-  .overview .overtitle {
-    font-size: 25px;
-    font-weight: 220;
-    padding: 0.2em 0;
+    .ovrno {
+      font-size: 3.2em;
+      font-weight: bold;
+      padding: 0.2em 0;
+    }
+
+    .overview .overtitle {
+      font-size: 25px;
+      font-weight: 220;
+      padding: 0.2em 0;
+    }
   }
 }
 

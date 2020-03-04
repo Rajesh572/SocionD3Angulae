@@ -29,8 +29,8 @@ export class OverviewComponent implements OnInit {
 
   onReportSelect() {
     try {
-      if (this.dataService.attributeKeys.includes(this.data.info)) {
-        this.router.navigateByUrl('/reports/select', { state: { id: this.data.info } });
+      if (this.dataService.attributeKeys.includes(this.data.title)) {
+        this.router.navigateByUrl('/reports/select', { state: { id: this.data.title } });
       }
     } catch(e) {
       console.log('Error while navigating to the report select page : ', e);

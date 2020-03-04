@@ -5,12 +5,13 @@
 
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-start;
+  // flex: 100%;
 }
 
 
 app-overview {
-  width: 33%;
+  display: flex;
+  flex: 0 0 calc(33.33%);
 }
 // @media screen and (max-width: 1300px) {
 //   .overviewcont {
@@ -19,20 +20,16 @@ app-overview {
 //   }
 // }
 
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 900px) {
   app-overview {
-    width: 50%;
-  }
-
+    flex: 0 0 calc(50%);
+    }
 }
 
-@media screen and (max-width: 550px) {
+@media screen and (max-width: 600px) {
   app-overview {
-    width: 90%;
-  }
-  .overviewcont {
-    justify-content: center;
-  }
+    flex: 0 0 calc(100%);
+    }
 }
 
 .usergraphs {
