@@ -1,7 +1,12 @@
-.filter-component {
+@media (min-width: 900px) {
+  .filter-component {
+    flex-direction: row;
+    flex-wrap: wrap;
+    max-width: 100%;
     display: flex;
-    justify-content: space-between;
-  }
+    justify-content: center;
+}
+}
   
   .noresult {
     text-align: center;
@@ -13,15 +18,22 @@
   }
   
   .clear, .apply {
-    min-width: 115px;
     height: max-content;
     background-color: #8C7FEE;
     color: white;
     font-size: inherit;
     border: none;
-    padding: 14px;
+    width: 90px;
+    margin-top: 8px;
+    padding: 0.6em;
     border-radius: 50px;
-    margin-left: 2em;
+    margin-left: 1em;
+  }
+
+  @media screen and  (max-width: 900px){
+    .clear, .apply{
+          margin-left: 20px;
+      }
   }
   
   .input-dropdown {

@@ -2,13 +2,21 @@
     color: #333
   }
   ::ng-deep .pagetitle{
-    font-size: 1.5em;
-    font-weight: bold;
-    padding-bottom: 0.5em;
+    font-size: 2em;
+    font-weight: 500;
     margin-top: 8px; 
   }
-  ::ng-deep .pagesubtitle{
-    font-size: 1.2em;
-    color:#444
-  }
+  @media screen and ( max-width: 1100px){
+    ::ng-deep .pagetitle{
+      font-size: 1.8em;
+      font-weight: 400;
+    }
+   }
+
+  // ::ng-deep .pagesubtitle{
+  //   font-size: 1.2em;
+  //   color:#444
+  // }
+  
+
   

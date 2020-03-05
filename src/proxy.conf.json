@@ -8,5 +8,20 @@
         "source": false,
         "changeOrigin": true,
         "target": "http://localhost:3000"
+    },
+    "/v1/api/getBarData": {
+        "source": false,
+        "changeOrigin": true,
+        "target": "http://localhost:3000"
+    },
+    "/v1/api/getStackedData": {
+        "source": false,
+        "changeOrigin": true,
+        "target": "http://localhost:3000"
+    },
+    "/v1/api/getMultiLineData": {
+        "source": false,
+        "changeOrigin": true,
+        "target": "http://localhost:3000"
     }   
 }

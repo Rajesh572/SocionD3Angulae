@@ -1,45 +1,117 @@
 .header {
-    background: #fff;
-    margin-top: 0;
-    margin-left: 80px;
-    height: 80px;
-    display: flex;
-    justify-content: space-around;
-    position: sticky;
-    top:0;
-    align-items: center;
-    z-index: 999;
-}
-.programheading {
-  margin: 0 2em;
+  display: flex;
+   background: #fff;
+   margin-top: 0;
+   margin-left: 90px;
+   //height: 80px;
+   justify-content: space-between;
+   position: sticky;
+   top:0;
+   align-items: center;
+   z-index: 999;
+   flex-wrap: wrap;
 }
 
-.programheading p {
-  font-size: 1.4em;
-font-weight: bold;
-}
-.search {
-  width: 45%;
-  .inputbox{
-    padding:0.8em;
-    border-radius:20px;
-    outline: none;
-    border:none;
-    border:1px solid #ccc;
-    width:60%;
-    font-size:0.8em;
-    margin: 0 2em;
-  }
-  .btnsearch{
-    background-color: #8C7FEE;
-    padding:0.7em 1.5em;
-    font-size: 1em;
-    outline: none;
-    border-radius:20px;
-    color:#fff;
-  }
+// @media screen and (max-width: 640px){
+//   .header{
+//       /* Reverse the axis of the header, making it vertical. */
+//       flex-direction: column;
+
+//       /* Align items to the begining (the left) of the header. */
+//       align-items: flex-start;
+//   }
+// }
+
+app-notification {
+ display: inline-flex;
+ margin-top: 0;
+ flex-wrap: wrap;
 }
 
-.socion-logo{
-  cursor: pointer;
+app-usermenu {
+ display: inline-flex;
+ margin-top: 0;
+ flex-wrap: wrap;
+}
+
+// @media screen and (max-width: 800px){
+//   .header .programheading p{
+//       /* Reverse the axis of the header, making it vertical. */
+//       flex-direction: column;
+//       max-width: 50% ;
+//       /* Align items to the begining (the left) of the header. */
+//       align-items: flex-start;
+     
+//   }
+// }
+
+// @media screen and (max-width: 300px){
+//   .header .programheading p{
+//       /* Reverse the axis of the header, making it vertical. */
+//       flex-direction: column;
+//       /* Align items to the begining (the left) of the header. */
+//       align-items: flex-start;
+//   }
+// }
+
+// .programheading {
+//   margin: 0 2em;
+// }
+
+// .programheading p {
+//   font-size: 1.5em;
+// font-weight: bold;
+// }
+// .search {
+//   width: 45%;
+//   .inputbox{
+//     padding:0.8em;
+//     border-radius:20px;
+//     outline: none;
+//     border:none;
+//     border:1px solid #ccc;
+//     width:60%;
+//     font-size:0.8em;
+//     margin: 0 2em;
+//   }
+//   .btnsearch{
+//     background-color: #8C7FEE;
+//     padding:0.7em 1.5em;
+//     font-size: 1em;
+//     outline: none;
+//     border-radius:20px;
+//     color:#fff;
+//   }
+// }
+
+
+.logo-section{
+ display: flex;
+ width: 70%;
+ align-items: flex-start;
+ .socion-logo{
+   cursor: pointer;
+ }
+}
+@media screen and (max-width:500px){
+ .logo-section{
+   width: 45%;
+   .socion-logo{
+     width: 100%;
+   }
+ }
+}
+
+@media screen and (max-width:700px){
+ .info-section{
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   width:30%;
+ }
+}
+@media screen and (max-width:500px){
+ .info-section{
+   width:40%;
+ }
 }

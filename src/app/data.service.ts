@@ -129,26 +129,39 @@ export class DataService {
 
   getDataforBar(program_name?, dimension?, event_type?, topics?) {
     let url = this.druidNodeUrl + 'getBarData';
-    this.http.post(url, { event_type, program_name, dimension, topics }).subscribe((data) => {
+    this.http.post('/v1/api/getBarData', { event_type, program_name, dimension, topics }).subscribe((data) => {
       // console.log('bar', data)
       this.barChartData.next(data['data']);
     });
+
+    // this.http.post(url, { event_type, program_name, dimension, topics }).subscribe((data) => {
+    //   // console.log('bar', data)
+    //   this.barChartData.next(data['data']);
+    // });
   }
 
   getStackedData(program_name?, dimension?, event_type?, topics?) {
     let url = this.druidNodeUrl + 'getStackedData';
-    this.http.post(url, { event_type, program_name, dimension, topics}).subscribe((data) => {
-      // console.log('stack', data)
+    this.http.post('/v1/api/getStackedData', { event_type, program_name, dimension, topics}).subscribe((data) => {
+      // console.log('bar', data)
       this.stackedChartData.next(data['data']);
     });
+    // this.http.post(url, { event_type, program_name, dimension, topics}).subscribe((data) => {
+    //   // console.log('stack', data)
+    //   this.stackedChartData.next(data['data']);
+    // });
   }
 
   getmultiLineData(program_name?, dimension?, event_type?, topics?) {
     let url = this.druidNodeUrl + 'getMultiLineData';
-    this.http.post(url, { event_type, program_name, dimension, topics }).subscribe((data) => {
-      console.log('multi', data);
+    this.http.post('/v1/api/getMultiLineData', { event_type, program_name, dimension, topics }).subscribe((data) => {
+      // console.log('bar', data)
       this.multiLineChartData.next(data['data']);
     });
+    // this.http.post(url, { event_type, program_name, dimension, topics }).subscribe((data) => {
+    //   console.log('multi', data);
+    //   this.multiLineChartData.next(data['data']);
+    // });
   }
 
   getTopics(program_name, event_type) {
