@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { DataService } from 'src/app/data.service';
 import * as _ from 'lodash';
+import { FilterDataService } from '../../services/filter-data/filter-data.service';
 
 @Component({
   selector: 'app-filter',
@@ -10,50 +11,45 @@ import * as _ from 'lodash';
 })
 export class FilterComponent implements OnInit {
 
-  selectedItems = [];
+  selectedTopics = [];
   selectedLocations = [];
   selectedTime;
   dataArray: any[];
   dropdownList: any;
   optionCustomDate = false;
-  dateFrom = '';
-  dateTo = '';
+  startDate = '';
+  endDate = '';
   serializedDate = new FormControl((new Date()).toISOString());
   newDataArray = [];
-  newLocationArray = ['Andhra Pradesh',
-    'Arunachal pradesh',
-    'Assam',
-    'Sikkim',
-    'Nagaland',
-    'Manipur',
-    'Meghalaya',
-    'Jammu kashmir',
-    'Karnataka',
-    'Madhya Pradesh',
-    'Manipur',
-    'Punjab',
-    'Rajasthan',
-    'Uttar Pradesh',
-    'Chhattisgarh'
-];
-  newTimeArray = ['Last 6 months',
-    'Last 3 months',
-    'Last 1 month',
-    'Last 2 weeks',
-    'Last 1 week',
-    'Custom Date'];
+  topicArray = [];
+  locationArray = [];
+  timeArray = [];
 
-  constructor(private dataService: DataService) { }
+
+  constructor(private dataService: DataService, private filterService: FilterDataService) { }
 
   ngOnInit() {
-    this.dataService.getDummyTopics().subscribe((data) => {
-      let alltopics = [];
-      data['data'].forEach(element => {
-        alltopics.push(element['topic_name']);
-      });
-      console.log('topics', _.uniq(alltopics));
-      this.newDataArray = _.uniq(alltopics);
+    try {
+    this.filterService.getDataForFilters().subscribe((data) => {
+      console.log('data ofr filter', data);
+      this.topicArray = data['result']['topic_name'];
+      this.locationArray = data['result']['location'];
+      this.timeArray = this.filterService.getTimeArrayObject();
+      console.log('Time : ', this.timeArray);
     });
+  } catch (e) {
+    console.log('Error in Filter Component while getting the filter menu data : ', e);
+  }
+
+    // this.dataService.getDummyTopics().subscribe((data) => {
+    //   let alltopics = [];
+    //   console.log('data ofr filter', data);
+    //   data['data'].forEach(element => {
+    //     alltopics.push(element['topic_name']);
+    //   });
+    //   console.log('topics', _.uniq(alltopics));
+    //   this.newDataArray = _.uniq(alltopics);
+    // });
   }
 
   onTopicChange(event) {
@@ -70,18 +66,18 @@ export class FilterComponent implements OnInit {
       this.optionCustomDate = true;
     } else {
       this.optionCustomDate = false;
-      this.dateFrom = '';
-      this.dateTo = '';
+      this.startDate = '';
+      this.endDate = '';
     }
   }
 
   clearAll() {
-    this.selectedItems = [];
+    this.selectedTopics = [];
     this.selectedLocations = [];
     this.selectedTime = undefined;
     this.optionCustomDate = false;
-    this.dateFrom = '';
-    this.dateTo = '';
+    this.startDate = '';
+    this.endDate = '';
     this.ngOnInit();
   }
 
@@ -99,5 +95,16 @@ export class FilterComponent implements OnInit {
     this.newDataArray = this.dataArray;
     /*  === 0 ? this.dropdownList : this.dataArray; */
   }
+
+  applyFilter() {
+    this.filterService.addToFilterObject({
+      locations: this.selectedLocations,
+      topics: this.selectedTopics,
+      time: this.selectedTime,
+      startTime: this.startDate,
+      endTime: this.endDate});
+  }
+
+
 
 }

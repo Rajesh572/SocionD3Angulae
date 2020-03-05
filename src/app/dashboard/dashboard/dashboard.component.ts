@@ -8,6 +8,7 @@ import { DataService } from '../../data.service';
 import * as _ from 'lodash';
 import { DashboardDataService } from 'src/app/sharedmodule/services/dashboard-data/dashboard-data.service';
 import { Observable, forkJoin } from 'rxjs';
+import { FilterDataService } from 'src/app/sharedmodule/services/filter-data/filter-data.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -16,8 +17,13 @@ import { Observable, forkJoin } from 'rxjs';
 })
 export class DashboardComponent implements OnInit {
   dropdownList: any;
-  constructor(private http: HttpClient, private dataService: DataService, private dashboardService: DashboardDataService) { }
+  constructor(
+    private http: HttpClient,
+    //  private dataService: DataService,
+    private dashboardService: DashboardDataService,
+    private filterService: FilterDataService) { }
   dashboardData = [];
+  requestBody = [];
   // dataArr = [];
 
   ngOnInit() {
@@ -26,58 +32,69 @@ export class DashboardComponent implements OnInit {
       const programId = this.dashboardService.getProgramDetails().program_id;
       const menuOptions = this.dashboardService.getMenuOptions();
 
+      this.filterService.$filterObjectChange.subscribe((filter) => {
+        console.log('filter: ', filter);
+        const filterKeys = Object.keys(filter);
+        filterKeys.forEach((element) => {
+          this.requestBody.forEach((item) => {
+            item.filter[element] = filter[element];
+          });
+        });
+        // this.requestBody.forEach((item) => {
+        //   if (!!filter.location) {
+        //     item.filter['location'] = filter.location;
+        //   }
+        //   if (!!filter.topic_name) {
+        //     item.filter['location'] = filter.topic_name;
+        //   }
+        // });
+        console.log('requestBody: ', this.requestBody);
+        this.collectDashboardData();
+      });
 
-      const dashboardRequests = [];
       console.log(menuOptions);
       menuOptions.forEach((option) => {
         // console.log('option : ', option);
         const requestBody = this.dashboardService.checkUniqueOption(option);
-        const filterObject = this.dashboardService.createFilterObject(option.filter, programId);
+        const paramObject = this.dashboardService.createParamsObject(option.params);
+        requestBody['params'] = paramObject;
+
+        const filterObject = this.dashboardService.createFilterObject(programId);
         // console.log('Filter : ', filterObject);
         requestBody['filter'] = filterObject;
         // console.log('Request : ', requestBody);
-        dashboardRequests.push(this.dashboardService.getDashboardData(requestBody));
+        this.requestBody.push(requestBody);
       });
-
-      forkJoin(dashboardRequests).subscribe((dashboardData) => {
-        console.log(dashboardData);
-        dashboardData.forEach((dashboardDataEach) => {
-          dashboardDataEach.result.forEach((data) => {
-            this.dashboardData.push(data);
-          });
-        });
-        this.dashboardData = this.dashboardService.addColorsAndTitle(this.dashboardData);
-        console.log('Data : ', this.dashboardData);
-
-      });
-      // this.dataService.menuItems.forEach((menuItem) => {
-      //   this.http.get(this.dataService.apiUrl + menuItem['route']).subscribe((data) => {
-      //     let obj = {};
-      //     obj['info'] = menuItem['info'];
-      //     obj['value'] = data[0]['value'];
-      //     obj['ngroute'] = menuItem['ngroute'];
-      //     obj['color'] = menuItem['color'];
-      //     obj['index'] = menuItem['index'];
-      //     obj['extra'] = menuItem['extra'];
-      //     this.dataArr.push(obj);
-      //     this.dataArr.sort((a, b) =>  a['index'] - b['index'] );
-      //   });
-      // })
+      this.collectDashboardData();
     } catch (e) {
       console.log('Error in Dashboard Component while fetching Dashboard Item Data : ', e);
     }
-
-    // try {
-    //   this.dataService.getDummyTopics().subscribe((data) => {
-    //     let alltopics = [];
-    //     data['data'].forEach(element => {
-    //       alltopics.push(element['topic_name']);
-    //     });
-    //     console.log('topics', _.uniq(alltopics));
-    //   });
-    // } catch (e) {
-    //   console.log('Error in Dashboard Component while fetching dummy Topics : ', e);
-    // }
   }
 
+  collectDashboardData() {
+    const dashboardRequests = [];
+    // console.log('Request Bodies : ', this.dashboardData);
+    this.requestBody.forEach((requestEach) => {
+      dashboardRequests.push(this.dashboardService.getDashboardData(requestEach));
+    });
+
+    forkJoin(dashboardRequests).subscribe((dashboardData) => {
+      console.log(dashboardData);
+      if (this.dashboardData.length > 0) {
+        this.dashboardData = [];
+      }
+      console.log(dashboardData);
+
+      // check if array is empty
+      const keys = ['event_type', 'role'];
+      dashboardData.forEach((dashboardDataEach) => {
+        dashboardDataEach.result.forEach((data) => {
+          this.dashboardData.push(data);
+        });
+      });
+      this.dashboardData = this.dashboardService.addColorsAndTitle(this.dashboardData);
+      console.log('Data : ', this.dashboardData);
+
+    });
+  }
 }

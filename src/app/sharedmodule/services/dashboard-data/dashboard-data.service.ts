@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { API_URL } from './../../../config/config';
 
 @Injectable({
@@ -28,14 +28,14 @@ TRAINER: 'Unique Trainers',
 
 keys = ['event_type', 'role'];
   menuOptions = [{
-    filter: {
+    params: {
       event_type: ['Generate Attestation', 'Session Completed', 'Download Content']
     }
   },
   {
     unique: true,
     unique_param: 'user_id',
-    filter: {
+    params: {
       role: ['TRAINER', 'TRAINEE']
     }
   }
@@ -59,19 +59,32 @@ keys = ['event_type', 'role'];
     return requestBody;
   }
 
-  createFilterObject(filterObject, programId) {
+  createFilterObject(programId) {
     const filter = {};
     filter['program_id'] = programId;
-    const filterKeys = Object.keys(filterObject);
-    filterKeys.forEach((element) => {
-      filter[element] = filterObject[element];
-    });
+    // const filterKeys = Object.keys(filterObject);
+    // filterKeys.forEach((element) => {
+    //   filter[element] = filterObject[element];
+    // });
     return filter;
+}
+createParamsObject(params) {
+  const paramsObject = {};
+  const paramKeys = Object.keys(params);
+  paramKeys.forEach((element) => {
+    paramsObject[element] = params[element];
+  });
+  return paramsObject;
 }
 
 getDashboardData(requestBody) {
   console.log(requestBody);
-  return this.http.post('/v1/api/event/count/read', requestBody);
+  const httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json'
+    })
+  };
+  return this.http.post('/v1/api/event/count/read', {request: requestBody}, httpOptions);
 }
 
 addColorsAndTitle(data) {
