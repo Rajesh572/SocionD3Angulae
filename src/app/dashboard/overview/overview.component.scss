@@ -6,7 +6,6 @@
   margin: 18px;
   width: 100%;
   // width: 33%;
-  cursor: pointer !important;
 
   .ovrno {
     font-size: 4.0em;
@@ -19,6 +18,14 @@
     font-weight: 220;
     padding: 0.4em 0;
   }
+}
+
+.applyCursor {
+  cursor: pointer !important;
+}
+
+.noCursor {
+  cursor: not-allowed !important;
 }
 
 /* 

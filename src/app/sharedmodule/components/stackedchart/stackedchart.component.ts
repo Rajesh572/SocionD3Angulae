@@ -58,9 +58,9 @@ export class StackedchartComponent implements OnInit, OnChanges {
     }
 
     console.log(this.changeStackChart, "stackchange")
-    if (!this.changeStackChart) {
-      return;
-    }
+    // if (!this.changeStackChart) {
+    //   return;
+    // }
     if (this.stackedData && this.topics && this.topics.length > 0) {
       console.log(this.dimension, this.stackedData);
       if (this.dimension === "Time Period") {

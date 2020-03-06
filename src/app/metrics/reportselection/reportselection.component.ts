@@ -1,33 +1,28 @@
 // tslint:disable: no-string-literal
 // tslint:disable: prefer-const
 
-import { Component, OnInit, OnChanges } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { DataService } from '../../data.service';
 import { Router } from '@angular/router';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import * as _ from 'lodash';
-import { FormControl } from '@angular/forms';
+import { FilterDataService } from 'src/app/sharedmodule/services/filter-data/filter-data.service';
+import { ReportDataService } from '../services/report-data.service';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-reportselection',
   templateUrl: './reportselection.component.html',
   styleUrls: ['./reportselection.component.scss']
 })
-export class ReportselectionComponent implements OnInit, OnChanges {
+export class ReportselectionComponent implements OnInit {
   dropdownList = [];
-  optionCustomDate = false;
-  dateTo = '';
-  dateFrom = '';
-  serializedDate = new FormControl((new Date()).toISOString());
   selectedItems = [];
-  selectedTime;
-  selectedLocations =  [];
   unselected = [];
   barData: any;
   stackedData: any;
   showCharts = false;
   yAxisLabel: any;
-  meta: any;
   faCheck = faCheck;
   verticalArr = ['Sessions Completed',
     'Participant Attestations',
@@ -40,73 +35,110 @@ export class ReportselectionComponent implements OnInit, OnChanges {
   selectedHorizontalValue: string;
   selectedVerticalValue: string;
   multiLineData: any;
-  topics: any[] = [];
+  topics: any[] = [ '3qwq',
+  'Check Again',
+  'Check for Multiple Topic',
+  'Generattor',
+  'Offline Test',
+  'Topic',
+  'Why Springs',
+  'fgfdf',
+  'gfgh',
+  'hhh',
+  'lkkjsflksjfsfsdlkj',
+  'new topic',
+  'topic',
+  'topic 3',
+  'topic2',
+  'video check',
+  'videos',
+  'ಏಕೆ ಸ್ಪ್ರಿಂಗ್ಸ್ ಮತ್ತು ಬೇಸಿಕ್ ಹೈಡ್ರೋಜಾಲಜಿ' ];
   modelSelected: any;
   dataArray: any[];
   newDataArray: any[] = [];
-  newLocationArray = ['Andhra Pradesh',
-  'Arunachal pradesh',
-  'Assam',
-  'Sikkim',
-  'Nagaland',
-  'Manipur',
-  'Meghalaya',
-  'Jammu kashmir',
-  'Karnataka',
-  'Madhya Pradesh',
-  'Manipur',
-  'Punjab',
-  'Rajasthan',
-  'Uttar Pradesh',
-  'Chhattisgarh'
-];
-newTimeArray = ['Last 6 months',
-  'Last 3 months',
-  'Last 1 month',
-  'Last 2 weeks',
-  'Last 1 week',
-  'Custom Date'];
   changeStackChart: boolean;
+  chartData = [];
 
-  constructor(private dataService: DataService, private router: Router) {
+  requestBody = [];
+
+  constructor(
+    private dataService: DataService,
+    private router: Router,
+    private filterService: FilterDataService,
+    private reportService: ReportDataService) {
     let extras = this.router.getCurrentNavigation().extras;
     if (!!extras.state) {
       let selectedmetric = extras['state']['id'];
       this.selectedVerticalValue = selectedmetric;
       this.selectedHorizontalValue = 'Time Period';
-      setTimeout(() => {
-        this.showReports();
-      });
+      // setTimeout(() => {
+      //   this.showReports();
+      // });
     }
   }
 
   ngOnInit() {
-    this.dataService.getDummyTopics().subscribe((data) => {
-      let alltopics = [];
-      data['data'].forEach(element => {
-        alltopics.push(element['topic_name']);
+    console.log('HV', this.selectedHorizontalValue);
+    if (!this.selectedHorizontalValue) {
+        this.selectedHorizontalValue = this.reportService.getSelectedHorizontalAttr();
+    }
+    console.log('HV', this.selectedVerticalValue);
+    if (!this.selectedVerticalValue) {
+      this.selectedVerticalValue = this.reportService.getSelectedVerticalAttr();
+  }
+    // this.selectedVerticalValue = this.reportService.getSelectedVerticalAttr();
+    // this.selectedHorizontalValue = this.reportService.getSelectedHorizontalAttr();
+    try {
+      this.filterService.$filterObjectChange.subscribe((filter) => {
+        console.log('filter: ', filter);
+        const filterKeys = Object.keys(filter);
+        if (!!filterKeys && filterKeys.length > 0) {
+          this.reportService.applyFiltersToRequestBody(filter);
+        } else {
+          this.reportService.initializeRequestBody();
+        }
+        this.requestBody = this.reportService.getRequestBody();
+        console.log('Request Body: ', this.requestBody);
+        this.collectReportData();
       });
-      console.log('topics', _.uniq(alltopics));
-      this.newDataArray = _.uniq(alltopics);
+    } catch (e) {
+      console.log('Error in Report Selection Component while fetching Chart Data : ', e);
+    }
+  }
+
+  collectReportData() {
+    const chartRequests = [];
+    // console.log('Request Bodies : ', this.dashboardData);
+    this.requestBody.forEach((requestEach) => {
+      console.log('requestEach: ', requestEach);
+      chartRequests.push(this.reportService.getChartData(requestEach));
     });
-  }
 
-  ngOnChanges() {
-  }
-
-  onKey(value) {
-    this.dataArray = [];
-    this.selectSearch(value);
-  }
-  selectSearch(value: any) {
-    let filter = value.toLowerCase();
-    this.dropdownList.forEach(option => {
-      if (option.toLowerCase().indexOf(filter) >= 0) {
-        this.dataArray.push(option);
+    forkJoin(chartRequests).subscribe((chartData) => {
+      console.log('chartData : ', chartData);
+      if (this.chartData.length > 0) {
+        this.chartData = [];
       }
+      console.log('chartData : ', chartData);
+
+      chartData.forEach((chartDataEach) => {
+        chartDataEach.result.forEach((data) => {
+          this.chartData.push(data);
+        });
+      });
+      console.log('Data : ', this.chartData);
+      this.dataService.setChartData(this.chartData);
+      this.barData = (chartData[0].result);
+      this.stackedData = (chartData[1].result);
+      this.multiLineData = (chartData[1].result);
+      this.showCharts = true;
     });
-    this.newDataArray = this.dataArray; /*  === 0 ? this.dropdownList : this.dataArray; */
   }
+
+  // onKey(value) {
+  //   this.dataArray = [];
+  //   this.selectSearch(value);
+  // }
 
   onHorizontalAxisSelect(key) {
     this.selectedItems = [];
@@ -179,31 +211,5 @@ newTimeArray = ['Last 6 months',
       this.changeStackChart = true;
     });
   }
-  clearAll() {
-    this.selectedItems = [];
-    this.selectedLocations = [];
-    this.selectedTime = undefined;
-    this.optionCustomDate = false;
-    this.showReports();
-  }
 
-  onTopicChange(event) {
-    console.log('Event on Topic : ', event);
-    this.changeStackChart = false;
-  }
-
-  onLocationChange(event) {
-    console.log('Event on Location : ', event);
-  }
-
-  onTimeChange(event) {
-    console.log('Event on Time : ', event);
-    if (event === 'Custom Date') {
-      this.optionCustomDate = true;
-    } else {
-      this.optionCustomDate = false;
-      this.dateFrom = '';
-      this.dateTo = '';
-    }
-  }
 }

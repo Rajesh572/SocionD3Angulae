@@ -10,7 +10,7 @@ import { SharedmoduleModule } from '../sharedmodule/sharedmodule.module';
   imports: [
     CommonModule,
     DashboardRoutingModule,
-    SharedmoduleModule,
+    SharedmoduleModule
   ]
 })
 export class DashboardModule { }

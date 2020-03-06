@@ -27,12 +27,14 @@ export class OverviewComponent implements OnInit {
     return colorcodes;
   }
 
-  onReportSelect() {
+  onReportSelect(count) {
     try {
-      if (this.dataService.attributeKeys.includes(this.data.title)) {
-        this.router.navigateByUrl('/reports/select', { state: { id: this.data.title } });
+      if (count > 0) {
+        if (this.dataService.attributeKeys.includes(this.data.title)) {
+          this.router.navigateByUrl('/reports/select', { state: { id: this.data.title } });
+        }
       }
-    } catch(e) {
+    } catch (e) {
       console.log('Error while navigating to the report select page : ', e);
     }
   }

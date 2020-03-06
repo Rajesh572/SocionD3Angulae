@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { HttpHeaders, HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -11,11 +12,21 @@ export class ReportDataService {
     program_id: 236
 };
 
-  initialHorizontalAttSelected = 'Time Period';
-  initialVerticalAttSelected = 'Sessions Completed';
+selectedVerticalAttr = 'Session Completed';
+selectedHorizontalAttr = 'Time Period';
+
+titleInfo = {'Session Completed': 'Sessions Completed',
+'Generate Attestation': 'Participant Attestations',
+TRAINEE: 'Unique Participants',
+TRAINER: 'Unique Trainers',
+'Download Content': 'Content Views'};
+
+  initialHorizontalAttrSelected = 'Time Period';
+  initialVerticalAttrSelected = 'Session Completed';
+  initialGranularity = 'month';
 
   requestDimensionAndGranularity = [{'Time Period': {
-    dimension: 'month',
+    dimension: 'topic_name',
     granularity: 'Month',
   }},
   {'Location': {
@@ -24,21 +35,17 @@ export class ReportDataService {
   }}
 ];
 
-  // chartOptions = [{
-  //   params: {
-  //     event_type: ['Generate Attestation', 'Session Completed', 'Download Content']
-  //   }
-  // },
-  // {
-  //   unique: true,
-  //   unique_param: 'user_id',
-  //   params: {
-  //     role: ['TRAINER', 'TRAINEE']
-  //   }
-  // }
-  // ];
+  chartOptions = [{
+    granularity: 'month',
+    dimension: ['month']
+  },
+  {
+    granularity: 'month',
+    dimension: ['topic_name', 'month']
+  }
+  ];
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
   applyFiltersToRequestBody(filter) {
     const filterKeys = Object.keys(filter);
@@ -49,15 +56,23 @@ export class ReportDataService {
     });
   }
 
+  getSelectedVerticalAttr() {
+    return this.titleInfo[this.selectedVerticalAttr];
+  }
+
+  getSelectedHorizontalAttr() {
+    return this.selectedHorizontalAttr;
+  }
+
   initializeRequestBody() {
     this.requestBody = [];
-    this.requestDimensionAndGranularity.forEach((option) => {
+    this.chartOptions.forEach((option) => {
+      const requestBody = {...option};
       // console.log('option : ', option);
-      const requestBody = this.checkUniqueOption(option);
-      const paramObject = this.createParamsObject(option.params);
-      requestBody['params'] = paramObject;
-
-      const filterObject = this.createFilterObject(this.programDetails.program_id);
+      // const requestBody = this.checkUniqueOption(option);
+      // const paramObject = this.createParamsObject(option.params);
+      // requestBody['params'] = paramObject;
+      const filterObject = this.createFilterObject(this.programDetails.program_id, this.initialVerticalAttrSelected);
       // console.log('Filter : ', filterObject);
       requestBody['filter'] = filterObject;
       // console.log('Request : ', requestBody);
@@ -65,7 +80,28 @@ export class ReportDataService {
     });
   }
 
+  createFilterObject(programId, initialVerticalAttrSelected) {
+    const filter = {};
+    filter['program_id'] = programId;
+    filter['event_type'] = initialVerticalAttrSelected;
+    // const filterKeys = Object.keys(filterObject);
+    // filterKeys.forEach((element) => {
+    //   filter[element] = filterObject[element];
+    // });
+    return filter;
+}
+
   getRequestBody() {
     return [...this.requestBody];
+  }
+
+  getChartData(requestBody) {
+    console.log(requestBody);
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+    return this.http.post('/v1/api/chart/data/read', {request: requestBody}, httpOptions);
   }
 }

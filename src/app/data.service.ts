@@ -186,7 +186,11 @@ export class DataService {
   }
     // added by aditya for UI Demo
 
-
+    setChartData(chartData) {
+      this.barChartData.next(chartData[0].result);
+      this.stackedChartData.next(chartData[1].result);
+      this.multiLineChartData.next(chartData[1].result);
+    }
 
   getDataByTime(program_name, event_type?, topics?) {
     let dataDimension = this.dataDimension;

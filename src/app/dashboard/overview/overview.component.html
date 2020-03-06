@@ -1,5 +1,5 @@
 
-    <div class="overview" [ngStyle]="getColorCode()" (click)="onReportSelect()">
+    <div class="overview" [ngClass]="data.count > 0 ? 'applyCursor' : 'noCursor' " [ngStyle]="getColorCode()" (click)="onReportSelect(data.count)">
         <p class="ovrno">{{data.count}}</p>
         <p class="overtitle">{{data.title}}</p>
       </div>
