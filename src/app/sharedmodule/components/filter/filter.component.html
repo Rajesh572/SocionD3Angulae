@@ -2,7 +2,7 @@
     <mat-form-field class="input-dropdown">
         <mat-label>Time</mat-label>
         <mat-select [(ngModel)]="selectedTime" (ngModelChange)="onTimeChange($event)">
-            <input class="select-input" placeholder="Search by Time" (keyup)="onKey($event.target.value)">
+            <input class="select-input" placeholder="Filter by Time" (keyup)="onKey($event.target.value)">
             <span class="noresult" *ngIf="timeArray.length === 0">No Search Found</span>
             <mat-option *ngFor="let time of timeArray" [value]="time">{{time}}</mat-option>
         </mat-select>
@@ -29,7 +29,7 @@
     <mat-form-field class="input-dropdown">
       <mat-label>Location</mat-label>
       <mat-select [(ngModel)]="selectedLocations" (ngModelChange)="onLocationChange($event)" multiple>
-          <input class="select-input" placeholder="Search by Location" (keyup)="onKey($event.target.value)">
+          <input class="select-input" placeholder="Filter by Location" (keyup)="onKey($event.target.value)">
           <span class="noresult" *ngIf="locationArray.length === 0">No Search Found</span>
           <mat-option *ngFor="let location of locationArray" [value]="location">{{location}}</mat-option>
       </mat-select>
@@ -38,7 +38,7 @@
   <mat-form-field class="input-dropdown">
     <mat-label>Topics</mat-label>
     <mat-select [(ngModel)]="selectedTopics" (ngModelChange)="onTopicChange($event)" multiple>
-        <input class="select-input" placeholder="Search by Topic" (keyup)="onKey($event.target.value)">
+        <input class="select-input" placeholder="Filter by Topic" (keyup)="onKey($event.target.value)">
         <span class="noresult" *ngIf="topicArray.length === 0">No Search Found</span>
         <mat-option *ngFor="let topic of topicArray" [value]="topic">{{topic}}</mat-option>
     </mat-select>

@@ -29,27 +29,26 @@ export class FilterComponent implements OnInit {
   constructor(private dataService: DataService, private filterService: FilterDataService) { }
 
   ngOnInit() {
-    try {
-    this.filterService.getDataForFilters().subscribe((data) => {
-      console.log('data ofr filter', data);
-      this.topicArray = data['result']['topic_name'];
-      this.locationArray = data['result']['location'];
+    let filterData = this.filterService.getFilterData();
+    if (Object.keys(filterData).length === 0) {
+      try {
+        this.filterService.getDataForFilters().subscribe((data) => {
+          console.log('data for filter', data);
+          this.filterService.setFilterData(data['result']);
+          this.topicArray = data['result']['topic_name'];
+          this.locationArray = data['result']['location'];
+          this.timeArray = this.filterService.getTimeArrayObject();
+        });
+      } catch (e) {
+        console.log('Error in Filter Component while getting the filter menu data : ', e);
+      }
+    } else {
+      this.topicArray = filterData['topic_name'];
+      this.locationArray = filterData['location'];
       this.timeArray = this.filterService.getTimeArrayObject();
-      console.log('Time : ', this.timeArray);
-    });
-  } catch (e) {
-    console.log('Error in Filter Component while getting the filter menu data : ', e);
-  }
-
-    // this.dataService.getDummyTopics().subscribe((data) => {
-    //   let alltopics = [];
-    //   console.log('data ofr filter', data);
-    //   data['data'].forEach(element => {
-    //     alltopics.push(element['topic_name']);
-    //   });
-    //   console.log('topics', _.uniq(alltopics));
-    //   this.newDataArray = _.uniq(alltopics);
-    // });
+    }
+    const filter = this.filterService.getFilterObject();
+    this.setFilterObjectParams(filter);
   }
 
   onTopicChange(event) {
@@ -78,7 +77,8 @@ export class FilterComponent implements OnInit {
     this.optionCustomDate = false;
     this.startDate = '';
     this.endDate = '';
-    this.ngOnInit();
+    this.filterService.clearFilterObject();
+    // this.ngOnInit();
   }
 
   onKey(value) {
@@ -102,9 +102,31 @@ export class FilterComponent implements OnInit {
       topics: this.selectedTopics,
       time: this.selectedTime,
       startTime: this.startDate,
-      endTime: this.endDate});
+      endTime: this.endDate
+    });
   }
 
 
+  setFilterObjectParams(filter) {
+    console.log(filter);
+    if (Object.keys(filter).length > 0) {
+      // const [location, topic_name, time, start_time, end_time] = filter;
+      if (filter.location) {
+        this.selectedLocations = filter.location;
+      }
+      if (filter.topic_name) {
+        this.selectedTopics = filter.topic_name;
+      }
+      if (filter.time) {
+        this.selectedTime = filter.time;
+      }
+      if (filter.start_time) {
+        this.startDate = filter.start_time;
+      }
+      if (filter.end_time) {
+        this.endDate = filter.end_time;
+      }
+    }
+  }
 
 }

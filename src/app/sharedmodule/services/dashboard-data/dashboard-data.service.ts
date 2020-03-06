@@ -40,7 +40,39 @@ keys = ['event_type', 'role'];
     }
   }
   ];
+
+  requestBody = [];
+
   constructor(private http: HttpClient) { }
+
+  initializeRequestBody() {
+    this.requestBody = [];
+    this.menuOptions.forEach((option) => {
+      // console.log('option : ', option);
+      const requestBody = this.checkUniqueOption(option);
+      const paramObject = this.createParamsObject(option.params);
+      requestBody['params'] = paramObject;
+
+      const filterObject = this.createFilterObject(this.programDetails.program_id);
+      // console.log('Filter : ', filterObject);
+      requestBody['filter'] = filterObject;
+      // console.log('Request : ', requestBody);
+      this.requestBody.push(requestBody);
+    });
+  }
+
+  applyFiltersToRequestBody(filter) {
+    const filterKeys = Object.keys(filter);
+    filterKeys.forEach((element) => {
+      this.requestBody.forEach((item) => {
+        item.filter[element] = filter[element];
+      });
+    });
+  }
+
+  getRequestBody() {
+    return [...this.requestBody];
+  }
 
   getProgramDetails() {
     return {...this.programDetails};

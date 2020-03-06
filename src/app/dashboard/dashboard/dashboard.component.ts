@@ -28,18 +28,20 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
     try {
-      // console.log('INIT block');
       const programId = this.dashboardService.getProgramDetails().program_id;
       const menuOptions = this.dashboardService.getMenuOptions();
 
       this.filterService.$filterObjectChange.subscribe((filter) => {
         console.log('filter: ', filter);
         const filterKeys = Object.keys(filter);
-        filterKeys.forEach((element) => {
-          this.requestBody.forEach((item) => {
-            item.filter[element] = filter[element];
-          });
-        });
+        if (!!filterKeys && filterKeys.length > 0) {
+          this.dashboardService.applyFiltersToRequestBody(filter);
+        } else {
+          this.dashboardService.initializeRequestBody();
+        }
+        this.requestBody = this.dashboardService.getRequestBody();
+        console.log('Request Body: ', this.requestBody);
+        this.collectDashboardData();
         // this.requestBody.forEach((item) => {
         //   if (!!filter.location) {
         //     item.filter['location'] = filter.location;
@@ -48,24 +50,22 @@ export class DashboardComponent implements OnInit {
         //     item.filter['location'] = filter.topic_name;
         //   }
         // });
-        console.log('requestBody: ', this.requestBody);
-        this.collectDashboardData();
       });
 
-      console.log(menuOptions);
-      menuOptions.forEach((option) => {
-        // console.log('option : ', option);
-        const requestBody = this.dashboardService.checkUniqueOption(option);
-        const paramObject = this.dashboardService.createParamsObject(option.params);
-        requestBody['params'] = paramObject;
+      // console.log(menuOptions);
+      // menuOptions.forEach((option) => {
+      //   // console.log('option : ', option);
+      //   const requestBody = this.dashboardService.checkUniqueOption(option);
+      //   const paramObject = this.dashboardService.createParamsObject(option.params);
+      //   requestBody['params'] = paramObject;
 
-        const filterObject = this.dashboardService.createFilterObject(programId);
-        // console.log('Filter : ', filterObject);
-        requestBody['filter'] = filterObject;
-        // console.log('Request : ', requestBody);
-        this.requestBody.push(requestBody);
-      });
-      this.collectDashboardData();
+      //   const filterObject = this.dashboardService.createFilterObject(programId);
+      //   // console.log('Filter : ', filterObject);
+      //   requestBody['filter'] = filterObject;
+      //   // console.log('Request : ', requestBody);
+      //   this.requestBody.push(requestBody);
+      // });
+      // this.collectDashboardData();
     } catch (e) {
       console.log('Error in Dashboard Component while fetching Dashboard Item Data : ', e);
     }
@@ -73,7 +73,7 @@ export class DashboardComponent implements OnInit {
 
   collectDashboardData() {
     const dashboardRequests = [];
-    // console.log('Request Bodies : ', this.dashboardData);
+    console.log('Request Bodies : ', this.dashboardData);
     this.requestBody.forEach((requestEach) => {
       dashboardRequests.push(this.dashboardService.getDashboardData(requestEach));
     });
@@ -83,7 +83,7 @@ export class DashboardComponent implements OnInit {
       if (this.dashboardData.length > 0) {
         this.dashboardData = [];
       }
-      console.log(dashboardData);
+      console.log('dashboardData : ', dashboardData);
 
       // check if array is empty
       const keys = ['event_type', 'role'];
