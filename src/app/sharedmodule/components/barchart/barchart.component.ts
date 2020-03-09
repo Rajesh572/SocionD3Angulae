@@ -1,9 +1,10 @@
-import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, Output, EventEmitter } from '@angular/core';
 
 import * as d3 from 'd3-selection';
 import * as d3Scale from 'd3-scale';
 import * as d3Axis from 'd3-axis';
 import * as d3Array from 'd3-array';
+import { Observable } from 'rxjs';
 // import * as d3Collection from 'd3-collection';
 
 
@@ -30,11 +31,22 @@ export class BarchartComponent implements OnInit, OnChanges {
   @Input() barData: any;
   @Input() label: any;
   @Input() dimension: any;
+  // @Output() myEvent: EventEmitter<any> = new EventEmitter();
+
+
+  // dataChangeDetectCycle(changeDetectCycle: Observable<boolean>) {
+  //   changeDetectCycle.subscribe((check) => {
+  //     if (check) {
+  //       this.ngOnChanges();
+  //     }
+  //   });
+  // }
 
   ngOnInit() {
   }
 
   ngOnChanges() {
+    // this.myEvent.emit(this.ngOnChanges);
     const chartWidth = d3.select('.chart').style('width');
     if (typeof(this.svgWidth) === 'string' && this.svgWidth.endsWith('%') ) {
       this.svgWidth = (parseFloat(this.svgWidth) / 100.0) * parseFloat(chartWidth);

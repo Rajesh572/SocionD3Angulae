@@ -1,0 +1,49 @@
+.menu {
+  text-align: center;
+  /* margin-left: 14%; */
+  display: flex;
+  flex-wrap: wrap;
+  }
+
+  .menu button {
+    /* display: block; */
+    /* text-align: center; */
+    padding: 0.8em 1.2em;
+    margin: 0.5em;
+    /* width: 300px; */
+    font-weight: bold;
+    font-size: medium;
+    background: #b5b3b3;
+    border: none;
+    color: #fff;
+  }
+
+  .axis-selection {
+    // padding: 1em;
+    // width: 100px;
+    // margin: 2%;
+    background: #fff;
+    // display: inline-flex;
+  }
+
+  .selected{
+    background-color: lightseagreen !important;
+}
+
+.modal-title {
+  font-weight: 500;
+  font-size: 2em;
+}
+
+::ng-deep .mat-dialog-container {
+  margin-left: 25%;
+  width: 100% !important;
+}
+
+.break-line {
+  border-top: 1.3px solid lightslategrey;
+}
+
+.selected {
+  background-color: lightseagreen !important;
+}

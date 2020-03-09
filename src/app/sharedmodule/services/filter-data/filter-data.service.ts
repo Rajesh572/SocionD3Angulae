@@ -38,7 +38,7 @@ export class FilterDataService {
 
   getDataForFilters() {
     const requestBody = this.generateRequestBody();
-    return this.http.post('/v1/api/event/unique/read', { request: requestBody });
+    return this.http.post('/api/v1/event/unique/read', { request: requestBody });
 
   }
 
@@ -81,6 +81,8 @@ export class FilterDataService {
         this.filter['time'] = filter.time;
         let end = new Date();
         let start: Date;
+        console.log('Start Time : ', filter.startTime);
+        console.log('End Time : ', filter.endTime);
         switch (filter.time) {
           case 'Custom Date': {
             start = filter.startTime;

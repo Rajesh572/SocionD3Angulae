@@ -18,8 +18,10 @@ export class FilterComponent implements OnInit {
   dropdownList: any;
   optionCustomDate = false;
   startDate = '';
+  startDateTime = '';
   endDate = '';
-  serializedDate = new FormControl((new Date()).toISOString());
+  serializedStartDate = new FormControl((new Date()).toISOString());
+  serializedEndDate = new FormControl((new Date()).toISOString());
   newDataArray = [];
   topicArray = [];
   locationArray = [];
@@ -29,6 +31,7 @@ export class FilterComponent implements OnInit {
   constructor(private dataService: DataService, private filterService: FilterDataService) { }
 
   ngOnInit() {
+    // console.log('Serialzied date value :', this.serializedDate);
     let filterData = this.filterService.getFilterData();
     if (Object.keys(filterData).length === 0) {
       try {
@@ -97,6 +100,7 @@ export class FilterComponent implements OnInit {
   }
 
   applyFilter() {
+    console.log(this.startDate);
     this.filterService.addToFilterObject({
       locations: this.selectedLocations,
       topics: this.selectedTopics,
@@ -106,6 +110,13 @@ export class FilterComponent implements OnInit {
     });
   }
 
+  onStartDateChange(event) {
+    this.startDate = event;
+  }
+
+  onEndDateChange(event) {
+    this.endDate = event;
+  }
 
   setFilterObjectParams(filter) {
     console.log(filter);
@@ -119,12 +130,25 @@ export class FilterComponent implements OnInit {
       }
       if (filter.time) {
         this.selectedTime = filter.time;
+        if(this.selectedTime === 'Custom Date') {
+          this.optionCustomDate = true;
+        } else {
+          this.serializedStartDate = new FormControl((new Date()).toISOString());
+          this.serializedEndDate = new FormControl((new Date()).toISOString());
+          this.optionCustomDate = false;
+        }
       }
       if (filter.start_time) {
         this.startDate = filter.start_time;
+        if (!!this.startDate) {
+          this.serializedStartDate = new FormControl(this.startDate);
+        }
       }
       if (filter.end_time) {
         this.endDate = filter.end_time;
+        if (!!this.endDate) {
+          this.serializedEndDate = new FormControl(this.endDate);
+        }
       }
     }
   }

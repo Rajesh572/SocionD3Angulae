@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { faUser, faPowerOff } from '@fortawesome/free-solid-svg-icons';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { UploadmodalComponent } from '../../../../uploadmodal/uploadmodal.component';
 @Component({
   selector: 'app-usermenu',

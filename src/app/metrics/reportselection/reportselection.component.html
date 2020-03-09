@@ -1,8 +1,8 @@
 <app-pageheader>
-    <div class="programtitle">Program: Hepatitis - c Awareness</div>
-    <div class="header-component">
-        <div class="pagetitle">Metrics</div>
-        <app-filter></app-filter>
+  <div class="programtitle">Program: Hepatitis - c Awareness</div>
+  <div class="header-component">
+    <div class="pagetitle">Metrics</div>
+    <app-filter></app-filter>
     <!-- <div  *ngIf="dropdownList.length > 0">
         <mat-form-field>
             <mat-label>Topics</mat-label>
@@ -13,68 +13,80 @@
             </mat-select>
         </mat-form-field> -->
 
-        <!-- <button class="clear-all" (click)="clearAll()">Clear All</button> -->
-    </div>
+    <!-- <button class="clear-all" (click)="clearAll()">Clear All</button> -->
+  </div>
 
-    <hr class = "break-line"/>
+  <hr class="break-line" />
 
 </app-pageheader>
 <div class="pagecontainer">
-    <div class="selectAxis">
-        <div class="dimensionsselection">
-            <div class="axis-selection">
-                <div class="menu">
-                    <h1 class="axis-heading">Select Horizontal Axis</h1>
-                    <ng-container *ngFor="let key of horizontalArr">
+  <div class="selectAxis">
+    <div class="dimensionsselection">
+      <div class="axis-selection">
+        <div class="menu">
+          <h1 class="axis-heading">Horizontal Axis</h1>
+
+          <div class="selected-axis">
+            <button disabled class="selected">{{selectedHorizontalValue}}</button>
+            <fa-icon class="axismodalicon" aria-hidden="true" aria-label="Example hand icon" [icon]="faPlusCircle"
+              (click)="openDialogForXAxis()"></fa-icon>
+          </div>
+          <!-- <ng-container *ngFor="let key of horizontalArr">
                         <button (click)="onHorizontalAxisSelect(key)"
                             [ngClass]="{ 'selected': key === getSelectedHorizontalAxis() }">{{key}} &nbsp;&nbsp;
                             <fa-icon *ngIf=" key === getSelectedHorizontalAxis() " [icon]="faCheck"></fa-icon></button>
-                    </ng-container>
-                </div>
-            </div>
+                    </ng-container> -->
+        </div>
+      </div>
 
-            <div class="axis-selection">
-                <div class="menu">
-                    <h1 class="axis-heading">Select Vertical Axis</h1>
-                    <ng-container *ngFor="let key of verticalArr">
+      <div class="axis-selection">
+        <div class="menu">
+          <h1 class="axis-heading">Vertical Axis</h1>
+
+          <div class="selected-axis">
+            <button disabled class="selected">{{selectedVerticaltext}}</button>
+            <fa-icon class="axismodalicon" aria-hidden="true" aria-label="Example hand icon" [icon]="faPlusCircle"
+              (click)="openDialogForYAxis()"></fa-icon>
+          </div>
+          <!-- <ng-container *ngFor="let key of verticalArr">
                         <button (click)="onVerticalAxisSelect(key)"
                             [ngClass]="{ 'selected': key === getSelectedVerticalAxis() }">{{key}}&nbsp;&nbsp;
                             <fa-icon *ngIf=" key === getSelectedVerticalAxis() " [icon]="faCheck"></fa-icon>
                         </button>
-                    </ng-container>
-                </div>
-            </div>
+                    </ng-container> -->
         </div>
-
-        <div class="containercenter"><button class="show-report" (click)="showReports()">Show Report</button></div>
+      </div>
     </div>
-    <div *ngIf="showCharts" class="charts-container">
-        <mat-tab-group mat-stretch-tabs class="example-stretched-tabs mat-elevation-z4">
-            <mat-tab label="Consolidated">
-                <ng-template matTabContent>
-                    <app-barchart class="charts" [dimension]="selectedHorizontalValue" [label]="yAxisLabel" [barData]="barData">
-                    </app-barchart>
-                </ng-template>
-            </mat-tab>
-            <mat-tab label="Topic Wise Breakup">
-                <ng-template matTabContent>
-                    <app-stackedchart class="charts" [dimension]="selectedHorizontalValue" [label]="yAxisLabel"
-                    [selectedTopics]="selectedItems" [topics]="topics" [stackedData]="stackedData" [changeStackChart]="changeStackChart"></app-stackedchart>               
-                </ng-template>
-            </mat-tab> 
-            <mat-tab label="Trend" *ngIf="selectedHorizontalValue === 'Time Period'">
-                <ng-template matTabContent>
-                    <app-multilinechart class="charts" [label]="yAxisLabel" [dimension]="selectedHorizontalValue"
-                    [multiLineData]="multiLineData"></app-multilinechart>
-                </ng-template>
-                </mat-tab>
-          </mat-tab-group>
-          
-        <!-- <app-barchart class="charts" [dimension]="selectedHorizontalValue" [label]="yAxisLabel" [barData]="barData">
+
+    <div class="containercenter"><button class="show-report" (click)="showReports()">Show Report</button></div>
+  </div>
+  <div *ngIf="showCharts" class="charts-container">
+    <mat-tab-group mat-stretch-tabs class="example-stretched-tabs mat-elevation-z4">
+      <mat-tab label="Consolidated">
+        <ng-template matTabContent>
+          <app-barchart class="charts" [dimension]="selectedHorizontalValue" [label]="selectedVerticaltext" [barData]="barData">
+          </app-barchart>
+        </ng-template>
+      </mat-tab>
+      <mat-tab label="Topic Wise Breakup">
+        <ng-template matTabContent>
+          <app-stackedchart class="charts" [dimension]="selectedHorizontalValue" [label]="selectedVerticaltext"
+            [selectedTopics]="selectedItems"[stackedData]="stackedData"></app-stackedchart>
+        </ng-template>
+      </mat-tab>
+      <mat-tab label="Trend" *ngIf="selectedHorizontalValue === 'Time Period'">
+        <ng-template matTabContent>
+          <app-multilinechart class="charts" [label]="selectedVerticaltext" [dimension]="selectedHorizontalValue"
+            [multiLineData]="multiLineData"></app-multilinechart>
+        </ng-template>
+      </mat-tab>
+    </mat-tab-group>
+
+    <!-- <app-barchart class="charts" [dimension]="selectedHorizontalValue" [label]="yAxisLabel" [barData]="barData">
         </app-barchart> -->
-        <!-- <app-stackedchart class="charts" [dimension]="selectedHorizontalValue" [label]="yAxisLabel"
+    <!-- <app-stackedchart class="charts" [dimension]="selectedHorizontalValue" [label]="yAxisLabel"
             [selectedTopics]="selectedItems" [topics]="topics" [stackedData]="stackedData" [changeStackChart]="changeStackChart"></app-stackedchart>
         <app-multilinechart class="charts" [label]="yAxisLabel" [dimension]="selectedHorizontalValue"
         [multiLineData]="multiLineData"></app-multilinechart> -->
-    </div>
+  </div>
 </div>

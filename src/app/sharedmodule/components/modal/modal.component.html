@@ -1,0 +1,13 @@
+<p class="modal-title">Select Horizontal Axis</p>
+<hr class="break-line"/>
+<br />
+<div class="axis-selection">
+    <div class="menu">
+        <ng-container *ngFor="let key of dataArray">
+            <button (click)="onHorizontalAxisSelect(key)"
+                [ngClass]="{ 'selected': key ===  selectedKey}">{{key}}
+                <fa-icon *ngIf="key ===  selectedKey" [icon]="faCheck"></fa-icon>
+            </button>
+        </ng-container>
+    </div>
+</div>

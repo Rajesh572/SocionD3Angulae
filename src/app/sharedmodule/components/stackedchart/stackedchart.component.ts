@@ -57,6 +57,7 @@ export class StackedchartComponent implements OnInit, OnChanges {
       console.log('SVG Width', this.svgWidth);
     }
 
+    this.initializeTopicData();
     console.log(this.changeStackChart, "stackchange")
     // if (!this.changeStackChart) {
     //   return;
@@ -232,4 +233,13 @@ export class StackedchartComponent implements OnInit, OnChanges {
     //this.svg.attr('width', this.width + 150)
   }
 
+  initializeTopicData() {
+    const topics = [];
+    this.stackedData.forEach((dataEach) => {
+      if (topics.indexOf(dataEach.topic_name) < 0) {
+        topics.push(dataEach.topic_name);
+      }
+    });
+    this.topics = topics;
+  }
 }

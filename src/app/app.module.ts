@@ -20,6 +20,7 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { MetricsModule } from './metrics/metrics.module';
 import { FavouriteModule } from './favourite/favourite.module';
 import { UploadmodalComponent } from './uploadmodal/uploadmodal.component';
+import { ModalComponent } from './sharedmodule/components/modal/modal.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,7 @@ import { UploadmodalComponent } from './uploadmodal/uploadmodal.component';
     NotificationComponent,
     UploadmodalComponent
   ],
-  entryComponents: [UploadmodalComponent],
+  entryComponents: [UploadmodalComponent, ModalComponent],
   imports: [
     BrowserModule,
     RouterModule.forRoot([]),

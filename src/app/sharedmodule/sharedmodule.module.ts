@@ -15,12 +15,13 @@ import { ChartButtonsComponent } from './components/chart-buttons/chart-buttons.
 import {MatRadioModule} from '@angular/material/radio';
 import { MenuactiveDirective } from './directives/menuactivedirective/menuactive.directive';
 import { OpendropdownDirective } from './directives/opendropdowndirective/opendropdown.directive';
+import { ModalComponent } from './components/modal/modal.component';
 
 @NgModule({
   declarations: [PageheaderComponent,
      BarchartComponent, BackComponent,
      PageheaderComponent, FilterComponent, MultilinechartComponent,
-  StackedchartComponent, ChartButtonsComponent, MenuactiveDirective, OpendropdownDirective],
+  StackedchartComponent, ChartButtonsComponent, MenuactiveDirective, OpendropdownDirective, ModalComponent],
   imports: [
     CommonModule,
     FontAwesomeModule,
@@ -35,6 +36,6 @@ import { OpendropdownDirective } from './directives/opendropdowndirective/opendr
   exports: [PageheaderComponent,
      BarchartComponent, BackComponent,
      FilterComponent, MultilinechartComponent, StackedchartComponent,
-  FilterComponent, ChartButtonsComponent, MenuactiveDirective, OpendropdownDirective]
+  FilterComponent, ChartButtonsComponent, MenuactiveDirective, OpendropdownDirective, ModalComponent]
 })
 export class SharedmoduleModule { }

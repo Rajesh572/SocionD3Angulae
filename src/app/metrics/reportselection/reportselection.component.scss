@@ -8,7 +8,7 @@
   justify-content: center;
 }
 
-@media screen and ( max-width: 1200px){
+@media screen and ( max-width: 1100px){
   .programtitle{
     font-size: 2.5em;
   }
@@ -35,14 +35,15 @@ body {
 }
 .menu {
   text-align: center;
-  margin-left: 14%;
+  // margin-left: 14%;
+  width: 100%;
 }
 
 .menu button {
   display: block;
   text-align: center;
   padding: 0.8em;
-  margin: 1em 0 1em 0;
+  margin: 1em 0;
   width: 350px;
   font-weight: bold;
   font-size: medium;
@@ -78,15 +79,14 @@ body {
 // }
 
 .clear-all {
-  min-width: 115px;
   height: max-content;
   background-color: #8C7FEE;
   color: white;
   font-size: inherit;
   border: none;
-  padding: 14px;
+  padding: 1em;
   border-radius: 50px;
-  margin-left: 2em;
+  margin-left: 5em;
 }
 
 .selected {
@@ -103,6 +103,7 @@ li {
 .dimensionsselection {
   display: flex;
   justify-content: center;
+  height: 250px;
 }
 .selectAxis {
   display: flex;
@@ -119,22 +120,10 @@ li {
   padding: 5px;
 }
 
-.filter-component {
-  display: flex;
-  justify-content: space-between;
-}
 
 .input-dropdown {
   margin-left: 20px;
 }
-
-@media screen and (max-width: 1400px) {
-  .input-dropdown {
-    margin-left: 10px;
-    max-width: 150px;
-  }
-}
-
 
 hr.break-line {
   // border-top: 1.3px solid #8C7FEE;
@@ -145,4 +134,23 @@ hr.break-line {
   margin: 0 10px;
   display: flex;
   justify-content: space-between;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.axismodalicon{
+  margin-top: 1.3em;
+  padding: 0 0.8em;
+  /* font-size: large; */
+  font-size: x-large;
+  color: #8d8d8d;
+}
+
+// .mat-icon-button {
+//   border-radius: 0%
+// }
+
+.selected-axis {
+  display: flex;
+  justify-content: flex-end;
 }

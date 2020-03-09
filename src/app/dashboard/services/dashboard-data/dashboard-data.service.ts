@@ -62,6 +62,9 @@ keys = ['event_type', 'role'];
   }
 
   applyFiltersToRequestBody(filter) {
+    if (this.requestBody.length <= 0) {
+      this.initializeRequestBody();
+    }
     const filterKeys = Object.keys(filter);
     filterKeys.forEach((element) => {
       this.requestBody.forEach((item) => {
@@ -71,6 +74,9 @@ keys = ['event_type', 'role'];
   }
 
   getRequestBody() {
+    if(this.requestBody.length <= 0) {
+      this.initializeRequestBody();
+    }
     return [...this.requestBody];
   }
 
@@ -116,7 +122,7 @@ getDashboardData(requestBody) {
       'Content-Type': 'application/json'
     })
   };
-  return this.http.post('/v1/api/event/count/read', {request: requestBody}, httpOptions);
+  return this.http.post('/api/v1/event/count/read', {request: requestBody}, httpOptions);
 }
 
 addColorsAndTitle(data) {
