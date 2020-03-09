@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { faCheck } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faWindowClose, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-modal',
@@ -11,14 +11,16 @@ export class ModalComponent implements OnInit {
 
 
   faCheck = faCheck;
+  faWindowClose = faWindowClose;
+  faTimesCircle = faTimesCircle;
   selectedItems = [];
   selectedHorizontalValue: string;
 
   constructor(public dialogRef: MatDialogRef<ModalComponent>,
               @Inject(MAT_DIALOG_DATA) private data: any) { }
 
-  dataArray = this.data.options;
-  selectedKey = this.data.selected;
+  // dataArray = this.data.options;
+  // selectedKey = this.data.selected;
 
   ngOnInit() {
   }
@@ -33,6 +35,10 @@ export class ModalComponent implements OnInit {
   getSelectedHorizontalAxis() {
 
     return this.selectedHorizontalValue;
+  }
+
+  onClickClose() {
+    this.dialogRef.close();
   }
 
 }

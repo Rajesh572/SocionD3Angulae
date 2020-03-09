@@ -23,15 +23,17 @@ body {
   background: #fff;
 }
 .axis-selection {
-  padding: 1em;
-  width: 500px;
-  margin: 2%;
+  // padding: 1em;
+  width: 420px;
+  margin: 1%;
   background: #fff;
   display: inline-flex;
 }
 
 .axis-heading {
   text-align: center;
+  font-size: 1.8em;
+  font-weight: 500;
 }
 .menu {
   text-align: center;
@@ -39,15 +41,15 @@ body {
   width: 100%;
 }
 
-.menu button {
+.selected {
   display: block;
   text-align: center;
   padding: 0.8em;
-  margin: 1em 0;
-  width: 350px;
+  margin: 0.8em 0;
+  width: 280px;
   font-weight: bold;
   font-size: medium;
-  background: #b5b3b3;
+  background-color: lightseagreen !important;
   border: none;
   color: #fff;
 }
@@ -64,6 +66,9 @@ body {
   margin-bottom: 20px;
 }
 
+// .charts-container {
+//   width: 100%;
+// }
 // .clear-all {
 //   margin-top: 10px;
 //   height: max-content;
@@ -89,9 +94,6 @@ body {
   margin-left: 5em;
 }
 
-.selected {
-  background-color: lightseagreen !important;
-}
 li {
   list-style: none;
 }
@@ -100,11 +102,10 @@ li {
   justify-content: center;
   align-items: center;
 }
-.dimensionsselection {
-  display: flex;
-  justify-content: center;
-  height: 250px;
-}
+// .dimensionsselection {
+//   display: flex;
+//   justify-content: center;
+// }
 .selectAxis {
   display: flex;
   justify-content: space-evenly;

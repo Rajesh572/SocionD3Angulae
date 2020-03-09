@@ -1,10 +1,13 @@
 .usermenu{
-    margin: 0 .5em;
-    width:160px;
+    margin: 0.5em;
+    width:200px;
     cursor: pointer;
     align-items: center;
 .userimg {
   height: 100%;
+  flex-direction: row;
+  box-sizing: border-box;
+  display: flex;
 }
     span{
         display: inline-block;
@@ -68,3 +71,8 @@ height: 131px;
 //         width: 70px;
 //     }
 // }
+
+.span-username {
+  flex: 1 1 0%;
+  box-sizing: border-box;
+}

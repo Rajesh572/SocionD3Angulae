@@ -3,6 +3,7 @@
   /* margin-left: 14%; */
   display: flex;
   flex-wrap: wrap;
+  justify-content: flex-start;
   }
 
   .menu button {
@@ -31,13 +32,13 @@
 }
 
 .modal-title {
-  font-weight: 500;
-  font-size: 2em;
+  font-weight: 450;
+  font-size: 1.6em;
 }
 
 ::ng-deep .mat-dialog-container {
-  margin-left: 25%;
-  width: 100% !important;
+  // margin-left: 25%;
+  // width: 100% !important;
 }
 
 .break-line {
@@ -46,4 +47,23 @@
 
 .selected {
   background-color: lightseagreen !important;
+}
+
+.cdk-overlay-pane.my-dialog {
+  position: relative!important;
+}
+.close .mat-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 5px;
+  line-height: 14px;
+  min-width: auto;
+}
+
+.close {
+  float: right;
+}
+.close-icon {
+  font-size: large;
 }

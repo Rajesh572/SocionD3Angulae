@@ -1,15 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { DataService } from 'src/app/data.service';
 import * as _ from 'lodash';
 import { FilterDataService } from '../../services/filter-data/filter-data.service';
+import { Observable, Subscriber, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-filter',
   templateUrl: './filter.component.html',
   styleUrls: ['./filter.component.scss']
 })
-export class FilterComponent implements OnInit {
+export class FilterComponent implements OnInit, OnDestroy {
 
   selectedTopics = [];
   selectedLocations = [];
@@ -26,16 +27,17 @@ export class FilterComponent implements OnInit {
   topicArray = [];
   locationArray = [];
   timeArray = [];
+  filterServiceSubscription: Subscription;
 
 
-  constructor(private dataService: DataService, private filterService: FilterDataService) { }
+  constructor(private filterService: FilterDataService) { }
 
   ngOnInit() {
     // console.log('Serialzied date value :', this.serializedDate);
-    let filterData = this.filterService.getFilterData();
+    const filterData = this.filterService.getFilterData();
     if (Object.keys(filterData).length === 0) {
       try {
-        this.filterService.getDataForFilters().subscribe((data) => {
+        this.filterServiceSubscription = this.filterService.getDataForFilters().subscribe((data) => {
           console.log('data for filter', data);
           this.filterService.setFilterData(data['result']);
           this.topicArray = data['result']['topic_name'];
@@ -84,10 +86,16 @@ export class FilterComponent implements OnInit {
     // this.ngOnInit();
   }
 
-  onKey(value) {
-    this.dataArray = [];
-    this.selectSearch(value);
+  // onKey(value) {
+  //   this.dataArray = [];
+  //   this.selectSearch(value);
+  // }
+
+  onKey(value, dataArray) {
+    // this.dataArray = [];
+    this.selectSearch(value, );
   }
+
   selectSearch(value: any) {
     let filter = value.toLowerCase();
     this.dropdownList.forEach(option => {
@@ -153,4 +161,8 @@ export class FilterComponent implements OnInit {
     }
   }
 
+  ngOnDestroy() {
+    if(!!this.filterServiceSubscription) {
+      this.filterServiceSubscription.unsubscribe();
+    }  }
 }

@@ -4,7 +4,9 @@ import { MetricsRoutingModule } from './metrics-routing.module';
 import { SharedmoduleModule } from '../sharedmodule/sharedmodule.module';
 import { ReportselectionComponent } from './reportselection/reportselection.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatSelectModule, MatFormFieldModule, MatTabsModule, MatDatepickerModule, MatNativeDateModule, MatInputModule, MatButtonModule, MatRadioModule } from '@angular/material';
+import { MatSelectModule, MatFormFieldModule, MatTabsModule,
+  MatDatepickerModule, MatNativeDateModule, MatInputModule,
+  MatButtonModule, MatRadioModule } from '@angular/material';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';

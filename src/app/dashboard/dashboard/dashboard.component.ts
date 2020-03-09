@@ -1,13 +1,13 @@
 // tslint:disable: no-string-literal
 // tslint:disable: prefer-const
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 // import { Router } from '@angular/router';
 // import { DataService } from '../../data.service';
 import * as _ from 'lodash';
 // import { DashboardDataService } from 'src/app/sharedmodule/services/dashboard-data/dashboard-data.service';
-import { Observable, forkJoin } from 'rxjs';
+import { Observable, forkJoin, Subscription } from 'rxjs';
 // import { FilterDataService } from 'src/app/sharedmodule/services/filter-data/filter-data.service';
 import { DashboardDataService } from '../services/dashboard-data/dashboard-data.service';
 import { FilterDataService } from 'src/app/sharedmodule/services/filter-data/filter-data.service';
@@ -17,7 +17,7 @@ import { FilterDataService } from 'src/app/sharedmodule/services/filter-data/fil
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, OnDestroy {
   dropdownList: any;
   constructor(
     private http: HttpClient,
@@ -27,13 +27,14 @@ export class DashboardComponent implements OnInit {
   dashboardData = [];
   requestBody = [];
   // dataArr = [];
+  filterServiceSubscription: Subscription;
 
   ngOnInit() {
     try {
       const programId = this.dashboardService.getProgramDetails().program_id;
       const menuOptions = this.dashboardService.getMenuOptions();
 
-      this.filterService.$filterObjectChange.subscribe((filter) => {
+      this.filterServiceSubscription = this.filterService.$filterObjectChange.subscribe((filter) => {
         console.log('filter: ', filter);
         const filterKeys = Object.keys(filter);
         if (!!filterKeys && filterKeys.length > 0) {
@@ -98,5 +99,11 @@ export class DashboardComponent implements OnInit {
       console.log('Data : ', this.dashboardData);
 
     });
+  }
+
+  ngOnDestroy() {
+    if(!!this.filterServiceSubscription) {
+      this.filterServiceSubscription.unsubscribe();
+    }
   }
 }

@@ -21,7 +21,7 @@
 </app-pageheader>
 <div class="pagecontainer">
   <div class="selectAxis">
-    <div class="dimensionsselection">
+    <!-- <div class="dimensionsselection"> -->
       <div class="axis-selection">
         <div class="menu">
           <h1 class="axis-heading">Horizontal Axis</h1>
@@ -56,27 +56,30 @@
                     </ng-container> -->
         </div>
       </div>
-    </div>
+    <!-- </div> -->
 
-    <div class="containercenter"><button class="show-report" (click)="showReports()">Show Report</button></div>
+    <!-- <div class="containercenter"><button class="show-report" (click)="showReports()">Show Report</button></div> -->
   </div>
   <div *ngIf="showCharts" class="charts-container">
     <mat-tab-group mat-stretch-tabs class="example-stretched-tabs mat-elevation-z4">
       <mat-tab label="Consolidated">
         <ng-template matTabContent>
-          <app-barchart class="charts" [dimension]="selectedHorizontalValue" [label]="selectedVerticaltext" [barData]="barData">
+          <app-no-result-found *ngIf="barData.length === 0"></app-no-result-found>
+          <app-barchart *ngIf="barData.length !== 0" class="charts" [dimension]="selectedHorizontalValue" [label]="selectedVerticaltext" [barData]="barData">
           </app-barchart>
         </ng-template>
       </mat-tab>
       <mat-tab label="Topic Wise Breakup">
         <ng-template matTabContent>
-          <app-stackedchart class="charts" [dimension]="selectedHorizontalValue" [label]="selectedVerticaltext"
+          <app-no-result-found *ngIf="stackedData.length === 0"></app-no-result-found>
+          <app-stackedchart *ngIf="stackedData.length !== 0" class="charts" [dimension]="selectedHorizontalValue" [label]="selectedVerticaltext"
             [selectedTopics]="selectedItems"[stackedData]="stackedData"></app-stackedchart>
         </ng-template>
       </mat-tab>
       <mat-tab label="Trend" *ngIf="selectedHorizontalValue === 'Time Period'">
         <ng-template matTabContent>
-          <app-multilinechart class="charts" [label]="selectedVerticaltext" [dimension]="selectedHorizontalValue"
+          <app-no-result-found *ngIf="multiLineData.length === 0"></app-no-result-found>
+          <app-multilinechart *ngIf="multiLineData.length !== 0" class="charts" [label]="selectedVerticaltext" [dimension]="selectedHorizontalValue"
             [multiLineData]="multiLineData"></app-multilinechart>
         </ng-template>
       </mat-tab>

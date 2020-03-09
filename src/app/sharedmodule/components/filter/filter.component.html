@@ -38,7 +38,7 @@
   <mat-form-field class="input-dropdown">
     <mat-label>Topics</mat-label>
     <mat-select [(ngModel)]="selectedTopics" (ngModelChange)="onTopicChange($event)" multiple>
-        <input class="select-input" placeholder="Filter by Topic" (keyup)="onKey($event.target.value)">
+        <input class="select-input" placeholder="Filter by Topic" (keyup)="onKey($event.target.value,topicArray)">
         <span class="noresult" *ngIf="topicArray.length === 0">No Search Found</span>
         <mat-option *ngFor="let topic of topicArray" [value]="topic">{{topic}}</mat-option>
     </mat-select>

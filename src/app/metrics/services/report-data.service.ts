@@ -127,6 +127,11 @@ TRAINER: 'role',
     this.requestBody = [];
     this.chartOptions.forEach((option) => {
       const requestBody = {...option};
+      if(this.selectedHorizontalAttr === 'location') {
+        if (requestBody.dimension.indexOf('location') < 0) {
+          requestBody.dimension.push('location');
+        }
+      }
       // console.log('option : ', option);
       // const requestBody = this.checkUniqueOption(option);
       // const paramObject = this.createParamsObject(option.params);

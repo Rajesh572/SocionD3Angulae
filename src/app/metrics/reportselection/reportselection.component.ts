@@ -1,14 +1,14 @@
 // tslint:disable: no-string-literal
 // tslint:disable: prefer-const
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { DataService } from '../../data.service';
 import { Router } from '@angular/router';
 import { faCheck, faEye, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import * as _ from 'lodash';
 import { FilterDataService } from 'src/app/sharedmodule/services/filter-data/filter-data.service';
 import { ReportDataService } from '../services/report-data.service';
-import { forkJoin } from 'rxjs';
+import { forkJoin, Subscription } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { ModalComponent } from 'src/app/sharedmodule/components/modal/modal.component';
 
@@ -17,7 +17,7 @@ import { ModalComponent } from 'src/app/sharedmodule/components/modal/modal.comp
   templateUrl: './reportselection.component.html',
   styleUrls: ['./reportselection.component.scss']
 })
-export class ReportselectionComponent implements OnInit {
+export class ReportselectionComponent implements OnInit, OnDestroy {
   selectedItems = [];
   unselected = [];
   barData: any;
@@ -32,7 +32,7 @@ export class ReportselectionComponent implements OnInit {
     'Unique Trainers',
     'Content Views'];
 
-  horizontalArr = ['Time Period', 'Location'];
+  horizontalArr = ['Time Period', 'location'];
 
   selectedHorizontalValue: string;
   selectedVerticalValue: string;
@@ -45,6 +45,7 @@ export class ReportselectionComponent implements OnInit {
   // fromxmodal: any;
   // fromymodal: any;
   requestBody = [];
+  filterServiceSubscription: Subscription;
 
   constructor(
     private dataService: DataService,
@@ -80,7 +81,7 @@ export class ReportselectionComponent implements OnInit {
     // this.selectedVerticalValue = this.reportService.getSelectedVerticalAttr();
     // this.selectedHorizontalValue = this.reportService.getSelectedHorizontalAttr();
     try {
-      this.filterService.$filterObjectChange.subscribe((filter) => {
+      this.filterServiceSubscription = this.filterService.$filterObjectChange.subscribe((filter) => {
         console.log('filter: ', filter);
         this.reportService.setFilter(filter);
         const filterKeys = Object.keys(filter);
@@ -125,7 +126,20 @@ export class ReportselectionComponent implements OnInit {
       this.barData = (chartData[0].result);
 
     // this.BarchartComponent.dataChangeDetectCycle
-      this.stackedData = (chartData[1].result);
+      let stackedData = chartData[1].result;
+      // console.log('stackedData: ', stackedData);
+      // console.log(Object.keys(stackedData[0]));
+      if (stackedData.length > 0) {
+        if ((Object.keys(stackedData[0]).indexOf('location')) >= 0) {
+          // console.log('stackedData');
+          stackedData.forEach((data) => {
+            data['Location'] = data.location;
+            delete data['location'];
+          });
+        }
+      }
+      // console.log(stackedData);
+      this.stackedData = stackedData;
       this.multiLineData = (chartData[1].result);
       this.showCharts = true;
     });
@@ -157,20 +171,20 @@ export class ReportselectionComponent implements OnInit {
     return this.reportService.getSelectedVerticalAttr();
   }
 
-  showReports() {
+  // showReports() {
 
-    // if (this.selectedItems.length > 0) {
-    //   this.dataService.seletedTopics.next(this.selectedItems);
-    // }
-    this.reportService.setSelectedHorizontalAttr(this.selectedHorizontalValue);
-    this.reportService.setSelectedVerticalAttr(this.selectedVerticalValue);
+  //   // if (this.selectedItems.length > 0) {
+  //   //   this.dataService.seletedTopics.next(this.selectedItems);
+  //   // }
+  //   this.reportService.setSelectedHorizontalAttr(this.selectedHorizontalValue);
+  //   this.reportService.setSelectedVerticalAttr(this.selectedVerticalValue);
 
-    // this.dataService.setAllSelectedAxis({ dimension: this.selectedHorizontalValue, metric: this.selectedVerticalValue },
-    //   this.selectedItems);
-    // change
-    // this.getDataforCharts();
-    this.collectReportData();
-  }
+  //   // this.dataService.setAllSelectedAxis({ dimension: this.selectedHorizontalValue, metric: this.selectedVerticalValue },
+  //   //   this.selectedItems);
+  //   // change
+  //   // this.getDataforCharts();
+  //   this.collectReportData();
+  // }
 
   // getDataforCharts() {
   //   this.dataService.$barChartData.subscribe((bardata) => {
@@ -195,23 +209,32 @@ export class ReportselectionComponent implements OnInit {
 
 
   openDialogForXAxis() {
+    const width = this.getModalWidth(this.horizontalArr.length);
+    const height = this.getModalHeigth(this.horizontalArr.length);
+    console.log('Width for X : ', width);
     const dialogRef = this.dialog.open(ModalComponent, {
-      height: '50%', width: '100%',
-      data: {options: this.horizontalArr, selected: this.selectedHorizontalValue},
+      height, width,
+      data: {options: this.horizontalArr, selected: this.selectedHorizontalValue, modalTitle: 'Select Horizontal Axis'},
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (!!result) {
         this.selectedHorizontalValue = result;
+        this.reportService.setSelectedHorizontalAttr(this.selectedHorizontalValue);
+        this.collectReportData();
+
       }
       // console.log('fromxmodal', this.selectedHorizontalValue);
     });
   }
 
   openDialogForYAxis() {
+    const width = this.getModalWidth(this.verticalArr.length);
+    const height = this.getModalHeigth(this.verticalArr.length);
+    console.log('Width for Y : ', width);
     const dialogRef = this.dialog.open(ModalComponent, {
-      height: '50%', width: '100%',
-      data: {options: this.verticalArr, selected: this.selectedVerticaltext},
+      height, width,
+      data: {options: this.verticalArr, selected: this.selectedVerticaltext, modalTitle: 'Select Vertical Axis'},
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -219,9 +242,40 @@ export class ReportselectionComponent implements OnInit {
         this.selectedVerticaltext = result;
         this.reportService.setSelectedVerticalAttrOnValue(result);
         this.selectedVerticalValue = this.reportService.getSelectedVerticalAttr();
+        this.reportService.setSelectedVerticalAttr(this.selectedVerticalValue);
+        this.collectReportData();
       }
       // console.log(this.selectedVerticalValue);
     });
   }
 
+  ngOnDestroy() {
+    if (!!this.filterServiceSubscription) {
+      this.filterServiceSubscription.unsubscribe();
+    }
+  }
+
+  getModalWidth(optionsLength) {
+    let width = '100%';
+    if (optionsLength < 4) {
+      width = '30%';
+    } else if (optionsLength < 10) {
+      width = '45%';
+    } else if (optionsLength < 15) {
+      width = '70%';
+    }
+    return width;
+  }
+
+  getModalHeigth(optionsLength) {
+    let height = '100%';
+    if (optionsLength < 3) {
+      height = '30%';
+    } else if (optionsLength < 7) {
+      height = '45%';
+    } else if (optionsLength < 12) {
+      height = '70%';
+    }
+    return height;
+  }
 }

@@ -7,12 +7,14 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class FilterDataService {
 
-  private timeArray = ['Last 6 months',
+  private timeArray = [
+    'Custom Date',
+    'Last 6 months',
     'Last 3 months',
     'Last 1 month',
     'Last 2 weeks',
-    'Last 1 week',
-    'Custom Date'];
+    'Last 1 week'
+  ];
 
   private filterSelectedObject = {};
   constructor(private http: HttpClient) { }
