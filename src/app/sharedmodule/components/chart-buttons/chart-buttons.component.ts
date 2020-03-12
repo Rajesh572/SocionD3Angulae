@@ -15,7 +15,7 @@ export class ChartButtonsComponent implements OnInit {
   faStar = faStar;
   markFavourite;
   timeFilter = 'month';
-  locationFilter = 'state';
+  locationFilter = 'district';
   constructor(private route: Router) { }
 
   ngOnInit() {
@@ -36,4 +36,13 @@ export class ChartButtonsComponent implements OnInit {
   setFavourite() {
     this.markFavourite = !this.markFavourite;
   }
+
+  timeFilterChange(event) {
+    console.log('Event : ', event.value);
+  }
+
+  locationFilterChange(event) {
+    console.log('Event : ', event.value);
+  }
+
 }

@@ -25,15 +25,15 @@ TRAINER: 'Unique Trainers',
   initialVerticalAttrSelected = 'Session Completed';
   initialGranularity = 'month';
 
-  requestDimensionAndGranularity = [{'Time Period': {
-    dimension: 'topic_name',
-    granularity: 'Month',
-  }},
-  {'Location': {
-    dimension: 'location',
-    granularity: 'All',
-  }}
-];
+//   requestDimensionAndGranularity = [{'Time Period': {
+//     dimension: 'topic_name',
+//     granularity: 'Month',
+//   }},
+//   {'Location': {
+//     dimension: 'location',
+//     granularity: 'All',
+//   }}
+// ];
 
 verticalDatabaseKey = {'Session Completed': 'event_type',
 'Generate Attestation': 'event_type',
@@ -137,7 +137,7 @@ TRAINER: 'role',
 
   initializeRequestBody() {
     this.requestBody = [];
-    let chartOptions; 
+    let chartOptions;
     if (this.selectedHorizontalAttr === 'location') {
       chartOptions = this.chartOptionsForLC;
     } else {
@@ -181,6 +181,19 @@ TRAINER: 'role',
     // });
     return filter;
 }
+
+  updateDimensionInRequestBody(dimension, value) {
+    let newRequestBody;
+    if (dimension === 'location') {
+      newRequestBody = this.getRequestBody();
+      newRequestBody[0].dimension = value;
+      newRequestBody[0].dimension = ['topic_name', value];
+    } else if (dimension === 'Time Period') {
+      
+    }
+    this.requestBody = newRequestBody;
+    this.getChartData(this.requestBody);
+  }
 
   getRequestBody() {
     return [...this.requestBody];

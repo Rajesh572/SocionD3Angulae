@@ -16,7 +16,7 @@ export class FilterDataService {
     'Last 1 week'
   ];
 
-  private filterSelectedObject = {};
+  // private filterSelectedObject = {};
   constructor(private http: HttpClient) { }
 
 
