@@ -17,7 +17,7 @@ export class ModalComponent implements OnInit {
   selectedHorizontalValue: string;
 
   constructor(public dialogRef: MatDialogRef<ModalComponent>,
-              @Inject(MAT_DIALOG_DATA) private data: any) { }
+              @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   // dataArray = this.data.options;
   // selectedKey = this.data.selected;
