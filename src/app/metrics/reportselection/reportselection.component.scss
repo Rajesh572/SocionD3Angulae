@@ -24,7 +24,7 @@ body {
 }
 .axis-selection {
   // padding: 1em;
-  width: 420px;
+  min-width: 400px;
   margin: 1%;
   background: #fff;
   display: inline-flex;
@@ -32,8 +32,8 @@ body {
 
 .axis-heading {
   text-align: center;
-  font-size: 1.8em;
-  font-weight: 500;
+  font-size: 1.5em;
+  font-weight: 400;
 }
 .menu {
   text-align: center;
