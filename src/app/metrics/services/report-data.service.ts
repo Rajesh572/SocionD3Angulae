@@ -41,7 +41,7 @@ TRAINEE: 'role',
 TRAINER: 'role',
 'Download Content': 'event_type'};
 
-  chartOptions = [{
+  chartOptionsForTP = [{
     granularity: 'month',
     dimension: ['month'],
     unique: false
@@ -49,6 +49,18 @@ TRAINER: 'role',
   {
     granularity: 'month',
     dimension: ['topic_name', 'month'],
+    unique: false
+  }
+  ];
+
+  chartOptionsForLC = [{
+    granularity: 'All',
+    dimension: ['location'],
+    unique: false
+  },
+  {
+    granularity: 'All',
+    dimension: ['topic_name', 'location'],
     unique: false
   }
   ];
@@ -125,13 +137,19 @@ TRAINER: 'role',
 
   initializeRequestBody() {
     this.requestBody = [];
-    this.chartOptions.forEach((option) => {
+    let chartOptions; 
+    if (this.selectedHorizontalAttr === 'location') {
+      chartOptions = this.chartOptionsForLC;
+    } else {
+      chartOptions = this.chartOptionsForTP;
+    }
+    chartOptions.forEach((option) => {
       const requestBody = {...option};
-      if(this.selectedHorizontalAttr === 'location') {
-        if (requestBody.dimension.indexOf('location') < 0) {
-          requestBody.dimension.push('location');
-        }
-      }
+      // if(this.selectedHorizontalAttr === 'location') {
+      //   if (requestBody.dimension.indexOf('location') < 0) {
+      //     requestBody.dimension.push('location');
+      //   }
+      // }
       // console.log('option : ', option);
       // const requestBody = this.checkUniqueOption(option);
       // const paramObject = this.createParamsObject(option.params);

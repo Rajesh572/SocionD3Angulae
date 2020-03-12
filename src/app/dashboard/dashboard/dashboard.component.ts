@@ -86,16 +86,19 @@ export class DashboardComponent implements OnInit, OnDestroy {
       if (this.dashboardData.length > 0) {
         this.dashboardData = [];
       }
+      let newDashboardData = [];
       console.log('dashboardData : ', dashboardData);
 
       // check if array is empty
       const keys = ['event_type', 'role'];
       dashboardData.forEach((dashboardDataEach) => {
         dashboardDataEach.result.forEach((data) => {
-          this.dashboardData.push(data);
+          newDashboardData.push(data);
         });
       });
-      this.dashboardData = this.dashboardService.addColorsAndTitle(this.dashboardData);
+      newDashboardData = this.dashboardService.addColorsAndTitle(newDashboardData);
+      newDashboardData = this.dashboardService.sortDataOnCount(newDashboardData);
+      this.dashboardData = newDashboardData;
       console.log('Data : ', this.dashboardData);
 
     });

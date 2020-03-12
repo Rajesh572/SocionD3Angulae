@@ -1,23 +1,23 @@
 <div class='chart-buttons' *ngIf="showButtons">
-    <div class="favourite-button">
+    <!-- <div class="favourite-button">
         <button class="button_marked" (click)="setFavourite()" *ngIf="markFavourite" mat-raised-button>
             <span class="marked-text">Marked as Favourite</span>
             <fa-icon class="marked-icon" [icon]="faStar"></fa-icon>
         </button>
         <button *ngIf="!markFavourite" (click)="setFavourite()" class="button" mat-raised-button>Mark as Favourite</button>
-    </div>
+    </div> -->
     <!-- <button *ngIf="dimension === 'Time Period'" class="button" mat-raised-button>Filter by Week</button>
     <button *ngIf="dimension === 'Time Period'" class="button" mat-raised-button>Filter by Day</button>
     <button *ngIf="dimension === 'Location'" class="button" mat-raised-button>Filter by District</button> -->
     <div class="radio-button" *ngIf="dimension === 'Time Period'">
         <p class="radio-title">View by</p>
-        <mat-radio-group aria-label="Select an option" [(ngModel)]="timeFilter">
+        <mat-radio-group aria-label="Select an option" color="primary" [(ngModel)]="timeFilter">
             <mat-radio-button class="option" selected value="month">Month</mat-radio-button>
             <mat-radio-button class="option" value="week">Week</mat-radio-button>
             <mat-radio-button class="option" value="day">Day</mat-radio-button>
           </mat-radio-group>
     </div>
-    <div class="radio-button" *ngIf="dimension === 'Location'">
+    <div class="radio-button" *ngIf="dimension === 'location'">
         <p class="radio-title">View by</p>
         <mat-radio-group aria-label="Select an option" [(ngModel)]="locationFilter">
             <mat-radio-button class="option" value="state">State</mat-radio-button>

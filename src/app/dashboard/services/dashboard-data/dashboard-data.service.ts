@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 // import { API_URL } from './../../../config/config';
+import * as _ from 'lodash';
 
 @Injectable({
   providedIn: 'root'
@@ -146,5 +147,9 @@ addColorsAndTitle(data) {
   });
 
   return data;
+}
+
+sortDataOnCount(data) {
+  return _.orderBy(data, ['count'], ['desc']);
 }
 }

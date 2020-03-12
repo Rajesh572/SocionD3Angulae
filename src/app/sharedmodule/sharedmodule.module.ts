@@ -13,6 +13,8 @@ import { MultilinechartComponent } from './components/chartComponents/multilinec
 import { StackedchartComponent } from './components/chartComponents/stackedchart/stackedchart.component';
 import { ChartButtonsComponent } from './components/chart-buttons/chart-buttons.component';
 import {MatRadioModule} from '@angular/material/radio';
+// import { MatButtonModule } from '@angular/material/button';
+// import { MatAutocomplete } from '@angular/material/autocomplete'
 import { MenuactiveDirective } from './directives/menuactivedirective/menuactive.directive';
 import { OpendropdownDirective } from './directives/opendropdowndirective/opendropdown.directive';
 import { ModalComponent } from './components/modal/modal.component';
@@ -33,10 +35,11 @@ import { NoResultFoundComponent } from './components/no-result-found/no-result-f
     FormsModule,
     ReactiveFormsModule,
     MatRadioModule
-  ],
+    ],
   exports: [PageheaderComponent,
      BarchartComponent, BackComponent,
      FilterComponent, MultilinechartComponent, StackedchartComponent,
-  FilterComponent, ChartButtonsComponent, MenuactiveDirective, OpendropdownDirective, ModalComponent, NoResultFoundComponent]
+  FilterComponent, ChartButtonsComponent, MenuactiveDirective, OpendropdownDirective,
+  ModalComponent, NoResultFoundComponent]
 })
 export class SharedmoduleModule { }

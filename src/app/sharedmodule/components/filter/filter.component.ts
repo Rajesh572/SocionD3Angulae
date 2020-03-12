@@ -3,7 +3,7 @@ import { FormControl } from '@angular/forms';
 import { DataService } from 'src/app/data.service';
 import * as _ from 'lodash';
 import { FilterDataService } from '../../services/filter-data/filter-data.service';
-import { Observable, Subscriber, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-filter',
@@ -23,10 +23,13 @@ export class FilterComponent implements OnInit, OnDestroy {
   endDate = '';
   serializedStartDate = new FormControl((new Date()).toISOString());
   serializedEndDate = new FormControl((new Date()).toISOString());
-  newDataArray = [];
+  // newDataArray = [];
   topicArray = [];
+  filteredTopicArray = [];
   locationArray = [];
+  filteredLocationArray = [];
   timeArray = [];
+  filteredTimeArray = [];
   filterServiceSubscription: Subscription;
 
 
@@ -43,6 +46,9 @@ export class FilterComponent implements OnInit, OnDestroy {
           this.topicArray = data['result']['topic_name'];
           this.locationArray = data['result']['location'];
           this.timeArray = this.filterService.getTimeArrayObject();
+          this.filteredTopicArray = this.topicArray;
+          this.filteredLocationArray = this.locationArray;
+          this.filteredTimeArray = this.timeArray;
         });
       } catch (e) {
         console.log('Error in Filter Component while getting the filter menu data : ', e);
@@ -50,7 +56,10 @@ export class FilterComponent implements OnInit, OnDestroy {
     } else {
       this.topicArray = filterData['topic_name'];
       this.locationArray = filterData['location'];
+      this.filteredTopicArray = this.topicArray;
+      this.filteredLocationArray = this.locationArray;
       this.timeArray = this.filterService.getTimeArrayObject();
+      this.filteredTimeArray = this.timeArray;
     }
     const filter = this.filterService.getFilterObject();
     this.setFilterObjectParams(filter);
@@ -91,21 +100,47 @@ export class FilterComponent implements OnInit, OnDestroy {
   //   this.selectSearch(value);
   // }
 
-  onKey(value, dataArray) {
+  onKey(value, key) {
     // this.dataArray = [];
-    this.selectSearch(value, );
+    // this.selectSearch(value, );
+    console.log('Value: ', value);
+    switch (key) {
+      case 'location': {
+        this.filteredLocationArray = this.sortArrayOnKey(value, this.locationArray);
+        break;
+      }
+      case 'topic': {
+        this.filteredTopicArray = this.sortArrayOnKey(value, this.topicArray);
+        break;
+      }
+      case 'time': {
+        this.filteredTimeArray = this.sortArrayOnKey(value, this.timeArray);
+        break;
+      }
+      default: {
+      }
+    }
   }
 
-  selectSearch(value: any) {
-    let filter = value.toLowerCase();
-    this.dropdownList.forEach(option => {
-      if (option.toLowerCase().indexOf(filter) >= 0) {
-        this.dataArray.push(option);
+  sortArrayOnKey(value, arrayToSort) {
+    const newArraySort = arrayToSort.filter((element) => {
+      if ((element.toLowerCase()).startsWith(value.toLowerCase())) {
+        return true;
       }
     });
-    this.newDataArray = this.dataArray;
-    /*  === 0 ? this.dropdownList : this.dataArray; */
+    return newArraySort;
   }
+
+  // selectSearch(value: any) {
+  //   let filter = value.toLowerCase();
+  //   this.dropdownList.forEach(option => {
+  //     if (option.toLowerCase().indexOf(filter) >= 0) {
+  //       this.dataArray.push(option);
+  //     }
+  //   });
+  //   this.newDataArray = this.dataArray;
+  //   /*  === 0 ? this.dropdownList : this.dataArray; */
+  // }
 
   applyFilter() {
     console.log(this.startDate);

@@ -7,7 +7,7 @@
 <div class="axis-selection">
     <div class="menu">
         <ng-container *ngFor="let key of data.options">
-            <button (click)="onHorizontalAxisSelect(key)"
+            <button color="accent" (click)="onHorizontalAxisSelect(key)"
                 [ngClass]="{ 'selected': key ===  data.selected}">{{key}}
                 <fa-icon *ngIf="key ===  data.selected" [icon]="faCheck"></fa-icon>
             </button>

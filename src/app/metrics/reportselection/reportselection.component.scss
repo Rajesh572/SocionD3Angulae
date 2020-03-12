@@ -49,7 +49,8 @@ body {
   width: 280px;
   font-weight: bold;
   font-size: medium;
-  background-color: lightseagreen !important;
+  background-color: lightseagreen;
+  cursor: default !important;
   border: none;
   color: #fff;
 }
@@ -109,7 +110,7 @@ li {
 .selectAxis {
   display: flex;
   justify-content: space-evenly;
-  margin: 2em 0;
+  margin: 0.5em 0;
   flex-wrap: wrap;
 }
 .noresult {
@@ -128,7 +129,7 @@ li {
 
 hr.break-line {
   // border-top: 1.3px solid #8C7FEE;
-  border-top: 1.3px solid lightslategrey;
+  border-top: 1.3px solid #cdcdcd;
 }
 
 .header-component {
@@ -145,6 +146,7 @@ hr.break-line {
   /* font-size: large; */
   font-size: x-large;
   color: #8d8d8d;
+  cursor: pointer;
 }
 
 // .mat-icon-button {
@@ -154,4 +156,8 @@ hr.break-line {
 .selected-axis {
   display: flex;
   justify-content: flex-end;
+}
+
+.pagecontainer {
+    min-height: 100vh;
 }

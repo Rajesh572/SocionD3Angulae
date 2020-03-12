@@ -76,3 +76,9 @@ height: 131px;
   flex: 1 1 0%;
   box-sizing: border-box;
 }
+
+@media screen and (max-width:600px) {
+  .span-username {
+      display: none;
+  }
+}
