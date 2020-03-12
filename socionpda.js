@@ -8,7 +8,7 @@ var express = require('express');        // call express
 var app = express();                 // define our app using express
 var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
-
+var proxy = require('express-http-proxy');
 
 // configure app to use bodyParser()
 // this will let us get the data from a POST
@@ -36,6 +36,29 @@ app.use(express.static(__dirname + '/dist'));
 
 // REGISTER OUR ROUTES -------------------------------
 // all of our routes will be prefixed with /api
+app.use('/api',addCorsHeaders, proxy('http://localhost:3000',{
+    proxyReqOptDecorator: function(proxyReqOpts, srcReq) {
+        // console.log('api calling:  ')
+        // you can update headers
+        return proxyReqOpts;
+      }
+    // proxyReqPathResolver: (req) => require('url').parse('http://localhost:3000').path
+
+}));
+// middleware to add CORS headers
+function addCorsHeaders(req, res, next) {
+    res.header('Access-Control-Allow-Origin', '*')
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,PATCH,DELETE,OPTIONS')
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization,' +
+      'cid, user-id, x-auth, Cache-Control, X-Requested-With, *')
+  
+    if (req.method === 'OPTIONS') {
+      res.sendStatus(200)
+    } else {
+      next()
+    };
+  }
+  
 app.get('*', function (req, res, next) {
     res.sendFile(__dirname + '/dist/index.html');
 });
