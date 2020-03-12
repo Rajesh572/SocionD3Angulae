@@ -14,9 +14,7 @@ import { RouterModule } from '@angular/router';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { DataService } from './data.service';
 import { HttpClientModule } from '@angular/common/http';
-import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown';
 import { MatFormFieldModule, MatSelectModule, MatDialogModule } from '@angular/material';
-import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { MetricsModule } from './metrics/metrics.module';
 import { FavouriteModule } from './favourite/favourite.module';
 import { UploadmodalComponent } from './uploadmodal/uploadmodal.component';
@@ -37,10 +35,8 @@ import { ModalComponent } from './sharedmodule/components/modal/modal.component'
     RouterModule.forRoot([]),
     FormsModule,
     ReactiveFormsModule,
-    AngularMultiSelectModule,
     MatSelectModule,
     MatFormFieldModule,
-    NgxMatSelectSearchModule,
     MatDialogModule,
     FontAwesomeModule,
     AppRoutingModule,

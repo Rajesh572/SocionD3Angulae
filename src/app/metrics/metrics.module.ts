@@ -8,8 +8,6 @@ import { MatSelectModule, MatFormFieldModule, MatTabsModule,
   MatDatepickerModule, MatNativeDateModule, MatInputModule,
   MatButtonModule, MatRadioModule } from '@angular/material';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown';
-import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { RouterModule } from '@angular/router';
 
 
@@ -21,9 +19,7 @@ import { RouterModule } from '@angular/router';
     CommonModule, MatSelectModule,
     SharedmoduleModule,
     FontAwesomeModule,
-    AngularMultiSelectModule,
     MatFormFieldModule,
-    NgxMatSelectSearchModule,
     MatTabsModule,
     MatDatepickerModule,
     MatNativeDateModule,
