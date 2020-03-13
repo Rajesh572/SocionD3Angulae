@@ -150,6 +150,6 @@ addColorsAndTitle(data) {
 }
 
 sortDataOnCount(data) {
-  return _.orderBy(data, ['count'], ['desc']);
+  return _.orderBy(data, ['event_type']);
 }
 }

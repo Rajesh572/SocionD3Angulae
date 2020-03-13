@@ -2,15 +2,13 @@
     color: #333
   }
   ::ng-deep .pagetitle{
-    font-size: 2em;
-    font-weight: 500;
+    font-size: 1.8em;
     margin-top: 8px; 
     margin-bottom: 8px;
   }
   @media screen and ( max-width: 1100px){
     ::ng-deep .pagetitle{
-      font-size: 1.8em;
-      font-weight: 400;
+      font-size: 1.6em;
     }
    }
 

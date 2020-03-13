@@ -11,19 +11,23 @@
     <button *ngIf="dimension === 'Location'" class="button" mat-raised-button>Filter by District</button> -->
     <div class="radio-button" *ngIf="dimension === 'Time Period'">
         <p class="radio-title">View by</p>
+        <ul style="list-style: none; padding-left: 0px;">
         <mat-radio-group aria-label="Select an option" color="primary" (change)="timeFilterChange($event)" [(ngModel)]="timeFilter">
-            <mat-radio-button class="option" selected value="month">Month</mat-radio-button>
-            <mat-radio-button class="option" value="week">Week</mat-radio-button>
-            <mat-radio-button class="option" value="day">Day</mat-radio-button>
+            <li><mat-radio-button class="option" selected value="month"> Month </mat-radio-button></li>
+            <li><mat-radio-button class="option" value="week"> Week </mat-radio-button></li>
+            <li><mat-radio-button class="option" value="day"> Day </mat-radio-button></li>
           </mat-radio-group>
+        </ul>
     </div>
     <div class="radio-button" *ngIf="dimension === 'location'">
         <p class="radio-title">View by</p>
-        <mat-radio-group aria-label="Select an option" (change)="locationFilterChange($event)" [(ngModel)]="locationFilter">
-            <mat-radio-button class="option" value="state">State</mat-radio-button>
-            <mat-radio-button class="option" value="district">District</mat-radio-button>
-            <mat-radio-button class="option" value="city">City</mat-radio-button>
+        <ul style="list-style: none; padding-left: 0px;">
+        <mat-radio-group aria-label="Select an option" color="primary" (change)="locationFilterChange($event)" [(ngModel)]="locationFilter">
+              <li><mat-radio-button class="option" value="state"> State </mat-radio-button></li>
+              <li><mat-radio-button class="option" value="district"> District </mat-radio-button></li>
+              <li><mat-radio-button class="option" value="city"> City </mat-radio-button></li>
             <!-- <mat-radio-button value="district">By District</mat-radio-button> -->
           </mat-radio-group>
+        </ul>
     </div>
 </div>
