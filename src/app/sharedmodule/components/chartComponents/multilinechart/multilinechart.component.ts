@@ -48,8 +48,13 @@ export class MultilinechartComponent implements OnInit, OnChanges {
     this.xAxisDataValue = this.xAxisDataDimension.value;
 
     if (this.multiLineData && this.dimension != "Location") {
-      let dates = this.multiLineData.map((data) => {
-        return data['date']
+      console.log('multiLineData ::::::::  ', this.multiLineData);
+      let dates = [];
+      this.multiLineData.forEach((data) => {
+        if(dates.indexOf(data['date']) < 0) {
+          const newDate = new Date(data['date']);
+          dates.push(newDate.toUTCString());
+        }
       });
       this.multiLineData.map((data) => {
          data['date'] = new Date(data['date']);
@@ -60,10 +65,11 @@ export class MultilinechartComponent implements OnInit, OnChanges {
       });
       let uniqueXKeyValues = _.uniq(xKeyValues);
       let uniqueDates = _.uniq(dates);
+      console.log('uniqueDates ::::  ', uniqueDates);
       this.data = uniqueDates.map((date) => { return new Date(date); })
       console.log('Data ::::  ', this.data);
       this.data2 = uniqueXKeyValues;
-      // console.log('Data2 ::::  ', this.data2);
+      console.log('Data2 ::::  ', this.data2);
 
       // this.data2 = uniqueXKeyValues.map((value) => {
       //   const obj = {};
