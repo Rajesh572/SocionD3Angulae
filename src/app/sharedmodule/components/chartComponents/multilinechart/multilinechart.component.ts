@@ -67,8 +67,17 @@ export class MultilinechartComponent implements OnInit, OnChanges {
       let uniqueDates = _.uniq(dates);
       console.log('uniqueDates ::::  ', uniqueDates);
       this.data = uniqueDates.map((date) => { return new Date(date); })
+      if (this.data.length === 1) {
+        const newDate = this.data[0].getTime() - 1000;
+        // new Date(Date.now() - 20000);
+        // this.data.push(new Date('2000-03-17T07:04:45.984Z'));
+        this.data.push(new Date(newDate));
+      }
       console.log('Data ::::  ', this.data);
       this.data2 = uniqueXKeyValues;
+      // if (this.data2.length === 1) {
+      //   this.data2.push('Jan');
+      // }
       console.log('Data2 ::::  ', this.data2);
 
       // this.data2 = uniqueXKeyValues.map((value) => {
@@ -160,11 +169,16 @@ export class MultilinechartComponent implements OnInit, OnChanges {
         dateArr.push(datavalues[this.xAxisDataValue]);
       });
       notIncDates = _.difference(this.data2, dateArr);
+      if (this.data2.length === 1) {
+        notIncDates.push('XX');
+      }
       notIncDates.forEach((dates) => {
         const obj = {};
         obj['topic_name'] = data['key'];
         obj['count'] = 0;
-        obj['date'] = new Date(this.data[this.data2.indexOf(dates)]);
+        obj['date'] = (this.data2.indexOf(dates) > -1) ?
+        new Date(this.data[this.data2.indexOf(dates)]) :
+        new Date(this.data[0].getTime() - 1000);
         obj[this.xAxisDataValue] = dates;
         data['values'].push(obj);
         // data['values'].push({ topic_name: data['key'], count: 0, date: dates })
@@ -204,6 +218,7 @@ export class MultilinechartComponent implements OnInit, OnChanges {
     this.svg.call(tip);
 
     let xForLine = d3Scale.scaleLinear().range([0, this.width]);
+    xForLine.domain(d3Array.extent(this.data, (d: Date) => d ));
 
     this.x = d3Scale.scaleBand().range([0, this.width]);
     this.y = d3Scale.scaleLinear().range([this.height, 0]);
@@ -212,7 +227,7 @@ export class MultilinechartComponent implements OnInit, OnChanges {
     this.line = d3Shape.line()
       .curve(d3Shape.curveBasis)
       .x((d: any) => {
-        // console.log('this.x(d[this.xAxisDataValue]) ;;;;;;; ', this.x(d[this.xAxisDataValue]));
+        console.log('xForLine(d[date] ;;;;;;; ', xForLine(d['date']));
         return xForLine(d['date']);
       })
       .y((d: any) => this.y(d.count));
@@ -220,7 +235,6 @@ export class MultilinechartComponent implements OnInit, OnChanges {
       // console.log('DAta :::::::::  ', this.data);
       // this.x.domain(stackedData.map((d: any) => d[this.yLabel]));
     this.x.domain(this.data2, (d: any) => (d));
-    xForLine.domain(d3Array.extent(this.data, (d: Date) => d ));
     this.y.domain([
       d3Array.min(groupeddata, function (c) { return d3Array.min(c.values, function (d) { return d['count']; }); }),
       d3Array.max(groupeddata, function (c) { return d3Array.max(c.values, function (d) { return d['count']; }); })

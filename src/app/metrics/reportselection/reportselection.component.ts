@@ -336,7 +336,7 @@ export class ReportselectionComponent implements OnInit, OnDestroy {
         } else if (result === 'Time Period') {
           this.viewByEvent = {key: 'Time Period', value: 'month'};
         }
-
+        this.reportService.setViewBy(this.viewByEvent);
         this.collectReportData();
 
       }

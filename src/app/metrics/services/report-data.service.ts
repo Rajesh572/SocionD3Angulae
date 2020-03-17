@@ -230,6 +230,9 @@ TRAINER: 'role',
 
 
   getRequestBody() {
+    if(this.requestBody.length === 0) {
+      this.initializeRequestBody();
+    }
     return [...this.requestBody];
   }
 
