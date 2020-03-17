@@ -340,7 +340,7 @@ export class ReportselectionComponent implements OnInit, OnDestroy {
         this.collectReportData();
 
       }
-      // console.log('fromxmodal', this.selectedHorizontalValue);
+      // console.log('fromxmodal', this.s electedHorizontalValue);
     });
   }
 
