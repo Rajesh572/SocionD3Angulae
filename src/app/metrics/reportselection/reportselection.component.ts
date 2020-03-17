@@ -11,6 +11,7 @@ import { ReportDataService } from '../services/report-data.service';
 import { forkJoin, Subscription } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { ModalComponent } from 'src/app/sharedmodule/components/modal/modal.component';
+import { ChartButtonService } from 'src/app/sharedmodule/services/chart-button/chart-button.service';
 
 @Component({
   selector: 'app-reportselection',
@@ -23,6 +24,7 @@ export class ReportselectionComponent implements OnInit, OnDestroy {
   barData: any;
   stackedData: any;
   showCharts = false;
+  viewByEvent: any = {key: 'Time Period', value: 'month'};
   faCheck = faCheck;
   faPlusCircle = faPlusCircle;
   faEye = faEye;
@@ -33,6 +35,12 @@ export class ReportselectionComponent implements OnInit, OnDestroy {
     'Content Views'];
 
   horizontalArr = ['Time Period', 'location'];
+
+  monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
+  'July', 'August', 'September', 'October', 'November', 'December'
+];
+  dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
 
   selectedHorizontalValue: string;
   selectedVerticalValue: string;
@@ -45,13 +53,14 @@ export class ReportselectionComponent implements OnInit, OnDestroy {
   // fromxmodal: any;
   // fromymodal: any;
   requestBody = [];
-  filterServiceSubscription: Subscription;
+  manageSubscriptions: Subscription[] = [];
 
   constructor(
     private dataService: DataService,
     private router: Router,
     private filterService: FilterDataService,
     private reportService: ReportDataService,
+    private chartButtonService: ChartButtonService,
     private dialog: MatDialog) {
     let extras = this.router.getCurrentNavigation().extras;
     console.log('Extras : ', extras);
@@ -81,18 +90,34 @@ export class ReportselectionComponent implements OnInit, OnDestroy {
     // this.selectedVerticalValue = this.reportService.getSelectedVerticalAttr();
     // this.selectedHorizontalValue = this.reportService.getSelectedHorizontalAttr();
     try {
-      this.filterServiceSubscription = this.filterService.$filterObjectChange.subscribe((filter) => {
+      const handleSubscription = this.filterService.$filterObjectChange.subscribe((filter) => {
         console.log('filter: ', filter);
         this.reportService.setFilter(filter);
         const filterKeys = Object.keys(filter);
         if (!!filterKeys && filterKeys.length > 0) {
           this.reportService.initializeRequestBody();
+          // this.viewByEvent = this.reportService.getView
+          // this.viewByEvent = this.reportService.getViewBy();
+          // this.reportService.setViewBy(this.viewByEvent);
           this.reportService.applyFiltersToRequestBody(filter);
         } else {
           this.reportService.initializeRequestBody();
+          // this.viewByEvent = this.reportService.getViewBy();
+          // this.reportService.setViewBy(this.viewByEvent);
         }
         this.collectReportData();
       });
+      this.manageSubscriptions.push(handleSubscription);
+
+      const manageSubs = this.chartButtonService.$chartButtonChange.subscribe((event) => {
+        console.log('Event is :::: ', event);
+        if (Object.keys(event).length > 0) {
+          this.viewByEvent = event;
+          this.reportService.setViewBy(event);
+        }
+        this.collectReportData();
+      });
+      this.manageSubscriptions.push(manageSubs);
     } catch (e) {
       console.log('Error in Report Selection Component while fetching Chart Data : ', e);
     }
@@ -100,6 +125,8 @@ export class ReportselectionComponent implements OnInit, OnDestroy {
 
   collectReportData() {
     this.reportService.initializeRequestBody();
+    this.viewByEvent = this.reportService.getViewBy();
+    this.reportService.setViewBy(this.viewByEvent);
     this.requestBody = this.reportService.getRequestBody();
     console.log('Request Body: ', this.requestBody);
     const chartRequests = [];
@@ -116,11 +143,55 @@ export class ReportselectionComponent implements OnInit, OnDestroy {
       }
       console.log('chartData : ', chartData);
 
-      chartData.forEach((chartDataEach) => {
-        chartDataEach.result.forEach((data) => {
-          this.chartData.push(data);
+      // const newChartData = [];
+      // chartData.forEach((chartDataEach) => {
+      //   chartDataEach.result.forEach((data) => {
+      //     newChartData.push(data);
+      //   });
+      // });
+      if (!!this.viewByEvent && Object.keys(this.viewByEvent).length > 0) {
+        chartData.forEach((chartDataEach) => {
+          chartDataEach.result.map((data) => {
+            if (this.viewByEvent.key === 'Time Period') {
+              const date = new Date(data.date);
+              switch (this.viewByEvent.value) {
+                case 'month': {
+                  data.month = this.monthNames[date.getMonth()];
+                  break;
+                }
+                case 'week': {
+                  // data.week = 'Week ' + this.getWeekNumber(date);
+                  let weekText = 'Week ' + this.getWeekOfMonth(date).toString();
+                  weekText += ' ';
+                  weekText += date.toLocaleString('default', { month: 'short' });
+                  // data.week = this.getWeekOfMonth(date) + ' Week of ' + date.toLocaleString('default', { month: 'short' });
+                  data.week = weekText;
+                  break;
+                }
+                case 'day': {
+                  data.day = date.getDate() + ' ' + date.toLocaleDateString('en-US',{'month': 'short'});
+                  break;
+                }
+                default : {}
+              }
+            } else if (this.viewByEvent.key === 'location') {
+              switch (this.viewByEvent.value) {
+                case 'state': {
+                  break;
+                }
+                case 'district': {
+                  break;
+                }
+                case 'city': {
+                  break;
+                }
+                default : {}
+              }
+            }
+          });
         });
-      });
+      }
+      this.chartData = chartData;
       console.log('Data : ', this.chartData);
       // this.dataService.setChartData(this.chartData);
       this.barData = (chartData[0].result);
@@ -145,6 +216,44 @@ export class ReportselectionComponent implements OnInit, OnDestroy {
     });
   }
 
+
+  getWeekNumber(thisDate: Date) {
+    // const dt = new Date(thisDate);
+    const thisDay = thisDate.getDate();
+
+    const newDate = thisDate;
+    newDate.setDate(1); // first day of month
+    const digit = newDate.getDay();
+
+    const Q = (thisDay + digit) / 7;
+
+    const R = (thisDay + digit) % 7;
+
+    if (R !== 0) {
+      return Math.ceil(Q);
+    } else {
+      return Q;
+    }
+  }
+
+   getWeekOfMonth(date: Date) {
+    const adjustedDate = date.getDate()+date.getDay();
+    const prefixes = ['0', '1', '2', '3', '4', '5'];
+    return (parseInt(prefixes[0 | adjustedDate / 7])+1);
+   }
+
+
+  getWeekNoISO(dt) {
+  const tdt: any = new Date(dt.valueOf());
+  const dayn = (dt.getDay() + 6) % 7;
+  tdt.setDate(tdt.getDate() - dayn + 3);
+  const firstThursday = tdt.valueOf();
+  tdt.setMonth(0, 1);
+  if (tdt.getDay() !== 4) {
+    tdt.setMonth(0, 1 + ((4 - tdt.getDay()) + 7) % 7);
+  }
+  return 1 + Math.ceil((firstThursday - tdt) / 604800000);
+}
 
   // onKey(value) {
   //   this.dataArray = [];
@@ -221,6 +330,13 @@ export class ReportselectionComponent implements OnInit, OnDestroy {
       if (!!result) {
         this.selectedHorizontalValue = result;
         this.reportService.setSelectedHorizontalAttr(this.selectedHorizontalValue);
+        console.log('Result ::::::: ', result);
+        if (result === 'location') {
+          this.viewByEvent = {key: 'location', value: 'district'};
+        } else if (result === 'Time Period') {
+          this.viewByEvent = {key: 'Time Period', value: 'month'};
+        }
+
         this.collectReportData();
 
       }
@@ -250,8 +366,10 @@ export class ReportselectionComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (!!this.filterServiceSubscription) {
-      this.filterServiceSubscription.unsubscribe();
+    if (this.manageSubscriptions.length > 0) {
+      this.manageSubscriptions.forEach((subsEach) => {
+        subsEach.unsubscribe();
+      });
     }
   }
 

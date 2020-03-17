@@ -1,5 +1,5 @@
 <app-pageheader>
-  <div class="programtitle">Program: Hepatitis - c Awareness</div>
+  <div class="programtitle">Meghalaya Community Led Landscape Management Project (CLLMP)</div>
   <div class="header-component">
     <div class="pagetitle">Metrics</div>
     <app-filter></app-filter>
@@ -65,22 +65,27 @@
       <mat-tab label="Consolidated">
         <ng-template matTabContent>
           <app-no-result-found *ngIf="barData.length === 0"></app-no-result-found>
-          <app-barchart *ngIf="barData.length !== 0" class="charts" [dimension]="selectedHorizontalValue" [label]="selectedVerticaltext" [barData]="barData">
+          <app-barchart *ngIf="barData.length !== 0" class="charts"
+           [dimension]="selectedHorizontalValue" [label]="selectedVerticaltext"
+            [barData]="barData" [xAxisDataDimension]="viewByEvent">
           </app-barchart>
         </ng-template>
       </mat-tab>
       <mat-tab label="Topic Wise Breakup">
         <ng-template matTabContent>
           <app-no-result-found *ngIf="stackedData.length === 0"></app-no-result-found>
-          <app-stackedchart *ngIf="stackedData.length !== 0" class="charts" [dimension]="selectedHorizontalValue" [label]="selectedVerticaltext"
-            [selectedTopics]="selectedItems"[stackedData]="stackedData"></app-stackedchart>
+          <app-stackedchart *ngIf="stackedData.length !== 0" class="charts"
+          [dimension]="selectedHorizontalValue" [label]="selectedVerticaltext"
+            [selectedTopics]="selectedItems"[stackedData]="stackedData" [xAxisDataDimension]="viewByEvent"></app-stackedchart>
         </ng-template>
       </mat-tab>
       <mat-tab label="Trend" *ngIf="selectedHorizontalValue === 'Time Period'">
         <ng-template matTabContent>
           <app-no-result-found *ngIf="multiLineData.length === 0"></app-no-result-found>
-          <app-multilinechart *ngIf="multiLineData.length !== 0" class="charts" [label]="selectedVerticaltext" [dimension]="selectedHorizontalValue"
-            [multiLineData]="multiLineData"></app-multilinechart>
+          <app-multilinechart *ngIf="multiLineData.length !== 0" class="charts"
+          [label]="selectedVerticaltext" [dimension]="selectedHorizontalValue"
+          [xAxisDataDimension]="viewByEvent"
+          [multiLineData]="multiLineData"></app-multilinechart>
         </ng-template>
       </mat-tab>
     </mat-tab-group>

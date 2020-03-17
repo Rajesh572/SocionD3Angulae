@@ -8,6 +8,7 @@ import * as d3Axis from 'd3-axis';
 import * as d3Array from 'd3-array';
 import * as d3ScaleChromatic from 'd3-scale-chromatic';
 import * as d3Time from 'd3-time';
+import d3Tip from 'd3-tip';
 import { nest } from 'd3-collection';
 
 @Component({
@@ -22,9 +23,15 @@ export class MultilinechartComponent implements OnInit, OnChanges {
   @Input() svgWidth: any = '75%';
   @Input() svgHeight = 550;
   datadate2: any;
+  data2: any;
   newData: any;
   uniqLocs: any;
   LOCS: any;
+    @Input() xAxisDataDimension: any;
+
+
+  xAxisDataKey: string;
+  xAxisDataValue: string;
 
   constructor() { }
 
@@ -37,13 +44,32 @@ export class MultilinechartComponent implements OnInit, OnChanges {
       console.log('SVG Width', this.svgWidth);
     }
     // window.scrollTo(500, 0);
+    this.xAxisDataKey = this.xAxisDataDimension.key;
+    this.xAxisDataValue = this.xAxisDataDimension.value;
+
     if (this.multiLineData && this.dimension != "Location") {
       let dates = this.multiLineData.map((data) => {
         return data['date']
-      })
-      let uniqueDates = _.uniq(dates)
+      });
+      this.multiLineData.map((data) => {
+         data['date'] = new Date(data['date']);
+      });
+      // console.log('Dates ::::  ', dates);
+      let xKeyValues = this.multiLineData.map((data) => {
+        return data[this.xAxisDataValue];
+      });
+      let uniqueXKeyValues = _.uniq(xKeyValues);
+      let uniqueDates = _.uniq(dates);
       this.data = uniqueDates.map((date) => { return new Date(date); })
+      console.log('Data ::::  ', this.data);
+      this.data2 = uniqueXKeyValues;
+      // console.log('Data2 ::::  ', this.data2);
 
+      // this.data2 = uniqueXKeyValues.map((value) => {
+      //   const obj = {};
+      //   obj[this.xAxisDataValue] = value;
+      //   return obj;
+      // });
       this.datadate2 = uniqueDates.map((date) => { return date })
       this.drawMultiLineChart()
     }
@@ -119,24 +145,32 @@ export class MultilinechartComponent implements OnInit, OnChanges {
       .key(function (d) { return d['topic_name']; })
       .entries(this.multiLineData);
     let group2 = groupeddata;
-
     group2.forEach((data) => {
       let dateArr = [];
       let notIncDates = [];
       data.values.forEach(datavalues => {
-        dateArr.push(datavalues['date'])
+        // const obj = {};
+        // obj[this.xAxisDataValue] = datavalues[this.xAxisDataValue];
+        dateArr.push(datavalues[this.xAxisDataValue]);
       });
-      notIncDates = _.difference(this.datadate2, dateArr);
+      notIncDates = _.difference(this.data2, dateArr);
       notIncDates.forEach((dates) => {
-        data['values'].push({ topic_name: data['key'], count: 0, date: dates })
+        const obj = {};
+        obj['topic_name'] = data['key'];
+        obj['count'] = 0;
+        obj['date'] = new Date(this.data[this.data2.indexOf(dates)]);
+        obj[this.xAxisDataValue] = dates;
+        data['values'].push(obj);
+        // data['values'].push({ topic_name: data['key'], count: 0, date: dates })
       })
       data['values'].sort((a, b) => {
-        let d1: any = new Date(a['date'])
-        let d2: any = new Date(b['date'])
+        let d1: any = new Date(a['date']);
+        let d2: any = new Date(b['date']);
         return d1 - d2;
-      })
-    })
+      });
+    });
     groupeddata = group2;
+    console.log('groupeddata ::::::::::  ', groupeddata);
     this.svg = d3.select('.chart .multilinechart');
     this.svg.selectAll("*").remove();
 
@@ -145,17 +179,42 @@ export class MultilinechartComponent implements OnInit, OnChanges {
 
     this.g = this.svg.append('g').attr('transform', 'translate(' + this.margin.left + ',' + this.margin.top + ')');
 
-    this.x = d3Scale.scaleTime().range([0, this.width])
+    const tip = d3Tip();
+
+    tip.attr('class', 'd3-tip')
+      .offset([-20, 0])
+      .style('z-index', '9999')
+      .html(d => {
+        // console.log(d);
+        let ttHtml = '<p style="color:#333; font-weight:400;">Topic: ';
+        ttHtml += '<span style="color:blue">';
+        ttHtml += d.key + '</span>';
+        // ttHtml += '<p style="color:#333; font-weight:400;">Count: ';
+        // ttHtml += '<span style="color:blue">';
+        // ttHtml += d.data + '</span>';
+        return ttHtml;
+      });
+
+    this.svg.call(tip);
+
+    let xForLine = d3Scale.scaleLinear().range([0, this.width]);
+
+    this.x = d3Scale.scaleBand().range([0, this.width]);
     this.y = d3Scale.scaleLinear().range([this.height, 0]);
     this.z = d3Scale.scaleOrdinal(d3ScaleChromatic.schemeCategory10);
 
     this.line = d3Shape.line()
       .curve(d3Shape.curveBasis)
-      .x((d: any) => this.x(new Date(d.date)))
+      .x((d: any) => {
+        // console.log('this.x(d[this.xAxisDataValue]) ;;;;;;; ', this.x(d[this.xAxisDataValue]));
+        return xForLine(d['date']);
+      })
       .y((d: any) => this.y(d.count));
 
-    this.x.domain(d3Array.extent(this.data, (d: Date) => d));
-
+      // console.log('DAta :::::::::  ', this.data);
+      // this.x.domain(stackedData.map((d: any) => d[this.yLabel]));
+    this.x.domain(this.data2, (d: any) => (d));
+    xForLine.domain(d3Array.extent(this.data, (d: Date) => d ));
     this.y.domain([
       d3Array.min(groupeddata, function (c) { return d3Array.min(c.values, function (d) { return d['count']; }); }),
       d3Array.max(groupeddata, function (c) { return d3Array.max(c.values, function (d) { return d['count']; }); })
@@ -171,10 +230,25 @@ export class MultilinechartComponent implements OnInit, OnChanges {
       .style("text-anchor", "end")
       .attr("dx", "-.8em")
       .attr("dy", ".15em")
+      .call(this.wrap, 50)
       .attr("font-size", "1.2em")
       .attr("transform", (d) => {
           return "rotate(-65)";
           });
+      // .text((d) => {
+        // console.log('Check d :::::::::   ', d);
+        // return d;
+        // console.log('Check xAxisDataValue :::::::::   ', this.xAxisDataValue);
+      //   if (this.xAxisDataValue === 'month') {
+      //   return d.toLocaleString('default', { month: 'short' });
+      // } else if (this.xAxisDataValue === 'week') {
+      //   return ('Week ' + this.getWeekNoISO(d));
+      // } else if (this.xAxisDataValue === 'day') {
+      //   return (d.getDate() + ' ' + d.toLocaleDateString('en-US',{'month': 'short'}));
+      // } else {
+      //   return '123456';
+      // }
+      // });
 
     this.g.append('g')
       .attr('class', 'axis axis--y')
@@ -205,6 +279,7 @@ export class MultilinechartComponent implements OnInit, OnChanges {
       .style("text-anchor", "middle")
       .text(this.label);
 
+      console.log('Grouped Data ::::::::::  ', groupeddata);
     let city = this.g.selectAll('.city')
       .data(groupeddata)
       .enter().append('g')
@@ -218,11 +293,13 @@ export class MultilinechartComponent implements OnInit, OnChanges {
       /* .style('mix-blend-mode', 'multiply') */
       .style('stroke-linejoin', 'round')
       .style('stroke-linecap', 'round')
+      .on('mouseover', tip.show)
+      .on('mouseout', tip.hide);
 
 
     city.append('text')
       .datum(function (d) { return { id: d.key, value: d.values[d.values.length - 1] }; })
-      .attr('transform', (d) => 'translate(' + this.x(new Date(d.value.date)) + ',' + this.y(d.value.count) + ')')
+      .attr('transform', (d) => 'translate(' + (this.x(d.value[this.xAxisDataValue])) + ',' + this.y(d.value.count) + ')')
       .attr('x', 3)
       .attr('dy', '0.35em')
       .style('font', '10px sans-serif')
@@ -251,8 +328,13 @@ export class MultilinechartComponent implements OnInit, OnChanges {
       .attr('y', 9.5)
       .attr('dy', '0.32em')
       .style('font-size', '12px')
-      .text(d => d);
-
+      .text(d => {
+        if (d.length > 15) {
+          return d.substr(0, 15) + ' ...';
+      } else {
+        return d;
+      }
+      });
   }
   private initChart(): void {
     this.svg = d3.select('.chart .multilinechart');
@@ -382,6 +464,48 @@ export class MultilinechartComponent implements OnInit, OnChanges {
       }
     })
     return location;
+  }
+
+  getWeekNoISO(dt) {
+    const tdt: any = new Date(dt.valueOf());
+    const dayn = (dt.getDay() + 6) % 7;
+    tdt.setDate(tdt.getDate() - dayn + 3);
+    const firstThursday = tdt.valueOf();
+    tdt.setMonth(0, 1);
+    if (tdt.getDay() !== 4) {
+      tdt.setMonth(0, 1 + ((4 - tdt.getDay()) + 7) % 7);
+    }
+    return 1 + Math.ceil((firstThursday - tdt) / 604800000);
+  }
+
+  wrap(text, width) {
+    text.each(function() {
+      let text = d3.select(this);
+      let words = text.text().split(/\s+/).reverse();
+      let line = [];
+      let word = '';
+      let lineNumber = 0;
+      let lineHeight = 1.1; // ems
+      let y = text.attr('y');
+      let dy = parseFloat(text.attr('dy'));
+      let tspan = text.text(null).append('tspan').attr('x', 0).attr('y', y).attr('dy', dy + 'em');
+      if (words.length > 1) {
+        while(word = words.pop()) {
+          line.push(word);
+          tspan.text(line.join(' '));
+          if (tspan.node().getComputedTextLength() > width) {
+            line.pop();
+            tspan.text(line.join(' '));
+            line = [word];
+            tspan = text.append('tspan').attr('x', 0).attr('y', y).attr('dy', ++lineNumber * lineHeight + dy + 'em').text(word);
+          }
+        }
+      } else {
+        line.push(words[0]);
+        tspan.text(line.join(' '));
+      }
+
+    });
   }
 
 }

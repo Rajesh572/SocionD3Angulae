@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Router  } from '@angular/router';
 import { faStar} from '@fortawesome/free-solid-svg-icons';
+import { ChartButtonService } from '../../services/chart-button/chart-button.service';
 
 @Component({
   selector: 'app-chart-buttons',
@@ -14,9 +15,9 @@ export class ChartButtonsComponent implements OnInit {
   // faCheckCircle = faCheckCircle;
   faStar = faStar;
   markFavourite;
-  timeFilter = 'month';
-  locationFilter = 'district';
-  constructor(private route: Router) { }
+  timeViewBy;
+  locationViewBy;
+  constructor(private route: Router, private chartButtonService: ChartButtonService) { }
 
   ngOnInit() {
     // this.route.url.subscribe((url) => {
@@ -31,18 +32,23 @@ export class ChartButtonsComponent implements OnInit {
     if (!this.route.url.includes('favourite')) {
         this.showButtons = true;
     }
+    this.timeViewBy = this.chartButtonService.getTimeViewBy();
+    // console.log('timeViewBy : ', this.timeViewBy);
+    this.locationViewBy = this.chartButtonService.getLocationViewBy();
   }
 
   setFavourite() {
     this.markFavourite = !this.markFavourite;
   }
 
-  timeFilterChange(event) {
-    console.log('Event : ', event.value);
+  timeViewByChange(event) {
+    // console.log('Event : ', event.value);
+    this.chartButtonService.updateViewByForChart({key: 'Time Period', value: this.timeViewBy});
   }
 
-  locationFilterChange(event) {
-    console.log('Event : ', event.value);
+  locationViewByChange(event) {
+    // console.log('Event : ', event.value);
+    this.chartButtonService.updateViewByForChart({key: 'location', value: this.locationViewBy});
   }
 
 }

@@ -40,6 +40,13 @@ app.use('/api',addCorsHeaders, proxy('http://localhost:3000',{
     proxyReqOptDecorator: function(proxyReqOpts, srcReq) {
         // console.log('api calling:  ')
         // you can update headers
+        // let urlParam = req.originalUrl.replace('/learner/', '')
+        // let query = require('url').parse(req.url).query
+        // if (query) {
+        //   return require('url').parse(learnerURL + urlParam + '?' + query).path
+        // } else {
+        //   return require('url').parse(learnerURL + urlParam).path
+        // }
         return proxyReqOpts;
       }
     // proxyReqPathResolver: (req) => require('url').parse('http://localhost:3000').path

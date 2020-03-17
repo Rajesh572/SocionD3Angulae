@@ -4,6 +4,7 @@ import * as d3Scale from 'd3-scale';
 import * as d3Shape from 'd3-shape';
 import * as d3Axis from 'd3-axis';
 import * as d3Array from 'd3-array';
+import d3Tip from 'd3-tip';
 import * as d3ScaleChromatic from 'd3-scale-chromatic';
 import { HttpClient } from '@angular/common/http';
 export interface Margin {
@@ -46,11 +47,22 @@ export class StackedchartComponent implements OnInit, OnChanges {
   @Input() selectedTopics;
   @Input() changeStackChart;
 
+  @Input() xAxisDataDimension: any;
+
+
+  xAxisDataKey: string;
+  xAxisDataValue: string;
 
   ngOnInit() {
   }
 
   ngOnChanges() {
+
+    // console.log(' Bar Chart Data :::::::: ', this.barData);
+    // console.log(' xAxisDataDimension :::::::: ', this.xAxisDataDimension);
+    this.xAxisDataKey = this.xAxisDataDimension.key;
+    this.xAxisDataValue = this.xAxisDataDimension.value;
+
     const chartWidth = d3.select('.chart').style('width');
     if (typeof(this.svgWidth) === 'string' && this.svgWidth.endsWith('%') ) {
       this.svgWidth = (parseFloat(this.svgWidth) / 100.0) * parseFloat(chartWidth);
@@ -65,15 +77,19 @@ export class StackedchartComponent implements OnInit, OnChanges {
     if (this.stackedData && this.topics && this.topics.length > 0) {
       console.log(this.dimension, this.stackedData);
       if (this.dimension === "Time Period") {
-        this.yLabel = "month"
+        this.yLabel = this.xAxisDataValue;
         let topicArr = this.selectedTopics.length > 0 ? this.selectedTopics : this.topics;
         let months = [];
         this.xd = this.stackedData;
         this.xd.forEach(element => {
-          if (months.indexOf(element['month']) > -1) { }
-          else { months.push(element['month']) }
+          if (months.indexOf(element[this.xAxisDataValue]) > -1) { }
+          else { months.push(element[this.xAxisDataValue]) }
         });
-        let newda = months.map(month => { return { month: month }; })
+        let newda = months.map(month => {
+          const obj = {};
+          obj[this.xAxisDataValue] = month;
+          return obj;
+        })
 
         newda.forEach((da) => {
           topicArr.forEach(topic => {
@@ -84,7 +100,7 @@ export class StackedchartComponent implements OnInit, OnChanges {
 
           newda.forEach((da) => {
 
-            if (da['month'] === objs['month']) {
+            if (da[this.xAxisDataValue] === objs[this.xAxisDataValue]) {
               da[objs['topic_name']] = objs['count']
             }
           })
@@ -93,15 +109,19 @@ export class StackedchartComponent implements OnInit, OnChanges {
         this.drawStackedChart(newda);
       }
       else {
-        this.yLabel = "Location"
+        this.yLabel = this.xAxisDataValue
         let topicArr = this.selectedTopics.length > 0 ? this.selectedTopics : this.topics;
         let locations = [];
         this.xd = this.stackedData;
         this.xd.forEach(element => {
-          if (locations.indexOf(element['Location']) > -1) { }
-          else { locations.push(element['Location']) }
+          if (locations.indexOf(element[this.xAxisDataValue]) > -1) { }
+          else { locations.push(element[this.xAxisDataValue]) }
         });
-        let newda = locations.map(location => { return { Location: location }; })
+        let newda = locations.map(location => {
+          const obj = {};
+          obj[this.xAxisDataValue] = location;
+          return obj;
+        })
 
         newda.forEach((da) => {
           topicArr.forEach(topic => {
@@ -112,7 +132,7 @@ export class StackedchartComponent implements OnInit, OnChanges {
 
           newda.forEach((da) => {
 
-            if (da['Location'] === objs['Location']) {
+            if (da[this.xAxisDataValue] === objs[this.xAxisDataValue]) {
               da[objs['topic_name']] = objs['count']
             }
           })
@@ -128,6 +148,24 @@ export class StackedchartComponent implements OnInit, OnChanges {
     this.svg = d3.select('.chart .stackedchart');
     this.svg.selectAll("*").remove();
 
+    const tip = d3Tip();
+
+    tip.attr('class', 'd3-tip')
+      .offset([-20, 0])
+      .style('z-index', '9999')
+      .html(d => {
+        // console.log(d);
+        let ttHtml = '<p style="color:#333; font-weight:400;">Topic: ';
+        ttHtml += '<span style="color:blue">';
+        ttHtml += d.key + '</span>';
+        // ttHtml += '<p style="color:#333; font-weight:400;">Count: ';
+        // ttHtml += '<span style="color:blue">';
+        // ttHtml += d.data + '</span>';
+        return ttHtml;
+      });
+
+    this.svg.call(tip);
+
     this.width = +this.svgWidth - this.margin.left - this.margin.right;
     this.height = +this.svgHeight - this.margin.top - this.margin.bottom;
     this.g = this.svg.append('g').attr('transform', 'translate(' + this.margin.left + ',' + this.margin.top + ')');
@@ -138,7 +176,7 @@ export class StackedchartComponent implements OnInit, OnChanges {
       .align(0.1);
     this.y = d3Scale.scaleLinear()
       .rangeRound([this.height, 0]);
-    this.z = d3Scale.scaleOrdinal(d3ScaleChromatic.schemeCategory10)
+    this.z = d3Scale.scaleOrdinal(d3ScaleChromatic.schemeCategory10);
     let keys = Object.getOwnPropertyNames(stackedData[0]).slice(1);
 
     stackedData = stackedData.map(v => {
@@ -156,6 +194,8 @@ export class StackedchartComponent implements OnInit, OnChanges {
       .data(d3Shape.stack().keys(keys)(stackedData))
       .enter().append('g')
       .attr('fill', d => this.z(d.key))
+      .on('mouseover', tip.show)
+      .on('mouseout', tip.hide)
       .selectAll('rect')
       .data(d => d)
       .enter().append('rect')
@@ -172,6 +212,7 @@ export class StackedchartComponent implements OnInit, OnChanges {
       .style("text-anchor", "end")
       .attr("dx", "-.8em")
       .attr("dy", ".15em")
+      .call(this.wrap, 50)
       .attr("font-size", "1.2em")
       .attr("transform", (d) => {
           return "rotate(-65)";
@@ -229,7 +270,13 @@ export class StackedchartComponent implements OnInit, OnChanges {
       .attr('y', 9.5)
       .attr('dy', '0.32em')
       .style('font-size', '12px')
-      .text(d => d);
+      .text(d => {
+        if (d.length > 15) {
+          return d.substr(0, 15) + ' ...';
+      } else {
+        return d;
+      }
+      });
     //this.svg.attr('width', this.width + 150)
   }
 
@@ -241,5 +288,35 @@ export class StackedchartComponent implements OnInit, OnChanges {
       }
     });
     this.topics = topics;
+  }
+
+  wrap(text, width) {
+    text.each(function() {
+      let text = d3.select(this);
+      let words = text.text().split(/\s+/).reverse();
+      let line = [];
+      let word = '';
+      let lineNumber = 0;
+      let lineHeight = 1.1; // ems
+      let y = text.attr('y');
+      let dy = parseFloat(text.attr('dy'));
+      let tspan = text.text(null).append('tspan').attr('x', 0).attr('y', y).attr('dy', dy + 'em');
+      if (words.length > 1) {
+        while(word = words.pop()) {
+          line.push(word);
+          tspan.text(line.join(' '));
+          if (tspan.node().getComputedTextLength() > width) {
+            line.pop();
+            tspan.text(line.join(' '));
+            line = [word];
+            tspan = text.append('tspan').attr('x', 0).attr('y', y).attr('dy', ++lineNumber * lineHeight + dy + 'em').text(word);
+          }
+        }
+      } else {
+        line.push(words[0]);
+        tspan.text(line.join(' '));
+      }
+
+    });
   }
 }

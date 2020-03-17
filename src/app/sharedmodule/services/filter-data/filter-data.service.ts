@@ -25,7 +25,7 @@ export class FilterDataService {
   private filterData = {};
   programDetails = {
     progrma_name: 'Hepatitis - c Awareness',
-    program_id: 236
+    program_id: 30
   };
   filterKeys = ['location', 'topic_name'];
   filter = {};

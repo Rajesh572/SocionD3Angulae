@@ -6,6 +6,7 @@ import * as d3 from 'd3-selection';
 import * as d3Scale from 'd3-scale';
 import * as d3Axis from 'd3-axis';
 import * as d3Array from 'd3-array';
+import d3Tip from 'd3-tip';
 // import * as d3Collection from 'd3-collection';
 
 
@@ -32,11 +33,22 @@ export class BarchartComponent implements OnInit, OnChanges {
   @Input() barData: any;
   @Input() label: any;
   @Input() dimension: any;
+  @Input() xAxisDataDimension: any;
+
+
+  xAxisDataKey: string;
+  xAxisDataValue: string;
 
   ngOnInit() {
   }
 
   ngOnChanges() {
+    // console.log(' Bar Chart Data :::::::: ', this.barData);
+    // console.log(' xAxisDataDimension :::::::: ', this.xAxisDataDimension);
+    this.xAxisDataKey = this.xAxisDataDimension.key;
+    this.xAxisDataValue = this.xAxisDataDimension.value;
+    // console.log(' xAxisDataKey :::::::: ', this.xAxisDataKey);
+    // console.log(' xAxisDataValue :::::::: ', this.xAxisDataValue);
     // this.myEvent.emit(this.ngOnChanges);
     const chartWidth = d3.select('.chart').style('width');
     if (typeof(this.svgWidth) === 'string' && this.svgWidth.endsWith('%') ) {
@@ -47,9 +59,9 @@ export class BarchartComponent implements OnInit, OnChanges {
     if (this.barData) {
       console.log(this.dimension);
       if (this.dimension === 'Time Period') {
-        this.yLabel = 'month';
+        this.yLabel = this.xAxisDataValue;
       } else {
-        this.yLabel = 'Location';
+        this.yLabel = this.xAxisDataValue;
       }
       this.drawBarchart();
     }
@@ -68,6 +80,19 @@ export class BarchartComponent implements OnInit, OnChanges {
       this.height = +this.svgHeight - this.margin.top - this.margin.bottom,
       this.g = this.svg.append('g').attr('transform', 'translate(' + this.margin.left + ',' + this.margin.top + ')');
 
+    const tip = d3Tip();
+
+    tip.attr('class', 'd3-tip')
+      .offset([-20, 0])
+      .style('z-index', '9999')
+      .html(d => {
+        let ttHtml = '<p style="color:#333; font-weight:400;">Count: ';
+        ttHtml += '<span style="color:blue">';
+        ttHtml += d.count + '</span>';
+        return ttHtml;
+      });
+
+    this.svg.call(tip);
 
     this.x = d3Scale.scaleBand()
       .rangeRound([0, this.width])
@@ -77,7 +102,8 @@ export class BarchartComponent implements OnInit, OnChanges {
       .rangeRound([this.height, 0]);
 
     this.x = this.x.domain(this.barData.map((d) => {
-      return d[this.yLabel.toLowerCase()];
+      return d[this.xAxisDataValue];
+      // return d[this.yLabel.toLowerCase()];
     }));
     this.y = this.y.domain([0, d3Array.max(this.barData, (d) => {
       return Number(d['count']);
@@ -91,10 +117,10 @@ export class BarchartComponent implements OnInit, OnChanges {
       .attr('dx', '-.8em')
       .attr('dy', '.15em')
       .attr('font-size', '1.2em')
+      .call(this.wrap, 60)
       .attr('transform', (d) => {
           return 'rotate(-65)';
           });
-
     this.g.append('g')
       .attr('class', 'baraxis')
       .call(d3Axis.axisLeft(this.y))
@@ -131,7 +157,7 @@ export class BarchartComponent implements OnInit, OnChanges {
       .append('rect')
       .attr('class', 'bar')
       .attr('x', (d) => {
-        return this.x(d[this.yLabel.toLowerCase()]);
+        return this.x(d[this.xAxisDataValue]);
       })
       .attr('y', (d) => {
         return this.y(Number(d.count));
@@ -140,6 +166,12 @@ export class BarchartComponent implements OnInit, OnChanges {
       .attr('height', (d) => {
         return this.height - this.y(Number(d.count));
       });
+      // .on('mouseover', tip.show)
+      // .on('mouseout', tip.hide);
+
+      // .on('mouseover', (d, i, n) => tip.show(d, n[i]))
+
+      // .on('mouseover', (data, index, element) => tip.show(data, element[index]))
 
     // for bar values
 
@@ -153,7 +185,7 @@ export class BarchartComponent implements OnInit, OnChanges {
       .attr('class', 'bar')
       .attr('text-anchor', 'middle')
       .attr('x', (d) => {
-        return this.x(d[this.yLabel.toLowerCase()]) + this.margin.left + this.margin.right + (this.width / len);
+        return this.x(d[this.xAxisDataValue]) + this.margin.left + this.margin.right + (this.width / len);
         })
       .attr('y', (d) => {
         return this.y(d.count) + this.margin.top - 5;
@@ -162,6 +194,36 @@ export class BarchartComponent implements OnInit, OnChanges {
         return d.count;
       });
 
+  }
+
+  wrap(text, width) {
+    text.each(function() {
+      let text = d3.select(this);
+      let words = text.text().split(/\s+/).reverse();
+      let line = [];
+      let word = '';
+      let lineNumber = 0;
+      let lineHeight = 1.1; // ems
+      let y = text.attr('y');
+      let dy = parseFloat(text.attr('dy'));
+      let tspan = text.text(null).append('tspan').attr('x', 0).attr('y', y).attr('dy', dy + 'em');
+      if (words.length > 1) {
+        while(word = words.pop()) {
+          line.push(word);
+          tspan.text(line.join(' '));
+          if (tspan.node().getComputedTextLength() > width) {
+            line.pop();
+            tspan.text(line.join(' '));
+            line = [word];
+            tspan = text.append('tspan').attr('x', 0).attr('y', y).attr('dy', ++lineNumber * lineHeight + dy + 'em').text(word);
+          }
+        }
+      } else {
+        line.push(words[0]);
+        tspan.text(line.join(' '));
+      }
+
+    });
   }
 
 }

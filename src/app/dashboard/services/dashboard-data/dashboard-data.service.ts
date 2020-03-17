@@ -10,7 +10,7 @@ export class DashboardDataService {
 
   programDetails = {
     progrma_name: 'Hepatitis - c Awareness',
-    program_id: 236
+    program_id: 30
 };
 // apiUrl = API_URL;
 

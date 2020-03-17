@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
+import { forkJoin, Subscription } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,7 @@ export class ReportDataService {
   requestBody = [];
   programDetails = {
     progrma_name: 'Hepatitis - c Awareness',
-    program_id: 236
+    program_id: 30
 };
 
 selectedVerticalAttr: string;
@@ -66,6 +67,7 @@ TRAINER: 'role',
   ];
 
   filter = {};
+  viewByData = {};
 
   constructor(private http: HttpClient) { }
 
@@ -73,6 +75,20 @@ TRAINER: 'role',
   setSelectedHorizontalAttr(horizontalAxisSelected: string) {
     if (!!horizontalAxisSelected) {
       this.selectedHorizontalAttr = horizontalAxisSelected;
+      let newRequestBody;
+      console.log('1234: ', this.selectedHorizontalAttr);
+      if (this.selectedHorizontalAttr === 'location') {
+        newRequestBody = this.getRequestBody();
+        newRequestBody[0].dimension = 'district';
+        newRequestBody[1].dimension = ['topic_name', 'district'];
+      } else if (this.selectedHorizontalAttr === 'Time Period') {
+        newRequestBody = this.getRequestBody();
+        newRequestBody[0].granularity = 'month';
+        newRequestBody[0].dimension = [];
+        newRequestBody[1].granularity = 'month';
+        newRequestBody[1].dimension = ['topic_name'];
+      }
+      this.requestBody = newRequestBody;
     }
   }
 
@@ -187,13 +203,31 @@ TRAINER: 'role',
     if (dimension === 'location') {
       newRequestBody = this.getRequestBody();
       newRequestBody[0].dimension = value;
-      newRequestBody[0].dimension = ['topic_name', value];
+      newRequestBody[1].dimension = ['topic_name', value];
     } else if (dimension === 'Time Period') {
-      
+      newRequestBody = this.getRequestBody();
+      newRequestBody[0].granularity = value;
+      newRequestBody[0].dimension = [];
+      newRequestBody[1].granularity = value;
+      newRequestBody[1].dimension = ['topic_name'];
     }
     this.requestBody = newRequestBody;
-    this.getChartData(this.requestBody);
+    console.log('newRequestBody ::::: ', newRequestBody);
+    // return this.collectReportData(dimension, value);
   }
+
+  setViewBy(data) {
+    this.viewByData = data;
+    this.updateDimensionInRequestBody(data.key, data.value);
+  }
+
+  getViewBy() {
+    if (Object.keys(this.viewByData).length < 1) {
+      this.viewByData = {key: 'Time Period', value: 'month'};
+    }
+    return {...this.viewByData};
+  }
+
 
   getRequestBody() {
     return [...this.requestBody];
