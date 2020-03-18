@@ -26,6 +26,7 @@ export class BarchartComponent implements OnInit, OnChanges {
   private svg: any;
   private g: any;
   private yLabel: any;
+  chartId = 0;
   constructor() { }
   @Input() data: any;
   @Input() svgWidth: any = '75%';

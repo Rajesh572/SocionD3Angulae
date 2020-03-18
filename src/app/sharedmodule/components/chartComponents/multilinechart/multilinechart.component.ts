@@ -23,6 +23,7 @@ export class MultilinechartComponent implements OnInit, OnChanges {
   @Input() svgWidth: any = '75%';
   @Input() svgHeight = 550;
   datadate2: any;
+  chartId = 2;
   data2: any;
   newData: any;
   uniqLocs: any;
@@ -287,7 +288,7 @@ export class MultilinechartComponent implements OnInit, OnChanges {
         "translate(" + (this.width / 2) + " ," +
         (this.height + this.margin.top + 100) + ")")
       .style("text-anchor", "middle")
-      .text("Time");
+      .text(this.xAxisDataValue[0].toUpperCase() + this.xAxisDataValue.slice(1));
 
 
     //For Y Axis Label
@@ -299,7 +300,7 @@ export class MultilinechartComponent implements OnInit, OnChanges {
       .style("text-anchor", "middle")
       .text(this.label);
 
-      console.log('Grouped Data ::::::::::  ', groupeddata);
+      // console.log('Grouped Data ::::::::::  ', groupeddata);
     let city = this.g.selectAll('.city')
       .data(groupeddata)
       .enter().append('g')

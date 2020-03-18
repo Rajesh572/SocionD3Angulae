@@ -7,7 +7,7 @@ import { forkJoin, Subscription } from 'rxjs';
 })
 export class ReportDataService {
 
-  requestBody = [];
+  requestBody = {};
   programDetails = {
     progrma_name: 'Hepatitis - c Awareness',
     program_id: 30
@@ -51,12 +51,22 @@ TRAINER: 'role',
     granularity: 'month',
     dimension: ['topic_name', 'month'],
     unique: false
+  },
+  {
+    granularity: 'month',
+    dimension: ['topic_name', 'month'],
+    unique: false
   }
   ];
 
   chartOptionsForLC = [{
     granularity: 'All',
     dimension: ['location'],
+    unique: false
+  },
+  {
+    granularity: 'All',
+    dimension: ['topic_name', 'location'],
     unique: false
   },
   {
@@ -72,21 +82,27 @@ TRAINER: 'role',
   constructor(private http: HttpClient) { }
 
 
-  setSelectedHorizontalAttr(horizontalAxisSelected: string) {
+  setSelectedHorizontalAttr(horizontalAxisSelected: string, selectedTabIndex) {
     if (!!horizontalAxisSelected) {
       this.selectedHorizontalAttr = horizontalAxisSelected;
       let newRequestBody;
+      newRequestBody = this.getRequestBody(selectedTabIndex);
+
       console.log('1234: ', this.selectedHorizontalAttr);
       if (this.selectedHorizontalAttr === 'location') {
-        newRequestBody = this.getRequestBody();
-        newRequestBody[0].dimension = 'district';
-        newRequestBody[1].dimension = ['topic_name', 'district'];
+        if (selectedTabIndex === 0) {
+          newRequestBody.dimension = 'district';
+        } else {
+          newRequestBody.dimension = ['topic_name', 'district'];
+        }
       } else if (this.selectedHorizontalAttr === 'Time Period') {
-        newRequestBody = this.getRequestBody();
-        newRequestBody[0].granularity = 'month';
-        newRequestBody[0].dimension = [];
-        newRequestBody[1].granularity = 'month';
-        newRequestBody[1].dimension = ['topic_name'];
+        if (selectedTabIndex === 0) {
+          newRequestBody.granularity = 'month';
+          newRequestBody.dimension = [];
+        } else {
+          newRequestBody.granularity = 'month';
+          newRequestBody.dimension = ['topic_name'];
+        }
       }
       this.requestBody = newRequestBody;
     }
@@ -133,7 +149,7 @@ TRAINER: 'role',
   }
 
 
-    applyFiltersToRequestBody(filter) {
+    applyFiltersToRequestBody(filter, selectedTabIndex) {
       if (!!filter) {
         this.filter = filter;
       }
@@ -141,9 +157,10 @@ TRAINER: 'role',
 
       const filterKeys = Object.keys(filter);
       filterKeys.forEach((element) => {
-        this.requestBody.forEach((item) => {
-          item.filter[element] = filter[element];
-        });
+        // this.requestBody((item) => {
+        //   item.filter[element] = filter[element];
+        // });
+        this.requestBody[selectedTabIndex].filter[element] = filter[element];
       });
     }
 
@@ -151,39 +168,38 @@ TRAINER: 'role',
       this.filter = filter;
     }
 
-  initializeRequestBody() {
-    this.requestBody = [];
+  initializeRequestBody(selectedTabIndex) {
+    this.requestBody[selectedTabIndex] = {};
     let chartOptions;
     if (this.selectedHorizontalAttr === 'location') {
-      chartOptions = this.chartOptionsForLC;
+      chartOptions = this.chartOptionsForLC[selectedTabIndex];
     } else {
-      chartOptions = this.chartOptionsForTP;
+      chartOptions = this.chartOptionsForTP[selectedTabIndex];
     }
-    chartOptions.forEach((option) => {
-      const requestBody = {...option};
-      // if(this.selectedHorizontalAttr === 'location') {
-      //   if (requestBody.dimension.indexOf('location') < 0) {
-      //     requestBody.dimension.push('location');
-      //   }
-      // }
-      // console.log('option : ', option);
-      // const requestBody = this.checkUniqueOption(option);
-      // const paramObject = this.createParamsObject(option.params);
-      // requestBody['params'] = paramObject;
-      const key = this.verticalDatabaseKey[this.getSelectedVerticalAttr()];
-      if(key === 'role') {
-        requestBody.unique = true;
-        requestBody['unique_param'] = 'user_id';
-      }
-      const filterObject = this.createFilterObject(this.programDetails.program_id);
-      // console.log('Filter : ', filterObject);
-      requestBody['filter'] = filterObject;
-      // console.log('Request : ', requestBody);
-      this.requestBody.push(requestBody);
-      if (Object.keys(this.filter).length > 0) {
-        this.applyFiltersToRequestBody(this.filter);
-      }
-    });
+
+    const requestBody = { ...chartOptions };
+    // if(this.selectedHorizontalAttr === 'location') {
+    //   if (requestBody.dimension.indexOf('location') < 0) {
+    //     requestBody.dimension.push('location');
+    //   }
+    // }
+    // console.log('option : ', option);
+    // const requestBody = this.checkUniqueOption(option);
+    // const paramObject = this.createParamsObject(option.params);
+    // requestBody['params'] = paramObject;
+    const key = this.verticalDatabaseKey[this.getSelectedVerticalAttr()];
+    if (key === 'role') {
+      requestBody.unique = true;
+      requestBody['unique_param'] = 'user_id';
+    }
+    const filterObject = this.createFilterObject(this.programDetails.program_id);
+    // console.log('Filter : ', filterObject);
+    requestBody['filter'] = filterObject;
+    // console.log('Request : ', requestBody);
+    this.requestBody[selectedTabIndex] = requestBody;
+    if (Object.keys(this.filter).length > 0) {
+      this.applyFiltersToRequestBody(this.filter, selectedTabIndex);
+    }
   }
 
   createFilterObject(programId) {
@@ -198,42 +214,55 @@ TRAINER: 'role',
     return filter;
 }
 
-  updateDimensionInRequestBody(dimension, value) {
+  updateDimensionInRequestBody(dimension, value, selectedTabIndex) {
     let newRequestBody;
     if (dimension === 'location') {
-      newRequestBody = this.getRequestBody();
-      newRequestBody[0].dimension = value;
-      newRequestBody[1].dimension = ['topic_name', value];
+      newRequestBody = this.getRequestBody(selectedTabIndex);
+      if (selectedTabIndex === 0) {
+        newRequestBody.dimension = value;
+      } else {
+        newRequestBody.dimension = ['topic_name', value];
+      }
     } else if (dimension === 'Time Period') {
-      newRequestBody = this.getRequestBody();
-      newRequestBody[0].granularity = value;
-      newRequestBody[0].dimension = [];
-      newRequestBody[1].granularity = value;
-      newRequestBody[1].dimension = ['topic_name'];
+      newRequestBody = this.getRequestBody(selectedTabIndex);
+      newRequestBody.granularity = value;
+      if (selectedTabIndex === 0) {
+        newRequestBody.dimension = [];
+      } else {
+        newRequestBody.dimension = ['topic_name'];
+      }
     }
-    this.requestBody = newRequestBody;
+    this.requestBody[selectedTabIndex] = newRequestBody;
     console.log('newRequestBody ::::: ', newRequestBody);
     // return this.collectReportData(dimension, value);
   }
 
-  setViewBy(data) {
-    this.viewByData = data;
-    this.updateDimensionInRequestBody(data.key, data.value);
+  setViewBy(data, selectedTabIndex) {
+    this.viewByData[selectedTabIndex] = data;
+    // this.viewByData = data;
+    this.updateDimensionInRequestBody(data.key, data.value, selectedTabIndex);
   }
 
-  getViewBy() {
-    if (Object.keys(this.viewByData).length < 1) {
-      this.viewByData = {key: 'Time Period', value: 'month'};
+  getViewBy(selectedTabIndex) {
+    if (this.viewByData[selectedTabIndex] && Object.keys(this.viewByData[selectedTabIndex]).length > 0) {
+      return {...this.viewByData[selectedTabIndex]};
     }
-    return {...this.viewByData};
+    else {
+      this.viewByData[selectedTabIndex] = {key: 'Time Period', value: 'month'};
+      return  {...this.viewByData[selectedTabIndex]};
+    }
+    // if (Object.keys(this.viewByData).length < 1) {
+    //   this.viewByData = {key: 'Time Period', value: 'month'};
+    // }
+    // return {...this.viewByData};
   }
 
 
-  getRequestBody() {
-    if(this.requestBody.length === 0) {
-      this.initializeRequestBody();
+  getRequestBody(selectedTabIndex) {
+    if (this.requestBody[selectedTabIndex] && Object.keys(this.requestBody[selectedTabIndex]).length <= 0) {
+      this.initializeRequestBody(selectedTabIndex);
     }
-    return [...this.requestBody];
+    return {...this.requestBody[selectedTabIndex]};
   }
 
   getChartData(requestBody) {

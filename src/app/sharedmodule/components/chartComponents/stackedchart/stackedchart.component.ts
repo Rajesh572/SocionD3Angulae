@@ -52,6 +52,7 @@ export class StackedchartComponent implements OnInit, OnChanges {
 
   xAxisDataKey: string;
   xAxisDataValue: string;
+  chartId = 1;
 
   ngOnInit() {
   }
@@ -203,6 +204,8 @@ export class StackedchartComponent implements OnInit, OnChanges {
       .attr('y', d => this.y(d[1]))
       .attr('height', d => this.y(d[0]) - this.y(d[1]))
       .attr('width', this.x.bandwidth());
+      // .attr('border', 1)
+      // .style('stroke', '#cdcdcd');
 
     this.g.append('g')
       .attr('class', 'stackaxis')

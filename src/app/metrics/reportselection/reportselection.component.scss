@@ -23,7 +23,7 @@ body {
 }
 .axis-selection {
   // padding: 1em;
-  min-width: 400px;
+  min-width: 370px;
   margin: 1%;
   background: #fff;
   display: inline-flex;
@@ -31,7 +31,8 @@ body {
 
 .axis-heading {
   text-align: center;
-  font-size: 1.5em;
+  margin-top: 5px;
+  font-size: 1.1em;
   font-weight: 400;
 }
 .menu {
@@ -43,11 +44,11 @@ body {
 .selected {
   display: block;
   text-align: center;
-  padding: 0.8em;
-  margin: 0.8em 0;
-  width: 280px;
-  font-weight: bold;
-  font-size: medium;
+  padding: 0.7em;
+  margin: 0.7em 0;
+  width: 250px;
+  font-weight: 500;
+  font-size: 1.0em;
   background-color: lightseagreen;
   cursor: default !important;
   border: none;

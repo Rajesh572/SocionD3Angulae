@@ -21,8 +21,8 @@ import { ChartButtonService } from 'src/app/sharedmodule/services/chart-button/c
 export class ReportselectionComponent implements OnInit, OnDestroy {
   selectedItems = [];
   unselected = [];
-  barData: any;
-  stackedData: any;
+  barData: any = [];
+  stackedData: any = [];
   showCharts = false;
   viewByEvent: any = {key: 'Time Period', value: 'month'};
   faCheck = faCheck;
@@ -45,9 +45,10 @@ export class ReportselectionComponent implements OnInit, OnDestroy {
   selectedHorizontalValue: string;
   selectedVerticalValue: string;
   selectedVerticaltext: string;
-  multiLineData: any;
+  multiLineData: any = [];
   modelSelected: any;
   dataArray: any[];
+  selectedTabIndex = 0;
   changeStackChart: boolean;
   chartData = [];
   // fromxmodal: any;
@@ -68,7 +69,7 @@ export class ReportselectionComponent implements OnInit, OnDestroy {
       let selectedmetric = extras['state']['id'];
       this.selectedVerticaltext = selectedmetric;
       this.selectedHorizontalValue = 'Time Period';
-      this.reportService.setSelectedHorizontalAttr(this.selectedHorizontalValue);
+      this.reportService.setSelectedHorizontalAttr(this.selectedHorizontalValue, this.selectedTabIndex);
       this.reportService.setSelectedVerticalAttrOnValue(selectedmetric);
       this.selectedVerticalValue = this.reportService.getSelectedVerticalAttr();
       // setTimeout(() => {
@@ -87,25 +88,27 @@ export class ReportselectionComponent implements OnInit, OnDestroy {
       this.selectedVerticalValue = this.reportService.getSelectedVerticalAttr();
       this.selectedVerticaltext = this.reportService.getSelectedVerticalAttrText();
     }
+    // console.log('selectedTabIndex :::: ', this.selectedTabIndex);
     // this.selectedVerticalValue = this.reportService.getSelectedVerticalAttr();
     // this.selectedHorizontalValue = this.reportService.getSelectedHorizontalAttr();
     try {
       const handleSubscription = this.filterService.$filterObjectChange.subscribe((filter) => {
         console.log('filter: ', filter);
+        // console.log('selectedTabIndex :::: ', this.selectedTabIndex);
         this.reportService.setFilter(filter);
         const filterKeys = Object.keys(filter);
         if (!!filterKeys && filterKeys.length > 0) {
-          this.reportService.initializeRequestBody();
+          // this.reportService.initializeRequestBody();
           // this.viewByEvent = this.reportService.getView
           // this.viewByEvent = this.reportService.getViewBy();
           // this.reportService.setViewBy(this.viewByEvent);
-          this.reportService.applyFiltersToRequestBody(filter);
+          this.reportService.applyFiltersToRequestBody(filter, this.selectedTabIndex);
         } else {
-          this.reportService.initializeRequestBody();
+          // this.reportService.initializeRequestBody();
           // this.viewByEvent = this.reportService.getViewBy();
           // this.reportService.setViewBy(this.viewByEvent);
         }
-        this.collectReportData();
+        this.collectReportData(this.selectedTabIndex);
       });
       this.manageSubscriptions.push(handleSubscription);
 
@@ -113,9 +116,9 @@ export class ReportselectionComponent implements OnInit, OnDestroy {
         console.log('Event is :::: ', event);
         if (Object.keys(event).length > 0) {
           this.viewByEvent = event;
-          this.reportService.setViewBy(event);
+          this.reportService.setViewBy(event, this.selectedTabIndex);
         }
-        this.collectReportData();
+        this.collectReportData(this.selectedTabIndex);
       });
       this.manageSubscriptions.push(manageSubs);
     } catch (e) {
@@ -123,25 +126,28 @@ export class ReportselectionComponent implements OnInit, OnDestroy {
     }
   }
 
-  collectReportData() {
-    this.reportService.initializeRequestBody();
-    this.viewByEvent = this.reportService.getViewBy();
-    this.reportService.setViewBy(this.viewByEvent);
-    this.requestBody = this.reportService.getRequestBody();
+  tabelect(event) {
+    console.log('Event ::::;; ', event.index);
+    // console.log('this.selectedTabIndex ::::;; ', this.selectedTabIndex);
+    this.collectReportData(event.index);
+  }
+
+  collectReportData(selectedTabIndex) {
+    this.reportService.initializeRequestBody(this.selectedTabIndex);
+    this.viewByEvent = this.reportService.getViewBy(this.selectedTabIndex);
+    this.reportService.setViewBy(this.reportService.getViewBy(this.selectedTabIndex), this.selectedTabIndex);
+    this.requestBody = this.reportService.getRequestBody(this.selectedTabIndex);
     console.log('Request Body: ', this.requestBody);
     const chartRequests = [];
     // console.log('Request Bodies : ', this.dashboardData);
-    this.requestBody.forEach((requestEach) => {
-      console.log('requestEach: ', requestEach);
-      chartRequests.push(this.reportService.getChartData(requestEach));
-    });
+    chartRequests.push(this.reportService.getChartData(this.requestBody));
 
     forkJoin(chartRequests).subscribe((chartData) => {
-      console.log('chartData : ', chartData);
-      if (this.chartData.length > 0) {
-        this.chartData = [];
-      }
-      console.log('chartData : ', chartData);
+      console.log('chartData : ', chartData[0]);
+      // if (this.chartData.length > 0) {
+      //   this.chartData = [];
+      // }
+      // console.log('chartData : ', chartData);
 
       // const newChartData = [];
       // chartData.forEach((chartDataEach) => {
@@ -150,68 +156,85 @@ export class ReportselectionComponent implements OnInit, OnDestroy {
       //   });
       // });
       if (!!this.viewByEvent && Object.keys(this.viewByEvent).length > 0) {
-        chartData.forEach((chartDataEach) => {
-          chartDataEach.result.map((data) => {
-            if (this.viewByEvent.key === 'Time Period') {
-              const date = new Date(data.date);
-              switch (this.viewByEvent.value) {
-                case 'month': {
-                  data.month = this.monthNames[date.getMonth()];
-                  break;
-                }
-                case 'week': {
-                  // data.week = 'Week ' + this.getWeekNumber(date);
-                  let weekText = 'Week ' + this.getWeekOfMonth(date).toString();
-                  weekText += ' ';
-                  weekText += date.toLocaleString('default', { month: 'short' });
-                  // data.week = this.getWeekOfMonth(date) + ' Week of ' + date.toLocaleString('default', { month: 'short' });
-                  data.week = weekText;
-                  break;
-                }
-                case 'day': {
-                  data.day = date.getDate() + ' ' + date.toLocaleDateString('en-US',{'month': 'short'});
-                  break;
-                }
-                default : {}
+        const chartDataEach = chartData[0];
+        chartDataEach.result.map((data) => {
+          if (this.viewByEvent.key === 'Time Period') {
+            const date = new Date(data.date);
+            switch (this.viewByEvent.value) {
+              case 'month': {
+                data.month = this.monthNames[date.getMonth()];
+                break;
               }
-            } else if (this.viewByEvent.key === 'location') {
-              switch (this.viewByEvent.value) {
-                case 'state': {
-                  break;
-                }
-                case 'district': {
-                  break;
-                }
-                case 'city': {
-                  break;
-                }
-                default : {}
+              case 'week': {
+                // data.week = 'Week ' + this.getWeekNumber(date);
+                let weekText = 'Week ' + this.getWeekOfMonth(date).toString();
+                weekText += ' ';
+                weekText += date.toLocaleString('default', { month: 'short' });
+                // data.week = this.getWeekOfMonth(date) + ' Week of ' + date.toLocaleString('default', { month: 'short' });
+                data.week = weekText;
+                break;
               }
+              case 'day': {
+                data.day = date.getDate() + ' ' + date.toLocaleDateString('en-US', { 'month': 'short' });
+                break;
+              }
+              default: { }
             }
-          });
+          } else if (this.viewByEvent.key === 'location') {
+            switch (this.viewByEvent.value) {
+              case 'state': {
+                break;
+              }
+              case 'district': {
+                break;
+              }
+              case 'city': {
+                break;
+              }
+              default: { }
+            }
+          }
         });
-      }
-      this.chartData = chartData;
-      console.log('Data : ', this.chartData);
-      // this.dataService.setChartData(this.chartData);
-      this.barData = (chartData[0].result);
 
-    // this.BarchartComponent.dataChangeDetectCycle
-      let stackedData = chartData[1].result;
-      // console.log('stackedData: ', stackedData);
-      // console.log(Object.keys(stackedData[0]));
-      if (stackedData.length > 0) {
-        if ((Object.keys(stackedData[0]).indexOf('location')) >= 0) {
-          // console.log('stackedData');
-          stackedData.forEach((data) => {
-            data['Location'] = data.location;
-            delete data['location'];
-          });
+      }
+
+      this.chartData[selectedTabIndex] = chartData;
+      console.log('chartData[0].result :::: ', chartData[0].result);
+      switch (selectedTabIndex) {
+        case 0 : {
+          this.barData = chartData[0].result;
+          break;
+        }
+        case 1 : {
+          let stackedData = chartData[0].result;
+          // console.log('stackedData: ', stackedData);
+          // console.log(Object.keys(stackedData[0]));
+          if (stackedData.length > 0) {
+            if ((Object.keys(stackedData[0]).indexOf('location')) >= 0) {
+              // console.log('stackedData');
+              stackedData.forEach((data) => {
+                data['Location'] = data.location;
+                delete data['location'];
+              });
+            }
+          }
+          // console.log(stackedData);
+          this.stackedData = stackedData;
+          break;
+        }
+        case 2 : {
+          this.multiLineData = (chartData[0].result);
+          break;
+        }
+        default : {
+
         }
       }
-      // console.log(stackedData);
-      this.stackedData = stackedData;
-      this.multiLineData = (chartData[1].result);
+      // console.log('Data : ', this.chartData);
+      // this.dataService.setChartData(this.chartData);
+      // this.barData = (chartData[0].result);
+
+    // this.BarchartComponent.dataChangeDetectCycle
       this.showCharts = true;
     });
   }
@@ -329,15 +352,25 @@ export class ReportselectionComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe(result => {
       if (!!result) {
         this.selectedHorizontalValue = result;
-        this.reportService.setSelectedHorizontalAttr(this.selectedHorizontalValue);
+        this.selectedTabIndex = 0;
+        this.reportService.setSelectedHorizontalAttr(this.selectedHorizontalValue, this.selectedTabIndex);
         console.log('Result ::::::: ', result);
         if (result === 'location') {
           this.viewByEvent = {key: 'location', value: 'district'};
+          this.chartButtonService.updateViewByForChart(this.viewByEvent, 0);
+          this.chartButtonService.updateViewByForChart(this.viewByEvent, 1);
+          this.reportService.setViewBy(this.viewByEvent, 0);
+          this.reportService.setViewBy(this.viewByEvent, 1);
         } else if (result === 'Time Period') {
           this.viewByEvent = {key: 'Time Period', value: 'month'};
+          this.chartButtonService.updateViewByForChart(this.viewByEvent, 0);
+          this.chartButtonService.updateViewByForChart(this.viewByEvent, 1);
+          this.chartButtonService.updateViewByForChart(this.viewByEvent, 2);
+          this.reportService.setViewBy(this.viewByEvent, 0);
+          this.reportService.setViewBy(this.viewByEvent, 1);
+          this.reportService.setViewBy(this.viewByEvent, 2);
         }
-        this.reportService.setViewBy(this.viewByEvent);
-        this.collectReportData();
+        this.collectReportData(this.selectedTabIndex);
 
       }
       // console.log('fromxmodal', this.s electedHorizontalValue);
@@ -359,7 +392,7 @@ export class ReportselectionComponent implements OnInit, OnDestroy {
         this.reportService.setSelectedVerticalAttrOnValue(result);
         this.selectedVerticalValue = this.reportService.getSelectedVerticalAttr();
         this.reportService.setSelectedVerticalAttr(this.selectedVerticalValue);
-        this.collectReportData();
+        this.collectReportData(this.selectedTabIndex);
       }
       // console.log(this.selectedVerticalValue);
     });

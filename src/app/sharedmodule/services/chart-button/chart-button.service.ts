@@ -10,24 +10,24 @@ export class ChartButtonService {
 
   private chartButtonChange = new Subject<any>();
   public $chartButtonChange = this.chartButtonChange.asObservable();
-  timeViewBy;
-  locationViewBy;
+  timeViewBy = [];
+  locationViewBy = [];
 
-  updateViewByForChart(viewBy) {
+  updateViewByForChart(viewBy, chartId) {
     if(viewBy.key === 'location') {
-      this.locationViewBy = viewBy.value;
+      this.locationViewBy[chartId] = viewBy.value;
     } else {
-      this.timeViewBy = viewBy.value;
+      this.timeViewBy[chartId] = viewBy.value;
     }
     this.chartButtonChange.next(viewBy);
   }
 
-  getTimeViewBy() {
-    return this.timeViewBy ? this.timeViewBy : 'month';
+  getTimeViewBy(chartId) {
+    return this.timeViewBy[chartId] ? this.timeViewBy[chartId] : 'month';
   }
 
-  getLocationViewBy() {
-    return this.locationViewBy ? this.locationViewBy : 'district';
+  getLocationViewBy(chartId) {
+    return this.locationViewBy[chartId] ? this.locationViewBy[chartId] : 'district';
   }
 
 }

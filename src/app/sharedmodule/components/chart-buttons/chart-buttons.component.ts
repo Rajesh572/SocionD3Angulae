@@ -11,6 +11,7 @@ import { ChartButtonService } from '../../services/chart-button/chart-button.ser
 export class ChartButtonsComponent implements OnInit {
 
   @Input() dimension;
+  @Input() chartId;
   showButtons = false;
   // faCheckCircle = faCheckCircle;
   faStar = faStar;
@@ -32,9 +33,9 @@ export class ChartButtonsComponent implements OnInit {
     if (!this.route.url.includes('favourite')) {
         this.showButtons = true;
     }
-    this.timeViewBy = this.chartButtonService.getTimeViewBy();
+    this.timeViewBy = this.chartButtonService.getTimeViewBy(this.chartId);
     // console.log('timeViewBy : ', this.timeViewBy);
-    this.locationViewBy = this.chartButtonService.getLocationViewBy();
+    this.locationViewBy = this.chartButtonService.getLocationViewBy(this.chartId);
   }
 
   setFavourite() {
@@ -43,12 +44,12 @@ export class ChartButtonsComponent implements OnInit {
 
   timeViewByChange(event) {
     // console.log('Event : ', event.value);
-    this.chartButtonService.updateViewByForChart({key: 'Time Period', value: this.timeViewBy});
+    this.chartButtonService.updateViewByForChart({key: 'Time Period', value: this.timeViewBy}, this.chartId);
   }
 
   locationViewByChange(event) {
     // console.log('Event : ', event.value);
-    this.chartButtonService.updateViewByForChart({key: 'location', value: this.locationViewBy});
+    this.chartButtonService.updateViewByForChart({key: 'location', value: this.locationViewBy}, this.chartId);
   }
 
 }
