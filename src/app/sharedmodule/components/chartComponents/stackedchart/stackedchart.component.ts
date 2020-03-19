@@ -52,7 +52,6 @@ export class StackedchartComponent implements OnInit, OnChanges {
 
   xAxisDataKey: string;
   xAxisDataValue: string;
-  chartId = 1;
 
   ngOnInit() {
   }
@@ -252,6 +251,25 @@ export class StackedchartComponent implements OnInit, OnChanges {
       .style("text-anchor", "middle")
       .text(this.label);
 
+    const LegendTip = d3Tip();
+
+    LegendTip.attr('class', 'd3-tip-legend')
+      .offset([-20, 0])
+      .style('z-index', '9999')
+      .style('background-color', 'white')
+      .html(d => {
+        // console.log(d);
+        let ttHtml = '<p style="color:#333; font-weight:400;">Topic: ';
+        ttHtml += '<span style="color:blue">';
+        ttHtml += d + '</span>';
+        // ttHtml += '<p style="color:#333; font-weight:400;">Count: ';
+        // ttHtml += '<span style="color:blue">';
+        // ttHtml += d.data + '</span>';
+        return ttHtml;
+      });
+
+    this.svg.call(LegendTip);
+
     let legend = this.g.append('g')
       .attr('font-family', 'sans-serif')
       .attr('font-size', 10)
@@ -266,6 +284,8 @@ export class StackedchartComponent implements OnInit, OnChanges {
       .attr('x', this.width - 19)
       .attr('width', 19)
       .attr('height', 19)
+      .on('mouseover', LegendTip.show)
+      .on('mouseout', LegendTip.hide)
       .attr('fill', this.z);
 
     legend.append('text')
@@ -274,12 +294,27 @@ export class StackedchartComponent implements OnInit, OnChanges {
       .attr('dy', '0.32em')
       .style('font-size', '12px')
       .text(d => {
-        if (d.length > 15) {
-          return d.substr(0, 15) + ' ...';
+        if (d.length <= 15) {
+          return d;
       } else {
-        return d;
+        const words = d.split(' ');
+        let display = '';
+        let checkLoop = false;
+        for (let i=0; i<words.length; i++) {
+          const word = words[i];
+          if (display.length + word.length > 20) {
+            checkLoop = true;
+            break;
+          } else {
+            display += word + ' ';
+          }
+        }
+        if (checkLoop) {
+           display += ' ...';
+        }
+        return display;
       }
-      });
+    });
     //this.svg.attr('width', this.width + 150)
   }
 

@@ -27,7 +27,7 @@
           <p class="axis-heading">Horizontal Axis</p>
 
           <div class="selected-axis">
-            <button disabled class="selected">{{selectedHorizontalValue}}</button>
+            <button (click)="openDialogForXAxis()" class="selected">{{selectedHorizontalValue}}</button>
             <fa-icon class="axismodalicon" aria-hidden="true" aria-label="Example hand icon" [icon]="faPlusCircle"
               (click)="openDialogForXAxis()"></fa-icon>
           </div>
@@ -44,7 +44,7 @@
           <p class="axis-heading">Vertical Axis</p>
 
           <div class="selected-axis">
-            <button disabled class="selected">{{selectedVerticaltext}}</button>
+            <button (click)="openDialogForYAxis()" class="selected">{{selectedVerticaltext}}</button>
             <fa-icon class="axismodalicon" aria-hidden="true" aria-label="Example hand icon" [icon]="faPlusCircle"
               (click)="openDialogForYAxis()"></fa-icon>
           </div>

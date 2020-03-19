@@ -34,7 +34,7 @@ export class ReportselectionComponent implements OnInit, OnDestroy {
     'Unique Trainers',
     'Content Views'];
 
-  horizontalArr = ['Time Period', 'location'];
+  horizontalArr = ['Time Period', 'Location'];
 
   monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
   'July', 'August', 'September', 'October', 'November', 'December'
@@ -180,7 +180,7 @@ export class ReportselectionComponent implements OnInit, OnDestroy {
               }
               default: { }
             }
-          } else if (this.viewByEvent.key === 'location') {
+          } else if (this.viewByEvent.key === 'Location') {
             switch (this.viewByEvent.value) {
               case 'state': {
                 break;
@@ -355,7 +355,7 @@ export class ReportselectionComponent implements OnInit, OnDestroy {
         this.selectedTabIndex = 0;
         this.reportService.setSelectedHorizontalAttr(this.selectedHorizontalValue, this.selectedTabIndex);
         console.log('Result ::::::: ', result);
-        if (result === 'location') {
+        if (result === 'Location') {
           this.viewByEvent = {key: 'location', value: 'district'};
           this.chartButtonService.updateViewByForChart(this.viewByEvent, 0);
           this.chartButtonService.updateViewByForChart(this.viewByEvent, 1);

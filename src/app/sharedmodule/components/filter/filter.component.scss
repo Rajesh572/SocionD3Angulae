@@ -17,7 +17,21 @@
     padding: 5px;
   }
   
-  .clear, .apply {
+  .clear {
+    height: max-content;
+    // background-color: lightseagreen;
+    background-color: #C2C2C2;
+    color: white;
+    font-size: inherit;
+    border: none;
+    width: 90px;
+    margin-top: 8px;
+    padding: 0.6em;
+    border-radius: 50px;
+    margin-left: 1em;
+  }
+
+  .apply {
     height: max-content;
     // background-color: lightseagreen;
     background-color: #3f51b5;
