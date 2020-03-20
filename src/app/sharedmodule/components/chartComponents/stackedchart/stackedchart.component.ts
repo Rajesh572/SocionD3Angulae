@@ -52,6 +52,7 @@ export class StackedchartComponent implements OnInit, OnChanges {
 
   xAxisDataKey: string;
   xAxisDataValue: string;
+  chartId = 1;
 
   ngOnInit() {
   }
